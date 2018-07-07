@@ -1,0 +1,4 @@
+".\Output\System.obj",
+".\Output\Main.obj" 
+TO ".\Output\WTZP1.0" 
+PRINT(".\Listing\WTZP1.m51") RAMSIZE(256) 

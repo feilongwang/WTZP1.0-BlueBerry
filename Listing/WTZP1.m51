@@ -1,0 +1,118 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/07/2018  18:48:49  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE .\Output\System.obj, .\Output\Main.obj TO .\Output\WTZP1.0 PRINT (.\Listing\WTZP1.m51) RAMSIZE 
+>> (256)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Output\System.obj (SYSTEM)
+  .\Output\Main.obj (MAIN)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+
+
+LINK MAP OF MODULE:  .\Output\WTZP1.0 (SYSTEM)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            IDATA   0008H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     000CH     UNIT         ?C_C51STARTUP
+            CODE    000FH     0006H     UNIT         ?PR?MAIN?MAIN
+            CODE    0015H     0002H     UNIT         ?PR?STARTSYSTEM?SYSTEM
+            CODE    0017H     0001H     UNIT         ?PR?INITSYSTEM?SYSTEM
+
+
+
+OVERLAY MAP OF MODULE:   .\Output\WTZP1.0 (SYSTEM)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?MAIN
+
+?PR?MAIN?MAIN
+  +--> ?PR?INITSYSTEM?SYSTEM
+  +--> ?PR?STARTSYSTEM?SYSTEM
+
+
+
+SYMBOL TABLE OF MODULE:  .\Output\WTZP1.0 (SYSTEM)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        SYSTEM
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/07/2018  18:48:49  PAGE 2
+
+
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  C:0015H         PUBLIC        StartSystem
+  C:0017H         PUBLIC        InitSystem
+  D:00D8H         PUBLIC        CCON
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          INITSYSTEM
+  C:0017H         LINE#         30
+  C:0017H         LINE#         31
+  C:0017H         LINE#         34
+  -------         ENDPROC       INITSYSTEM
+  -------         PROC          STARTSYSTEM
+  C:0015H         LINE#         43
+  C:0015H         LINE#         44
+  C:0015H         LINE#         49
+  C:0015H         LINE#         50
+  C:0015H         LINE#         52
+  -------         ENDPROC       STARTSYSTEM
+  -------         ENDMOD        SYSTEM
+
+  -------         MODULE        MAIN
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  D:00C0H         PUBLIC        P4
+  D:00C8H         PUBLIC        P5
+  D:00E8H         PUBLIC        P6
+  D:00F8H         PUBLIC        P7
+  D:00A8H         PUBLIC        IE
+  D:00B8H         PUBLIC        IP
+  D:00D8H         PUBLIC        CCON
+  C:000FH         PUBLIC        main
+  D:0098H         PUBLIC        SCON
+  D:0088H         PUBLIC        TCON
+  D:00D0H         PUBLIC        PSW
+  -------         PROC          MAIN
+  C:000FH         LINE#         25
+  C:000FH         LINE#         26
+  C:000FH         LINE#         28
+  C:0012H         LINE#         31
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        MAIN
+
+Program Size: data=9.0 xdata=0 code=24
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
