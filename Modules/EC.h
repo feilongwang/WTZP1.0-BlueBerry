@@ -3,26 +3,23 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-07
-** 作    者：   王老师
+** 日    期：   2018-07-08
+** 作    者：   温武军
 **---------------------------------------------------------------
-** 文 件 名：   Drivers.h
-** 文件说明：   驱动层头文件整合
+** 文 件 名：   EC.h
+** 文件说明：   电导率测量头文件
 *****************************************************************/
-#ifndef _DRIVERS_H_
-#define _DRIVERS_H_
+#ifndef EC_H
+#define EC_H
+//K=J\R其中K为电导率，J为电导常熟1.035.R为测量的阻抗
 
 /*---------------------INCLUDES----------------------*/
-//#include ".\Drivers\Delay.h"
-//#include ".\Drivers\IO.h"
-//#include ".\Drivers\Timer0.h"
-#include "UrstTest.h"
-//#include ".\Drivers\ADC.h"
-//#include ".\Drivers\DAC.h"
-//#include ".\Drivers\E2PROM.h"
-//#include ".\Drivers\Interrupt.h"
-#include "AD5933.h"
-#include "I2C.h"
+#include ".\Board\Board.h"
+
+/*---------------------DEFINES-----------------------*/
+
+
+/*---------------------DECLARES----------------------*/
 
 
 #endif

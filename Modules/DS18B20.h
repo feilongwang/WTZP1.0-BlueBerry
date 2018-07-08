@@ -4,25 +4,27 @@
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
 ** 日    期：   2018-07-07
-** 作    者：   王老师
+** 作    者：   温武军
 **---------------------------------------------------------------
-** 文 件 名：   Drivers.h
-** 文件说明：   驱动层头文件整合
+** 文 件 名：   DS18B20.h
+** 文件说明：   溶液温度测量头文件
 *****************************************************************/
-#ifndef _DRIVERS_H_
-#define _DRIVERS_H_
+#ifndef _DS18B20_H_
+#define _DS18B20_H_
 
 /*---------------------INCLUDES----------------------*/
-//#include ".\Drivers\Delay.h"
-//#include ".\Drivers\IO.h"
-//#include ".\Drivers\Timer0.h"
-#include "UrstTest.h"
-//#include ".\Drivers\ADC.h"
-//#include ".\Drivers\DAC.h"
-//#include ".\Drivers\E2PROM.h"
-//#include ".\Drivers\Interrupt.h"
-#include "AD5933.h"
-#include "I2C.h"
+#include ".\Board\Board.h"
 
+/*---------------------DEFINES-----------------------*/
+#define DQ P1_4
 
+/*---------------------DECLARES----------------------*/
+void delayus(unsigned int b);
+uint8 DS18B20rest(void);
+void write_byte(unsigned char dat);
+uint8 read_byte();
+uint8 DS18B20Start();//初始化DS18B20
+int16 DS18B20();//获得温度
+
+	
 #endif

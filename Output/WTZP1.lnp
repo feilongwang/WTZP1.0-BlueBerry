@@ -1,3 +1,8 @@
+".\Output\UrstTest.obj",
+".\Output\AD5933.obj",
+".\Output\I2C.obj",
+".\Output\DS18B20.obj",
+".\Output\EC.obj",
 ".\Output\System.obj",
 ".\Output\Main.obj" 
 TO ".\Output\WTZP1.0" 

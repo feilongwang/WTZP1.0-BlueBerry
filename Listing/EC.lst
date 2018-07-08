@@ -1,0 +1,44 @@
+C51 COMPILER V9.00   EC                                                                    07/08/2018 13:33:01 PAGE 1   
+
+
+C51 COMPILER V9.00, COMPILATION OF MODULE EC
+OBJECT MODULE PLACED IN .\Output\EC.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\EC.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -\EC.lst) TABS(2) OBJECT(.\Output\EC.obj)
+
+line level    source
+
+   1          /*****************************************************************
+   2          **                   大连理工大学 创新创业学院
+   3          **                       物联网应用工坊
+   4          **---------------------------------------------------------------
+   5          ** 项目名称：   WTZP1.0-BlueBerry
+   6          ** 日    期：   2018-07-08
+   7          ** 作    者：   温武军
+   8          **---------------------------------------------------------------
+   9          ** 文 件 名：   EC.h
+  10          ** 文件说明：   电导率测量
+  11          *****************************************************************/
+  12          
+  13          /*---------------------INCLUDES----------------------*/
+  14          #include "EC.h"
+  15          
+  16          /*---------------------VARIABLES---------------------*/
+  17          
+  18          
+  19          /*---------------------FUNCTIONS---------------------*/
+  20          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   ----    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

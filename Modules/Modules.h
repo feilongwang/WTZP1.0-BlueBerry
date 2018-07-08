@@ -13,7 +13,8 @@
 #define _MODULES_H_
 
 /*---------------------INCLUDES----------------------*/
-
+#include "DS18B20.h"
+#include "EC.h"
 
 
 #endif
