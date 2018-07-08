@@ -25,7 +25,7 @@ void Start(void);
 void SendData(unsigned char dat);
 void RecvACK(void);
 uint8 RecvData(void);
-void SendACK(void);
+//void SendACK(void);
 void SendNAK(void);
 void Stop(void);
 	

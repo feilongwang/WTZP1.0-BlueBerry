@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/08/2018 15:57:14 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/08/2018 21:00:05 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
@@ -27,7 +27,7 @@ line level    source
   17          
   18          /*---------------------VARIABLES---------------------*/
   19          
-  20          uint16 EC;
+  20          extern float ECCon;
   21          
   22          /*---------------------FUNCTIONS---------------------*/
   23          
@@ -42,7 +42,7 @@ line level    source
   32          {
   33   1        InitI2C();
   34   1        InitUart1();
-  35   1      
+  35   1        AD5933Init();
   36   1      }
   37          
   38          /***********************************************************************
@@ -58,29 +58,31 @@ line level    source
   48   1        int LiquidT;
   49   1        //
   50   1          DS18B20Start();
-  51   1      
+  51   1          Read_AD5933_Temperature();
   52   1        //
   53   1          while(1)
   54   1          {
-C51 COMPILER V9.00   SYSTEM                                                                07/08/2018 15:57:14 PAGE 2   
+C51 COMPILER V9.00   SYSTEM                                                                07/08/2018 21:00:05 PAGE 2   
 
-  55   2            DS18B20Start();
-  56   2            delay1s();
+  55   2            EC();
+  56   2            DS18B20Start();
   57   2            delay1s();
-  58   2            LiquidT=DS18B20();
-  59   2            UartSend_Byte(LiquidT,2); 
-  60   2          }
-  61   1      
-  62   1      }
-  63          
+  58   2            delay1s();
+  59   2            LiquidT=DS18B20();
+  60   2            UartSend_Byte(ECCon,4); 
+  61   2            AD5933Init();
+  62   2          }
+  63   1      
+  64   1      }
+  65          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     39    ----
+   CODE SIZE        =     56    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      2       2
+   DATA SIZE        =   ----       2
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
