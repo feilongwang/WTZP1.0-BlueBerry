@@ -14,11 +14,15 @@
 
 /*---------------------INCLUDES----------------------*/
 #include ".\Board\Board.h"
+#include "I2C.h"
 
 /*---------------------DEFINES-----------------------*/
-#define AD5933_SDA P33
-#define AD5933_SCL P32
+
 
 /*---------------------DECLARES----------------------*/
+
+void AD5933WriteByte(uint8 Addr,uint8 dat);
+void AD5933SetPointer(uint8 Addr);
+uint8 AD5933Read(uint8 Addr);
 
 #endif

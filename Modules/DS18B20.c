@@ -19,23 +19,6 @@ uint8 a[2];
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
-** 函 数 名： delayus(unsigned int b)
-** 函数说明： 延时程序-延时1us
-**---------------------------------------------------------------------
-** 输入参数： uint32
-** 返回参数： 无
-***********************************************************************/
-//该函数时间与晶振频率有关，此处为24Mhz
-void delayus(unsigned int b)
-{
-   while (b--)
-   {
-       _nop_();_nop_();_nop_();_nop_();_nop_(); _nop_();_nop_();_nop_();_nop_();_nop_();
-	   _nop_();_nop_();_nop_();_nop_();_nop_(); _nop_();_nop_();_nop_();_nop_();_nop_();
-	   _nop_();_nop_();_nop_();_nop_();
-   }
-}
-/***********************************************************************
 ** 函 数 名： DS18B20rest()
 ** 函数说明： 复位DS18B20
 **---------------------------------------------------------------------
@@ -46,11 +29,11 @@ unsigned char DS18B20rest()
 {
 	//unsigned char a;用于复位检测
 	DQ=1;
-	delayus(10);
+	delay1us(10);
 	DQ=0;
-	delayus(800);
+	delay1us(800);
 	DQ=1;
-	delayus(600);
+	delay1us(600);
 	return 1;
 }
 /***********************************************************************
@@ -68,11 +51,11 @@ void write_byte(unsigned char dat)
 	{
 		temp=dat&0x01;
 		DQ=0;
-		delayus(15);
+		delay1us(15);
 		DQ=dat&0x01;
-		delayus(45);
+		delay1us(45);
 		DQ=1;
-		delayus(10);
+		delay1us(10);
 		dat=dat>>1;
 	}
 	//delayus(100);
@@ -92,14 +75,14 @@ unsigned char read_byte()
 	{
 		val>>=1;
 		DQ=0;	
-		delayus(2);
+		delay1us(2);
 		DQ=1;
-		delayus(4);
+		delay1us(4);
 		if(DQ)
 		{
 			val=val|=0x80;
 		}
-		delayus(30);
+		delay1us(30);
 	}
 	return val;
 }

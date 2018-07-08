@@ -1,6 +1,8 @@
 ".\Output\UrstTest.obj",
 ".\Output\AD5933.obj",
 ".\Output\I2C.obj",
+".\Output\Time.obj",
+".\Output\Delay.obj",
 ".\Output\DS18B20.obj",
 ".\Output\EC.obj",
 ".\Output\System.obj",

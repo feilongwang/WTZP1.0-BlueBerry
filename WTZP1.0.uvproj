@@ -357,6 +357,16 @@
               <FileType>1</FileType>
               <FilePath>.\Drivers\I2C.c</FilePath>
             </File>
+            <File>
+              <FileName>Time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\Time.c</FilePath>
+            </File>
+            <File>
+              <FileName>Delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\Delay.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

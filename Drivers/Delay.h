@@ -3,25 +3,22 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-07
-** 作    者：   王老师
+** 日    期：   2018-07-08
+** 作    者：   温武军
 **---------------------------------------------------------------
-** 文 件 名：   System.h
-** 文件说明：   系统功能
+** 文 件 名：   Delay.h
+** 文件说明：   延时程序汇总(晶振24Mhz)
 *****************************************************************/
-#ifndef _SYSTEM_H_
-#define _SYSTEM_H_
+#ifndef _DELAY_H_
+#define _DELAY_H_
 
 /*---------------------INCLUDES----------------------*/
 #include ".\Board\Board.h"
-#include ".\Modules\Modules.h"
-
-/*---------------------DEFINES-----------------------*/
-
 
 /*---------------------DECLARES----------------------*/
-extern void InitSystem(void);
-extern void StartSystem(void);
+void delay10ms(void);
+void delay1us(unsigned int b);
+void delay1s(void);
 
 
 #endif

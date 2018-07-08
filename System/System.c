@@ -17,6 +17,7 @@
 
 /*---------------------VARIABLES---------------------*/
 
+uint16 EC;
 
 /*---------------------FUNCTIONS---------------------*/
 
@@ -29,7 +30,8 @@
 ***********************************************************************/
 void InitSystem(void)
 {
-
+	InitI2C();
+	InitUart1();
 
 }
 
@@ -42,13 +44,19 @@ void InitSystem(void)
 ***********************************************************************/
 void StartSystem(void)
 {
+	//´æ´¢±äÁ¿Çø
+	int LiquidT;
 	//
-		
+		DS18B20Start();
 
 	//
     while(1)
     {
-		
+			DS18B20Start();
+			delay1s();
+			delay1s();
+			LiquidT=DS18B20();
+			UartSend_Byte(LiquidT,2); 
     }
 
 }

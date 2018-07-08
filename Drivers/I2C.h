@@ -16,10 +16,17 @@
 #include ".\Board\Board.h"
 
 /*---------------------DEFINES-----------------------*/
-#define AD5933_SDA P33
-#define AD5933_SCL P32
+
 
 /*---------------------DECLARES----------------------*/
-
+void InitI2C(void);
+void Wait(void);
+void Start(void);
+void SendData(unsigned char dat);
+void RecvACK(void);
+uint8 RecvData(void);
+void SendACK(void);
+void SendNAK(void);
+void Stop(void);
 	
 #endif

@@ -14,12 +14,12 @@
 
 /*---------------------INCLUDES----------------------*/
 #include ".\Board\Board.h"
+#include ".\Drivers\Drivers.h"
 
 /*---------------------DEFINES-----------------------*/
 #define DQ P1_4
 
 /*---------------------DECLARES----------------------*/
-void delayus(unsigned int b);
 uint8 DS18B20rest(void);
 void write_byte(unsigned char dat);
 uint8 read_byte();
