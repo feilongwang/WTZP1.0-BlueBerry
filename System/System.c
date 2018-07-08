@@ -32,7 +32,7 @@ void InitSystem(void)
 {
 	InitI2C();
 	InitUart1();
-	AD5933Init();
+	//AD5933Init();//”–Œ Ã‚
 }
 
 /***********************************************************************
@@ -48,17 +48,17 @@ void StartSystem(void)
 	int LiquidT;
 	//
 		DS18B20Start();
-		Read_AD5933_Temperature();
+		//Read_AD5933_Temperature();
 	//
     while(1)
     {
-			EC();
+			//EC();
 			DS18B20Start();
 			delay1s();
 			delay1s();
 			LiquidT=DS18B20();
 			UartSend_Byte(ECCon,4); 
-			AD5933Init();
+			//AD5933Init();
     }
 
 }
