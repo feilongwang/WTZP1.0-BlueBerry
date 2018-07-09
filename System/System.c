@@ -55,7 +55,7 @@ void StartSystem(void)
     while(1)
     {
 			DS18B20Start();
-			delay1s();
+			//delay1s();
 			delay1s();
 			//LiquidT=DS18B20();
 			//UartSend_Byte(LiquidT,2);
