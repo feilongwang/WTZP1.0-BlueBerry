@@ -21,7 +21,7 @@
   </DaveTm>
 
   <Target>
-    <TargetName>Target 1</TargetName>
+    <TargetName>WTZP1.0-BlueBerry</TargetName>
     <ToolsetNumber>0x0</ToolsetNumber>
     <ToolsetName>MCS-51</ToolsetName>
     <TargetOption>
@@ -160,10 +160,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Board\Board.h</PathWithFileName>
       <FilenameWithoutPath>Board.h</FilenameWithoutPath>
@@ -174,10 +174,10 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Board\STC8A8K64S4A12.h</PathWithFileName>
       <FilenameWithoutPath>STC8A8K64S4A12.h</FilenameWithoutPath>
@@ -195,13 +195,83 @@
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Drivers\Drivers.h</PathWithFileName>
       <FilenameWithoutPath>Drivers.h</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>4</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Drivers\UrstTest.c</PathWithFileName>
+      <FilenameWithoutPath>UrstTest.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>5</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Drivers\AD5933.c</PathWithFileName>
+      <FilenameWithoutPath>AD5933.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>6</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Drivers\I2C.c</PathWithFileName>
+      <FilenameWithoutPath>I2C.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>7</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Drivers\Time.c</PathWithFileName>
+      <FilenameWithoutPath>Time.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>2</GroupNumber>
+      <FileNumber>8</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865696</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Drivers\Delay.c</PathWithFileName>
+      <FilenameWithoutPath>Delay.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -212,17 +282,59 @@
     <cbSel>0</cbSel>
     <File>
       <GroupNumber>3</GroupNumber>
-      <FileNumber>4</FileNumber>
+      <FileNumber>9</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Modules\Modules.h</PathWithFileName>
       <FilenameWithoutPath>Modules.h</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>10</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Modules\DS18B20.c</PathWithFileName>
+      <FilenameWithoutPath>DS18B20.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>11</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Modules\EC.c</PathWithFileName>
+      <FilenameWithoutPath>EC.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>3</GroupNumber>
+      <FileNumber>12</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>10698323</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>81865520</TopLine>
+      <CurrentLine>5186328</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>.\Modules\LUX.c</PathWithFileName>
+      <FilenameWithoutPath>LUX.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -233,42 +345,42 @@
     <cbSel>0</cbSel>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>5</FileNumber>
+      <FileNumber>13</FileNumber>
       <FileType>5</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865568</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\System\System.h</PathWithFileName>
       <FilenameWithoutPath>System.h</FilenameWithoutPath>
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>6</FileNumber>
+      <FileNumber>14</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865568</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\System\System.c</PathWithFileName>
       <FilenameWithoutPath>System.c</FilenameWithoutPath>
     </File>
     <File>
       <GroupNumber>4</GroupNumber>
-      <FileNumber>7</FileNumber>
+      <FileNumber>15</FileNumber>
       <FileType>1</FileType>
       <tvExp>0</tvExp>
       <Focus>0</Focus>
-      <ColumnNumber>0</ColumnNumber>
+      <ColumnNumber>10698323</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>0</TopLine>
-      <CurrentLine>0</CurrentLine>
+      <TopLine>81865568</TopLine>
+      <CurrentLine>5186328</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>.\System\Main.c</PathWithFileName>
       <FilenameWithoutPath>Main.c</FilenameWithoutPath>
@@ -1610,22 +1722,5 @@
       </Window>
     </View>
   </WinLayout>
-
-  <MDIGroups>
-    <Orientation>1</Orientation>
-    <ActiveMDIGroup>0</ActiveMDIGroup>
-    <MDIGroup>
-      <Size>100</Size>
-      <ActiveTab>0</ActiveTab>
-      <Documents>
-        <Doc>
-          <Name>.\Board\Board.h</Name>
-          <ColumnNumber>38</ColumnNumber>
-          <TopLine>1</TopLine>
-          <CurrentLine>20</CurrentLine>
-        </Doc>
-      </Documents>
-    </MDIGroup>
-  </MDIGroups>
 
 </ProjectOpt>

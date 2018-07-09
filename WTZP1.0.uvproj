@@ -387,6 +387,11 @@
               <FileType>1</FileType>
               <FilePath>.\Modules\EC.c</FilePath>
             </File>
+            <File>
+              <FileName>LUX.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\LUX.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

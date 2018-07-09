@@ -5,6 +5,7 @@
 ".\Output\Delay.obj",
 ".\Output\DS18B20.obj",
 ".\Output\EC.obj",
+".\Output\LUX.obj",
 ".\Output\System.obj",
 ".\Output\Main.obj" 
 TO ".\Output\WTZP1.0" 

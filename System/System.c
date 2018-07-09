@@ -17,7 +17,7 @@
 
 /*---------------------VARIABLES---------------------*/
 
-extern float ECCon;
+uint16 EC;
 
 /*---------------------FUNCTIONS---------------------*/
 
@@ -32,7 +32,8 @@ void InitSystem(void)
 {
 	InitI2C();
 	InitUart1();
-	//AD5933Init();//有问题
+	LUX_Init();
+
 }
 
 /***********************************************************************
@@ -45,20 +46,20 @@ void InitSystem(void)
 void StartSystem(void)
 {
 	//存储变量区
-	int LiquidT;
+	/*int LiquidT*/;
 	//
 		DS18B20Start();
-		//Read_AD5933_Temperature();
+	 
+
 	//
     while(1)
     {
-			//EC();
 			DS18B20Start();
 			//delay1s();
 			delay1s();
-			LiquidT=DS18B20();
-			UartSend_Byte(ECCon,4); 
-			//AD5933Init();
+			//LiquidT=DS18B20();
+			//UartSend_Byte(LiquidT,2);
+			UartSend_Byte(Get_Lux(),4);
     }
 
 }
