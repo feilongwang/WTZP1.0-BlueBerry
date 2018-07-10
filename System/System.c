@@ -34,6 +34,7 @@ void InitSystem(void)
 	InitUart1();
 	LUX_Init();
   Init_AD();
+	InitPara();
 }
 
 /***********************************************************************
@@ -60,7 +61,7 @@ void StartSystem(void)
 			//LiquidT=DS18B20();
 			//UartSend_Byte(LiquidT,2);
 			//UartSend_Byte(Get_Lux(),4);
-			UartSend_Byte(Get_CO2(),2);
+			UartSend_Byte(ph(),2);
     }
 
 }

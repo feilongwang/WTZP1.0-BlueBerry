@@ -8,6 +8,7 @@
 ".\Output\EC.obj",
 ".\Output\LUX.obj",
 ".\Output\CO2.obj",
+".\Output\ph.obj",
 ".\Output\System.obj",
 ".\Output\Main.obj" 
 TO ".\Output\WTZP1.0" 

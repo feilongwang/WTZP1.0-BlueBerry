@@ -3,22 +3,23 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-07
-** 作    者：   王老师
+** 日    期：   2018-07-10
+** 作    者：   迟旭
 **---------------------------------------------------------------
-** 文 件 名：   Modules.h
-** 文件说明：   模块层头文件整合
+** 文 件 名：   ph.h
+** 文件说明：   溶液ph测量头文件
 *****************************************************************/
-#ifndef _MODULES_H_
-#define _MODULES_H_
+#ifndef _ph_H_
+#define _ph_H_
 
 /*---------------------INCLUDES----------------------*/
-#include "DS18B20.h"
-#include "EC.h"
-#include "LUX.h"
+#include ".\Board\Board.h"
 #include ".\Drivers\Drivers.h"
-#include "CO2.h"
-#include "ph.h"
+
+/*---------------------DECLARES----------------------*/
+void InitPara(void);
+uint16 GetADFilter(uint8 n);
+uint16 ph(void);
 
 
 #endif
