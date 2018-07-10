@@ -17,7 +17,7 @@
 //#include ".\Drivers\IO.h"
 #include ".\Drivers\Time.h"
 #include "UrstTest.h"
-//#include ".\Drivers\ADC.h"
+#include ".\Drivers\ADC.h"
 //#include ".\Drivers\DAC.h"
 //#include ".\Drivers\E2PROM.h"
 #include "Interrupt.h"

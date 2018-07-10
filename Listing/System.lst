@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/09/2018 21:02:32 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/10/2018 20:20:58 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
@@ -62,20 +62,21 @@ line level    source
   52   1         
   53   1      
   54   1        //
-C51 COMPILER V9.00   SYSTEM                                                                07/09/2018 21:02:32 PAGE 2   
+C51 COMPILER V9.00   SYSTEM                                                                07/10/2018 20:20:58 PAGE 2   
 
   55   1          while(1)
   56   1          {
   57   2            DS18B20Start();
-  58   2            delay1s();
+  58   2            //delay1s();
   59   2            delay1s();
   60   2            //LiquidT=DS18B20();
   61   2            //UartSend_Byte(LiquidT,2);
-  62   2            UartSend_Byte(Get_Lux(),4);
-  63   2          }
-  64   1      
-  65   1      }
-  66          
+  62   2            //UartSend_Byte(Get_Lux(),4);
+  63   2            UartSend_Byte(Get_CO2(),2);
+  64   2          }
+  65   1      
+  66   1      }
+  67          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE

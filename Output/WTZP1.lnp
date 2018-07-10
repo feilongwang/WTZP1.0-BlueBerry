@@ -3,9 +3,11 @@
 ".\Output\I2C.obj",
 ".\Output\Time.obj",
 ".\Output\Delay.obj",
+".\Output\ADC.obj",
 ".\Output\DS18B20.obj",
 ".\Output\EC.obj",
 ".\Output\LUX.obj",
+".\Output\CO2.obj",
 ".\Output\System.obj",
 ".\Output\Main.obj" 
 TO ".\Output\WTZP1.0" 

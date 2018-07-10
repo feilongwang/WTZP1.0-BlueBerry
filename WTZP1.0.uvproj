@@ -367,6 +367,11 @@
               <FileType>1</FileType>
               <FilePath>.\Drivers\Delay.c</FilePath>
             </File>
+            <File>
+              <FileName>ADC.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\ADC.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -391,6 +396,11 @@
               <FileName>LUX.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Modules\LUX.c</FilePath>
+            </File>
+            <File>
+              <FileName>CO2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\CO2.c</FilePath>
             </File>
           </Files>
         </Group>
