@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   ADC                                                                   07/10/2018 20:20:57 PAGE 1   
+C51 COMPILER V9.00   ADC                                                                   07/10/2018 20:40:15 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE ADC
@@ -34,7 +34,7 @@ line level    source
   24          ** 返回参数： 无
   25          ***********************************************************************/
   26          
-  27          void Set_AD()
+  27          void Init_AD()
   28          {
   29   1        P1M1 = 0x24; //0010 0100  设置P1.2 P1.5为ADC口
   30   1        P1M0 = 0x00; //0000 0000
@@ -50,26 +50,25 @@ line level    source
   40          uint16 GetAD(uint8 n)
   41          {
   42   1        uint16 v;
-  43   1        Set_AD();
-  44   1        ADCCFG=0x2F; //设置ADC时钟为系统时钟/2/16/16  0010 1111
-  45   1        ADC_CONTR=0x80|n; //使能ADC模块 1000 0000
-  46   1      
-  47   1        ADC_CONTR|=0x40; //启动AD转换 0100 0000
+  43   1        ADCCFG=0x2F; //设置ADC时钟为系统时钟/2/16/16  0010 1111
+  44   1        ADC_CONTR=0x80|n; //使能ADC模块 1000 0000
+  45   1      
+  46   1        ADC_CONTR|=0x40; //启动AD转换 0100 0000
+  47   1        _nop_();
   48   1        _nop_();
-  49   1        _nop_();
-  50   1        while(!(ADC_CONTR&0x20)); //查询ADC完成标志 0010 0000
-  51   1        ADC_CONTR&=~0x20; //清完成标志
-  52   1      
-  53   1        v=(ADC_RES<<8)+ADC_RESL; //读取ADC结果
-  54   1      
-C51 COMPILER V9.00   ADC                                                                   07/10/2018 20:20:57 PAGE 2   
+  49   1        while(!(ADC_CONTR&0x20)); //查询ADC完成标志 0010 0000
+  50   1        ADC_CONTR&=~0x20; //清完成标志
+  51   1      
+  52   1        v=(ADC_RES<<8)+ADC_RESL; //读取ADC结果
+  53   1      
+  54   1        return v; 
+C51 COMPILER V9.00   ADC                                                                   07/10/2018 20:40:15 PAGE 2   
 
-  55   1        return v; 
-  56   1      }
+  55   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     46    ----
+   CODE SIZE        =     43    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

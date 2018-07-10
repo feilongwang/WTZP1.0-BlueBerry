@@ -16,7 +16,7 @@
 #include "./Board/Board.h"
 
 /*---------------------DECLARES----------------------*/
- void Set_AD();
+ void   Init_AD();
  uint16 GetAD(uint8 n);
 
 #endif
