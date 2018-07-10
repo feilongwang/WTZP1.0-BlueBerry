@@ -133,6 +133,6 @@ int DS18B20()
 	//TZ=(DS18B.a[0]>>4)|((DS18B.a[1]<<4)&0x3f);//温度整数部分
 	//TX=DS18B.a[0]<<4;//温度小数部分
 	tt=LiquidT*0.0625;
-	LiquidT=tt*10+0.5;
+	LiquidT=tt*10+0.5;//获取小数部分，并四舍五入
 	return LiquidT;
 }
