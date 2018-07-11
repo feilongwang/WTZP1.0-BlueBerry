@@ -402,6 +402,11 @@
               <FileType>1</FileType>
               <FilePath>.\Modules\CO2.c</FilePath>
             </File>
+            <File>
+              <FileName>PH.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\PH.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

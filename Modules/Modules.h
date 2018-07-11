@@ -18,7 +18,7 @@
 #include "LUX.h"
 #include ".\Drivers\Drivers.h"
 #include "CO2.h"
-#include "ph.h"
+#include "PH.h"
 
 
 #endif

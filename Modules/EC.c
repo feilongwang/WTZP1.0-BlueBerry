@@ -79,13 +79,13 @@ void Read_AD5933_Temperature(void)
 	ECTemp=(ECTemp>>2)/32;
 }
 /***********************************************************************
-** 函 数 名： AD5933(void)
+** 函 数 名： EC(void)
 ** 函数说明： 完成电导率转换
 **---------------------------------------------------------------------
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void AD5933(void)
+void EC(void)
 {
 	uint8 s;
 	AD5933Init();
@@ -115,10 +115,10 @@ void AD5933(void)
 	else if((ECRealValue>0)&&(ECImageValue<0))
 	{
 		ECRads=180*atan2(ECImageValue,ECRealValue)/PI + 360;
-	}
+	}//计算相位
 
 	ECRes=Cgain/ECMagnitude; //Ω
-	ECCon=1000000L*Cce/(ECRes*cos(PI*(ECRads-Crads)/180)-Cres); //μS/cm	 
+	ECCon=1000000L*Cce/(ECRes*cos(PI*(ECRads-SysPhase)/180)-SysRes); //μS/cm	 
     
 	AD5933WriteByte(0x80,0xA1); //控制寄存器，1010 0001 0000 0000 省电模式，2V，一倍放大，内部时钟 	0xA100
 }
