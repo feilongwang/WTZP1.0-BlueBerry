@@ -16,7 +16,6 @@
 #include <absacc.h>
 #include <intrins.h>
 #include <math.h>
-
 #include ".\Board\STC8A8K64S4A12.h"
 
 
@@ -27,6 +26,7 @@
 #define PI 3.1415926
 
 #define MAKEWORD(high,low) (((high)<<8)|(low))
+#define TEST P2_6
 
 
 /*---------------------TYPEDEF-----------------------*/

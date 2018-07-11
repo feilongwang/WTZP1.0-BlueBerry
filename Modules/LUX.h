@@ -13,6 +13,7 @@
 #define _LUX_H_
 /*---------------------INCLUDES----------------------*/
 #include "./Board/Board.h"
+#include ".\Drivers\Drivers.h"
 
 /*---------------------DEFINES-----------------------*/
 sbit LUX_SCL=P0^7;
@@ -27,7 +28,7 @@ void  LUX_SendByte(uint8 dat);
 uint8 LUX_ReadByte();
 void  LUX_Single_Write(uint8 REG_Address);    //写入单个字节数据    
 void  LUX_Multiple_read(void);                //连续的读取内部寄存器数据
-void  LUX_Init();
+void  InitLUX();
 uint32 Get_Lux(void);
 
 #endif

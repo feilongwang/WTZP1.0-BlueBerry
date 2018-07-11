@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/11/2018 14:15:24 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/11/2018 20:29:15 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
-                    -PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -24,68 +24,70 @@ line level    source
   14          #include ".\Drivers\Drivers.h"
   15          #include ".\Modules\Modules.h"
   16          #include ".\System\System.h"
-  17          
-  18          /*---------------------VARIABLES---------------------*/
-  19          
-  20          
+  17          #include ".\Board\Board.h"
+  18          
+  19          /*---------------------VARIABLES---------------------*/
+  20            float k;
   21          
-  22          /*---------------------FUNCTIONS---------------------*/
-  23          
-  24          /***********************************************************************
-  25          ** 函 数 名： InitSystem()
-  26          ** 函数说明： 初始化系统
-  27          **---------------------------------------------------------------------
-  28          ** 输入参数： 无
-  29          ** 返回参数： 无
-  30          ***********************************************************************/
-  31          void InitSystem(void)
-  32          {
-  33   1        InitI2C();
-  34   1        InitUart1();
-  35   1        LUX_Init();
-  36   1        Init_AD();
-  37   1        InitPara();
-  38   1      }
-  39          
-  40          /***********************************************************************
-  41          ** 函 数 名： StartSystem()
-  42          ** 函数说明： 运行系统
-  43          **---------------------------------------------------------------------
-  44          ** 输入参数： 无
-  45          ** 返回参数： 无
-  46          ***********************************************************************/
-  47          void StartSystem(void)
-  48          {
-  49   1        //存储变量区
-  50   1        /*int LiquidT*/;
-  51   1        //
-  52   1          DS18B20Start();
-  53   1         
-  54   1      
-C51 COMPILER V9.00   SYSTEM                                                                07/11/2018 14:15:24 PAGE 2   
+  22          
+  23          /*---------------------FUNCTIONS---------------------*/
+  24          
+  25          /***********************************************************************
+  26          ** 函 数 名： InitSystem()
+  27          ** 函数说明： 初始化系统
+  28          **---------------------------------------------------------------------
+  29          ** 输入参数： 无
+  30          ** 返回参数： 无
+  31          ***********************************************************************/
+  32          void InitSystem(void)
+  33          {
+  34   1        InitI2C();
+  35   1        InitUart1();
+  36   1        InitLUX();
+  37   1        Init_AD();
+  38   1        InitPara();
+  39   1        InitAD5933();
+  40   1      }
+  41          
+  42          /***********************************************************************
+  43          ** 函 数 名： StartSystem()
+  44          ** 函数说明： 运行系统
+  45          **---------------------------------------------------------------------
+  46          ** 输入参数： 无
+  47          ** 返回参数： 无
+  48          ***********************************************************************/
+  49          void StartSystem(void)
+  50          {
+  51   1        //存储变量区
+  52   1        //int LiquidT
+  53   1        TEST=1;
+  54   1        //DS18B20Start();
+C51 COMPILER V9.00   SYSTEM                                                                07/11/2018 20:29:15 PAGE 2   
 
-  55   1        //
-  56   1          while(1)
-  57   1          {
-  58   2            DS18B20Start();
-  59   2            //delay1s();
-  60   2            delay1s();
-  61   2            //LiquidT=DS18B20();
-  62   2            //UartSend_Byte(LiquidT,2);
-  63   2            //UartSend_Byte(Get_Lux(),4);
-  64   2            UartSend_Byte(ph(),2);
-  65   2          }
-  66   1      
-  67   1      }
-  68          
+  55   1        Read_AD5933_Temperature(); 
+  56   1        //
+  57   1          while(1)
+  58   1          {
+  59   2            delay1s();
+  60   2            k=EC();
+  61   2            TEST = !TEST;
+  62   2            //LiquidT=DS18B20();
+  63   2            //UartSend_Byte(LiquidT,2);
+  64   2            //UartSend_Byte(Get_Lux(),4);
+  65   2            //UartSend_Byte(ph(),2);
+  66   2            UartSend_Byte(k,4);
+  67   2          }
+  68   1      
+  69   1      }
+  70          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     38    ----
+   CODE SIZE        =     50    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      4    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

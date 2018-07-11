@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   PH                                                                    07/11/2018 14:15:24 PAGE 1   
+C51 COMPILER V9.00   PH                                                                    07/11/2018 20:29:15 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE PH
 OBJECT MODULE PLACED IN .\Output\PH.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\PH.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRI
-                    -NT(.\Listing\PH.lst) TABS(2) OBJECT(.\Output\PH.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\PH.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listing
+                    -\PH.lst) TABS(2) OBJECT(.\Output\PH.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52   2          ph_b = ph_para_y1-ph_k*ph_para_x1;
   53   2        }
   54   1      }
-C51 COMPILER V9.00   PH                                                                    07/11/2018 14:15:24 PAGE 2   
+C51 COMPILER V9.00   PH                                                                    07/11/2018 20:29:15 PAGE 2   
 
   55          /***********************************************************************
   56          ** º¯ Êý Ãû£º GetADFilter()
