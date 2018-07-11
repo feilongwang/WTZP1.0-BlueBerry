@@ -25,9 +25,9 @@
 
 
 /*---------------------DECLARES----------------------*/
-void AD5933Init(void);
+void InitAD5933(void);
 void Read_AD5933_Temperature(void);
-void EC(void);
+float EC(void);
 
 
 #endif

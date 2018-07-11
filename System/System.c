@@ -14,9 +14,10 @@
 #include ".\Drivers\Drivers.h"
 #include ".\Modules\Modules.h"
 #include ".\System\System.h"
+#include ".\Board\Board.h"
 
 /*---------------------VARIABLES---------------------*/
-
+	float k;
 
 
 /*---------------------FUNCTIONS---------------------*/
@@ -32,9 +33,10 @@ void InitSystem(void)
 {
 	InitI2C();
 	InitUart1();
-	LUX_Init();
+	InitLUX();
   Init_AD();
 	InitPara();
+	InitAD5933();
 }
 
 /***********************************************************************
@@ -47,21 +49,21 @@ void InitSystem(void)
 void StartSystem(void)
 {
 	//´æ´¢±äÁ¿Çø
-	/*int LiquidT*/;
-	//
-		DS18B20Start();
-	 
-
+	//int LiquidT
+	TEST=1;
+  //DS18B20Start();
+	Read_AD5933_Temperature(); 
 	//
     while(1)
     {
-			DS18B20Start();
-			//delay1s();
 			delay1s();
+			k=EC();
+			TEST = !TEST;
 			//LiquidT=DS18B20();
 			//UartSend_Byte(LiquidT,2);
 			//UartSend_Byte(Get_Lux(),4);
-			UartSend_Byte(ph(),2);
+			//UartSend_Byte(ph(),2);
+			UartSend_Byte(k,4);
     }
 
 }

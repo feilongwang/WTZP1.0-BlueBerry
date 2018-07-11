@@ -31,7 +31,7 @@ float ECCon;
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void AD5933Init(void)
+void InitAD5933(void)
 {
 	AD5933WriteByte(0x82,0x0E); //起始频率 30kHz 1k/(16.776M/4)*2^27 =  30000*32	0x0EA600
 	AD5933WriteByte(0x83,0xA6);
@@ -85,10 +85,9 @@ void Read_AD5933_Temperature(void)
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void EC(void)
+float EC(void)
 {
 	uint8 s;
-	AD5933Init();
 
 	while(1)
 	{
@@ -121,4 +120,7 @@ void EC(void)
 	ECCon=1000000L*Cce/(ECRes*cos(PI*(ECRads-SysPhase)/180)-SysRes); //μS/cm	 
     
 	AD5933WriteByte(0x80,0xA1); //控制寄存器，1010 0001 0000 0000 省电模式，2V，一倍放大，内部时钟 	0xA100
+	
+	InitAD5933();
+	return ECCon;
 }

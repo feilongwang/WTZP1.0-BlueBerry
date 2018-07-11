@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   DELAY                                                                 07/11/2018 14:15:23 PAGE 1   
+C51 COMPILER V9.00   DELAY                                                                 07/11/2018 20:29:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\Output\Delay.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Drivers\Delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
-                    -PRINT(.\Listing\Delay.lst) TABS(2) OBJECT(.\Output\Delay.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Drivers\Delay.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ing\Delay.lst) TABS(2) OBJECT(.\Output\Delay.obj)
 
 line level    source
 
@@ -42,7 +42,7 @@ line level    source
   32   1                  for(a=73;a>0;a--);
   33   1      }
   34          /***********************************************************************
-  35          ** 函 数 名： delayus(unsigned int b)
+  35          ** 函 数 名： delay1us(unsigned int b)
   36          ** 函数说明： 延时程序-延时1us,该函数时间与晶振频率有关，此处为24Mhz,不精准
   37          **---------------------------------------------------------------------
   38          ** 输入参数： uint32
@@ -58,11 +58,11 @@ line level    source
   48   2         }
   49   1      }
   50          /***********************************************************************
-  51          ** 函 数 名： delayus()
+  51          ** 函 数 名： delay1s()
   52          ** 函数说明： 延时程序-延时1s,该函数时间与晶振频率有关，此处为24Mhz
   53          **---------------------------------------------------------------------
   54          ** 输入参数： 无
-C51 COMPILER V9.00   DELAY                                                                 07/11/2018 14:15:23 PAGE 2   
+C51 COMPILER V9.00   DELAY                                                                 07/11/2018 20:29:14 PAGE 2   
 
   55          ** 返回参数： 无
   56          ***********************************************************************/
@@ -75,10 +75,42 @@ line level    source
   63   1          for(n=14;n>0;n--);
   64   1          _nop_();  
   65   1      }
+  66          /***********************************************************************
+  67          ** 函 数 名： Delay5us()
+  68          ** 函数说明： 延时5微妙
+  69          **---------------------------------------------------------------------
+  70          ** 输入参数： 无
+  71          ** 返回参数： 无
+  72          ***********************************************************************/
+  73          void Delay5us()
+  74          {
+  75   1        uint8 n = 120;
+  76   1        
+  77   1        while (n--);
+  78   1      }
+  79          
+  80          /***********************************************************************
+  81          ** 函 数 名： delay_ms
+  82          ** 函数说明： 延时k毫秒
+  83          **---------------------------------------------------------------------
+  84          ** 输入参数： uint16 k
+  85          ** 返回参数： 无
+  86          ***********************************************************************/
+  87          void delay_ms(uint16 k) 
+  88          {           
+  89   1        uint16 i,j;       
+  90   1        for(i=0;i<k;i++)
+  91   1        {     
+  92   2          for(j=0;j<24000;j++)      
+  93   2          {
+  94   3            ;
+  95   3          }
+  96   2        }           
+  97   1      }       
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     68    ----
+   CODE SIZE        =    109    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
