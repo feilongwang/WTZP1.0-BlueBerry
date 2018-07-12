@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   PH                                                                    07/11/2018 20:29:15 PAGE 1   
+C51 COMPILER V9.00   PH                                                                    07/12/2018 21:17:41 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE PH
@@ -41,7 +41,7 @@ line level    source
   31          ** 输入参数： 无
   32          ** 返回参数： 无
   33          ***********************************************************************/
-  34          void InitPara(void)
+  34          void InitPh(void)
   35          {
   36   1        ph_para_x1 = 1842;
   37   1        ph_para_y1 = 9180;
@@ -62,7 +62,7 @@ line level    source
   52   2          ph_b = ph_para_y1-ph_k*ph_para_x1;
   53   2        }
   54   1      }
-C51 COMPILER V9.00   PH                                                                    07/11/2018 20:29:15 PAGE 2   
+C51 COMPILER V9.00   PH                                                                    07/12/2018 21:17:41 PAGE 2   
 
   55          /***********************************************************************
   56          ** 函 数 名： GetADFilter()

@@ -19,6 +19,7 @@
 #include ".\Board\STC8A8K64S4A12.h"
 
 
+
 /*---------------------DEFINES-----------------------*/
 #define	TRUE	1
 #define	FALSE	0

@@ -17,7 +17,7 @@
 #include ".\Board\Board.h"
 
 /*---------------------VARIABLES---------------------*/
-	float k;
+
 
 
 /*---------------------FUNCTIONS---------------------*/
@@ -35,8 +35,7 @@ void InitSystem(void)
 	InitUart1();
 	InitLUX();
   Init_AD();
-	InitPara();
-	InitAD5933();
+	InitPh();
 }
 
 /***********************************************************************
@@ -50,15 +49,21 @@ void StartSystem(void)
 {
 	//´æ´¢±äÁ¿Çø
 	//int LiquidT
-	TEST=1;
+	float k;
+	k=0;
+	TEST=0;//LEDÁÁ
+	delay1s();
+	delay1s();
   //DS18B20Start();
+	
 	Read_AD5933_Temperature(); 
+	TEST = ~TEST; 
 	//
     while(1)
     {
 			delay1s();
+			delay1s();
 			k=EC();
-			TEST = !TEST;
 			//LiquidT=DS18B20();
 			//UartSend_Byte(LiquidT,2);
 			//UartSend_Byte(Get_Lux(),4);

@@ -18,8 +18,9 @@
 #include ".\Drivers\Drivers.h"
 
 /*---------------------DEFINES-----------------------*/
-#define Cgain	(3736830L+413*(ECTemp-22))	//增益系数
-#define Cce		1.010					//电导率探头常数
+//#define Cgain	(3736830L+413*(ECTemp-22))	//增益系数
+#define Cgain	(3736830L)
+#define Cce		1.074					//电导率探头常数
 #define SysRes	6.58					//电导率线补偿电阻
 #define SysPhase	291.24					//系统相位角 
 

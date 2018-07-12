@@ -17,7 +17,7 @@
 #include ".\Drivers\Drivers.h"
 
 /*---------------------DECLARES----------------------*/
-void InitPara(void);
+void InitPh(void);
 uint16 GetADFilter(uint8 n);
 uint16 ph(void);
 

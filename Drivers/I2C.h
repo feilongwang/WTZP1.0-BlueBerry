@@ -16,7 +16,8 @@
 #include ".\Board\Board.h"
 
 /*---------------------DEFINES-----------------------*/
-
+sbit    SDA         =   P3^3;
+sbit    SCL         =   P3^2;
 
 /*---------------------DECLARES----------------------*/
 void InitI2C(void);

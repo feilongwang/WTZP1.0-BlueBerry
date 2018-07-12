@@ -343,14 +343,14 @@
               <FilePath>.\Drivers\Drivers.h</FilePath>
             </File>
             <File>
-              <FileName>UrstTest.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Drivers\UrstTest.c</FilePath>
-            </File>
-            <File>
               <FileName>AD5933.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Drivers\AD5933.c</FilePath>
+            </File>
+            <File>
+              <FileName>UrstTest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\UrstTest.c</FilePath>
             </File>
             <File>
               <FileName>I2C.c</FileName>
