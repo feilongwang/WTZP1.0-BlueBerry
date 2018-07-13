@@ -48,27 +48,27 @@ void InitSystem(void)
 void StartSystem(void)
 {
 	//´æ´¢±äÁ¿Çø
-	//int LiquidT
+	int LiquidT;
 	float k;
 	k=0;
 	TEST=0;//LEDÁÁ
 	delay1s();
 	delay1s();
-  //DS18B20Start();
-	
+  DS18B20Start();
 	Read_AD5933_Temperature(); 
-	TEST = ~TEST; 
+	
 	//
     while(1)
     {
 			delay1s();
 			delay1s();
 			k=EC();
-			//LiquidT=DS18B20();
-			//UartSend_Byte(LiquidT,2);
+			LiquidT=DS18B20();
+			UartSend_Byte(LiquidT,2);
 			//UartSend_Byte(Get_Lux(),4);
 			//UartSend_Byte(ph(),2);
 			UartSend_Byte(k,4);
+			TEST = ~TEST; 
     }
 
 }

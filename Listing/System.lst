@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/12/2018 21:17:41 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/13/2018 11:16:29 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
-                    -ing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -58,29 +58,29 @@ line level    source
   48          void StartSystem(void)
   49          {
   50   1        //´æ´¢±äÁ¿Çø
-  51   1        //int LiquidT
+  51   1        int LiquidT;
   52   1        float k;
   53   1        k=0;
   54   1        TEST=0;//LEDÁÁ
-C51 COMPILER V9.00   SYSTEM                                                                07/12/2018 21:17:41 PAGE 2   
+C51 COMPILER V9.00   SYSTEM                                                                07/13/2018 11:16:29 PAGE 2   
 
   55   1        delay1s();
   56   1        delay1s();
-  57   1        //DS18B20Start();
-  58   1        
-  59   1        Read_AD5933_Temperature(); 
-  60   1        TEST = ~TEST; 
-  61   1        //
-  62   1          while(1)
-  63   1          {
+  57   1        DS18B20Start();
+  58   1        Read_AD5933_Temperature(); 
+  59   1        
+  60   1        //
+  61   1          while(1)
+  62   1          {
+  63   2            delay1s();
   64   2            delay1s();
-  65   2            delay1s();
-  66   2            k=EC();
-  67   2            //LiquidT=DS18B20();
-  68   2            //UartSend_Byte(LiquidT,2);
-  69   2            //UartSend_Byte(Get_Lux(),4);
-  70   2            //UartSend_Byte(ph(),2);
-  71   2            UartSend_Byte(k,4);
+  65   2            k=EC();
+  66   2            LiquidT=DS18B20();
+  67   2            UartSend_Byte(LiquidT,2);
+  68   2            //UartSend_Byte(Get_Lux(),4);
+  69   2            //UartSend_Byte(ph(),2);
+  70   2            UartSend_Byte(k,4);
+  71   2            TEST = ~TEST; 
   72   2          }
   73   1      
   74   1      }
@@ -88,11 +88,11 @@ line level    source
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     65    ----
+   CODE SIZE        =     95    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       4
+   DATA SIZE        =   ----       6
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
