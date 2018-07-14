@@ -36,6 +36,7 @@ void InitSystem(void)
 	InitLUX();
   Init_AD();
 	InitPh();
+	InitUart2();
 }
 
 /***********************************************************************
@@ -64,10 +65,10 @@ void StartSystem(void)
 			delay1s();
 			k=EC();
 			LiquidT=DS18B20();
-			UartSend_Byte(LiquidT,2);
+			UartSend1_Byte(LiquidT,2);
 			//UartSend_Byte(Get_Lux(),4);
 			//UartSend_Byte(ph(),2);
-			UartSend_Byte(k,4);
+			UartSend1_Byte(k,4);
 			TEST = ~TEST; 
     }
 

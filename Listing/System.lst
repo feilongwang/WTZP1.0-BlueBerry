@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/13/2018 11:16:29 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/14/2018 20:59:14 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
-                    -PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
+                    -ing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -46,49 +46,50 @@ line level    source
   36   1        InitLUX();
   37   1        Init_AD();
   38   1        InitPh();
-  39   1      }
-  40          
-  41          /***********************************************************************
-  42          ** 函 数 名： StartSystem()
-  43          ** 函数说明： 运行系统
-  44          **---------------------------------------------------------------------
-  45          ** 输入参数： 无
-  46          ** 返回参数： 无
-  47          ***********************************************************************/
-  48          void StartSystem(void)
-  49          {
-  50   1        //存储变量区
-  51   1        int LiquidT;
-  52   1        float k;
-  53   1        k=0;
-  54   1        TEST=0;//LED亮
-C51 COMPILER V9.00   SYSTEM                                                                07/13/2018 11:16:29 PAGE 2   
+  39   1        InitUart2();
+  40   1      }
+  41          
+  42          /***********************************************************************
+  43          ** 函 数 名： StartSystem()
+  44          ** 函数说明： 运行系统
+  45          **---------------------------------------------------------------------
+  46          ** 输入参数： 无
+  47          ** 返回参数： 无
+  48          ***********************************************************************/
+  49          void StartSystem(void)
+  50          {
+  51   1        //存储变量区
+  52   1        int LiquidT;
+  53   1        float k;
+  54   1        k=0;
+C51 COMPILER V9.00   SYSTEM                                                                07/14/2018 20:59:14 PAGE 2   
 
-  55   1        delay1s();
+  55   1        TEST=0;//LED亮
   56   1        delay1s();
-  57   1        DS18B20Start();
-  58   1        Read_AD5933_Temperature(); 
-  59   1        
-  60   1        //
-  61   1          while(1)
-  62   1          {
-  63   2            delay1s();
+  57   1        delay1s();
+  58   1        DS18B20Start();
+  59   1        Read_AD5933_Temperature(); 
+  60   1        
+  61   1        //
+  62   1          while(1)
+  63   1          {
   64   2            delay1s();
-  65   2            k=EC();
-  66   2            LiquidT=DS18B20();
-  67   2            UartSend_Byte(LiquidT,2);
-  68   2            //UartSend_Byte(Get_Lux(),4);
-  69   2            //UartSend_Byte(ph(),2);
-  70   2            UartSend_Byte(k,4);
-  71   2            TEST = ~TEST; 
-  72   2          }
-  73   1      
-  74   1      }
-  75          
+  65   2            delay1s();
+  66   2            k=EC();
+  67   2            LiquidT=DS18B20();
+  68   2            UartSend1_Byte(LiquidT,2);
+  69   2            //UartSend_Byte(Get_Lux(),4);
+  70   2            //UartSend_Byte(ph(),2);
+  71   2            UartSend1_Byte(k,4);
+  72   2            TEST = ~TEST; 
+  73   2          }
+  74   1      
+  75   1      }
+  76          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     95    ----
+   CODE SIZE        =     98    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

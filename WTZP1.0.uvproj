@@ -372,6 +372,11 @@
               <FileType>1</FileType>
               <FilePath>.\Drivers\ADC.c</FilePath>
             </File>
+            <File>
+              <FileName>Interrupt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\Interrupt.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -406,6 +411,11 @@
               <FileName>PH.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Modules\PH.c</FilePath>
+            </File>
+            <File>
+              <FileName>Wifi.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\Wifi.c</FilePath>
             </File>
           </Files>
         </Group>

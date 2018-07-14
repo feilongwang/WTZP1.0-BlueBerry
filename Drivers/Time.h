@@ -17,6 +17,6 @@
 
 /*---------------------DECLARES----------------------*/
 void InitTime1(void);
-
+void InitTime2(void);
 
 #endif

@@ -19,6 +19,7 @@
 #include ".\Drivers\Drivers.h"
 #include "CO2.h"
 #include "PH.h"
+#include "Wifi.h"
 
 
 #endif
