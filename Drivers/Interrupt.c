@@ -12,8 +12,7 @@
 
 /*---------------------INCLUDES----------------------*/
 #include "Interrupt.h"
-uint8 Urst2Rec;
-uint8 Urst2busy=0;
+
 
 /*---------------------VARIABLES---------------------*/
 
@@ -57,15 +56,17 @@ void Uart1Isr() interrupt 4 using 1
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void Uart2Isr() interrupt 8 using 1
+/*void Uart2Isr() interrupt 8 using 1
 {
     if (S2CON & 0x02)
     {
-        S2CON &= ~0x02;
+			S2CON &= ~0x02;
+			Urst2busy=0;
     }
     if (S2CON & 0x01)
     {
-        S2CON &= ~0x01;
-        Urst2Rec = S2BUF;
+			S2CON &= ~0x01;
+			Urst2Rec = S2BUF;
     }
-}
+		UartSend1_Byte(0,2);
+}*/

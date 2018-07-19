@@ -15,7 +15,8 @@
 #include "UrstTest.h"
 
 /*---------------------VARIABLES---------------------*/
-extern uint8 Urst2busy;
+uint8 Urst2Rec;
+uint8 Urst2busy=0;
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
@@ -51,7 +52,7 @@ void UartSend1(unsigned char dat)
 ** 输入参数： uint32（发送数据），uint8（发送数据字节数）
 ** 返回参数： 无
 ***********************************************************************/
-void UartSend1_Byte(unsigned long int dat,unsigned char n) 
+void UartSend1_Byte(unsigned long dat,unsigned char n)
 {
 	unsigned char i,ch;
 	for(i=0;i<n;i++)
@@ -70,7 +71,7 @@ void UartSend1_Byte(unsigned long int dat,unsigned char n)
 ***********************************************************************/
 void InitUart2()
 {
-	S2CON = 0x10; //(0001 0000) 允许接收
+	S2CON = 0x50; //(0001 0000) 允许接收,9位数据，有起始与终止位 
 	InitTime2();																																	
 }
 /***********************************************************************
@@ -80,34 +81,41 @@ void InitUart2()
 ** 输入参数： uint8
 ** 返回参数： 无
 ***********************************************************************/
-void UartSend2(unsigned char dat)
+void UartSend2(char dat)
 {
-	while (Urst2busy);
-  Urst2busy = 1;
 	S2BUF=dat;
+	while(!(S2CON & 0x02));
+	S2CON &= ~0x02;
 }
 /***********************************************************************
-** 函 数 名： UartSend2_Byte(unsigned long int dat,unsigned char n)
+** 函 数 名： UartSend2_str(unsigned long int dat,unsigned char n)
 ** 函数说明： 多字节发送程序//先送低8位再送高8位
 **---------------------------------------------------------------------
 ** 输入参数： uint8（发送字符串的首地址）
 ** 返回参数： 无
 ***********************************************************************/
-void UartSend2_Byte(unsigned char *dat) 
+void UartSend2_str(char *dat) 
 {
 	while(*dat)
 	{
-		UartSend2(*dat++);
+		UartSend2(*dat);
+		dat++;
 	}
 }
 /***********************************************************************
 ** 函 数 名： UartRec2()
-** 函数说明： 字符串接收程序
+** 函数说明： 字符接收程序
 **---------------------------------------------------------------------
-** 输入参数： uint8
-** 返回参数： 无
+** 输入参数： 无
+** 返回参数： uint8
 ***********************************************************************/
-/*uint8 UartRec2()
+uint8 UartRec2()
 {
-	
-}*/
+	if(S2CON & 0x01)
+	{
+		S2CON &= ~0x01;
+		Urst2Rec = S2BUF;
+		return Urst2Rec;
+	}
+	return 0;
+}

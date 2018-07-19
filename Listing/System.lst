@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/14/2018 20:59:14 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/19/2018 22:35:44 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\List
-                    -ing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND 
+                    -PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -59,41 +59,47 @@ line level    source
   49          void StartSystem(void)
   50          {
   51   1        //´æ´¢±äÁ¿Çø
-  52   1        int LiquidT;
-  53   1        float k;
-  54   1        k=0;
-C51 COMPILER V9.00   SYSTEM                                                                07/14/2018 20:59:14 PAGE 2   
+  52   1        //int LiquidT;
+  53   1        //float k;
+  54   1        //k=0;
+C51 COMPILER V9.00   SYSTEM                                                                07/19/2018 22:35:44 PAGE 2   
 
   55   1        TEST=0;//LEDÁÁ
   56   1        delay1s();
   57   1        delay1s();
-  58   1        DS18B20Start();
-  59   1        Read_AD5933_Temperature(); 
+  58   1        //DS18B20Start();
+  59   1        //Read_AD5933_Temperature(); 
   60   1        
   61   1        //
   62   1          while(1)
   63   1          {
   64   2            delay1s();
   65   2            delay1s();
-  66   2            k=EC();
-  67   2            LiquidT=DS18B20();
-  68   2            UartSend1_Byte(LiquidT,2);
-  69   2            //UartSend_Byte(Get_Lux(),4);
-  70   2            //UartSend_Byte(ph(),2);
-  71   2            UartSend1_Byte(k,4);
-  72   2            TEST = ~TEST; 
-  73   2          }
-  74   1      
-  75   1      }
-  76          
+  66   2            //k=EC();
+  67   2            //LiquidT=DS18B20();
+  68   2            //UartSend1_Byte(LiquidT,2);
+  69   2            WifiLink();
+  70   2            delay1s();
+  71   2            delay1s();
+  72   2            Wifidat();
+  73   2            delay1s();
+  74   2            delay1s();
+  75   2            WifiBeat();
+  76   2            //UartSend_Byte(Get_Lux(),4);
+  77   2            //UartSend_Byte(ph(),2);
+  78   2            //UartSend1_Byte(k,4);
+  79   2            TEST = ~TEST; 
+  80   2          }
+  81   1      
+  82   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     98    ----
+   CODE SIZE        =     57    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       6
+   DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

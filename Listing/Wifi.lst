@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   WIFI                                                                  07/14/2018 20:59:14 PAGE 1   
+C51 COMPILER V9.00   WIFI                                                                  07/19/2018 22:35:43 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE WIFI
 OBJECT MODULE PLACED IN .\Output\Wifi.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\Wifi.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listi
-                    -ng\Wifi.lst) TABS(2) OBJECT(.\Output\Wifi.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\Wifi.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND P
+                    -RINT(.\Listing\Wifi.lst) TABS(2) OBJECT(.\Output\Wifi.obj)
 
 line level    source
 
@@ -17,30 +17,103 @@ line level    source
    7          ** 作    者：   温武军
    8          **---------------------------------------------------------------
    9          ** 文 件 名：   Wifi.c
-  10          ** 文件说明：   wifi功能模块
+  10          ** 文件说明：   wifi功能模块(与wifi模块通信有问题)
   11          *****************************************************************/
   12          /*---------------------INCLUDES----------------------*/
   13          #include "Wifi.h"
   14          
   15          /*---------------------VARIABLES---------------------*/
-  16          
-  17          
-  18          /*---------------------FUNCTIONS---------------------*/
-  19          /***********************************************************************
-  20          ** 函 数 名： InitUart1()
-  21          ** 函数说明： 串口1异步通信初始化程序，选择定时器1
-  22          **---------------------------------------------------------------------
-  23          ** 输入参数： 无
-  24          ** 返回参数： 无
-  25          ***********************************************************************/
+  16          //char a[69]="{\"DatasDTO\":[{\"ApiTag\":\"LiquidT\",\"PointDTO\":[{\"Value\":{";
+  17          //char value[4]="";
+  18          //char b[41]="},\"RecordTime\":\"1531488366\"}]}]}";
+  19          char xdata Link[110]="{\"t\": 1,\"device\": \"BlueBerry\",\"key\":\"d9b8d549677e42d989f35401b6c0790f\",\"v
+             -er\":\"v1.0\"}";
+  20          char xdata Data[80]="{\"t\": 3,\"datatype\":1,\"datas\":{\"Ph\":22.5},\"msgid\": 173}";
+  21          char xdata BeatQus[7]="$#AT#\r";
+  22          char xdata Ack[64],*JSONp=Ack;
+  23          
+  24          /*---------------------FUNCTIONS---------------------*/
+  25          /***********************************************************************
+  26          ** 函 数 名： WifiRec()
+  27          ** 函数说明： 接收来自WiFi模块的JSON
+  28          **---------------------------------------------------------------------
+  29          ** 输入参数： 无
+  30          ** 返回参数： uint8
+  31          ***********************************************************************/
+  32          uint8 WifiRec()
+  33          {
+  34   1        int j=0;
+  35   1        char k;
+  36   1        k=UartRec2();
+  37   1        {
+  38   2          while(!k)
+  39   2          {j++;if(j>300)return 0;}//等待无果返回0
+  40   2          *JSONp=k;
+  41   2        }while(JSONp++);
+  42   1        return 1;//成功返回1
+  43   1      }
+  44          /***********************************************************************
+  45          ** 函 数 名： JsonKeyRec()
+  46          ** 函数说明： 获取JSON键值
+  47          **---------------------------------------------------------------------
+  48          ** 输入参数： 目标键名，键值储存地址
+  49          ** 返回参数： uint16,键值的地址
+  50          ***********************************************************************/
+  51          uint16 WifiLinkAck(char *JsonKey)
+  52          {
+  53   1        char *value;
+C51 COMPILER V9.00   WIFI                                                                  07/19/2018 22:35:43 PAGE 2   
+
+  54   1        char *JsonKeyStart;//键名开始的地址
+  55   1        char *JsonKeyEnd;//键名结束的地址
+  56   1        char JsonKeyLength;//键名长度
+  57   1        JsonKeyStart=strstr(JSONp,JsonKey);
+  58   1        JsonKeyLength=strlen(JsonKey);
+  59   1        JsonKeyEnd=JsonKeyStart+JsonKeyLength;
+  60   1        if(JsonKeyStart != 0 && *(JsonKeyStart - 1) == '\"' && *(JsonKeyEnd) == '\"' && *(JsonKeyEnd + 1) == ':' 
+             -&& *(JsonKeyEnd + 2) == '\"' )
+  61   1        {
+  62   2          value=JsonKeyEnd+2;
+  63   2        }
+  64   1        return value;
+  65   1      }
+  66          /***********************************************************************
+  67          ** 函 数 名： WifiLink()
+  68          ** 函数说明： 与云平台台建立链接
+  69          **---------------------------------------------------------------------
+  70          ** 输入参数： 无
+  71          ** 返回参数： 无
+  72          ***********************************************************************/
+  73          void WifiLink()
+  74          {
+  75   1        UartSend2_str(Link);
+  76   1        //UartSend2_str(Data);
+  77   1      }
+  78          /***********************************************************************
+  79          ** 函 数 名： WifiBeat()
+  80          ** 函数说明： 与云平台台建立心跳连接
+  81          **---------------------------------------------------------------------
+  82          ** 输入参数： 无
+  83          ** 返回参数： 无
+  84          ***********************************************************************/
+  85          void WifiBeat()
+  86          {
+  87   1        UartSend2_str(BeatQus);
+  88   1        //UartSend2_str(Data);
+  89   1        //UartSend2_str(BeatQus);
+  90   1      }
+  91          void Wifidat()
+  92          {
+  93   1        UartSend2_str(Data);
+  94   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   ----    ----
+   CODE SIZE        =    227    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =    264    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =   ----      14
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

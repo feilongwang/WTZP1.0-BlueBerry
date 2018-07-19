@@ -26,6 +26,7 @@ void UartSend1(unsigned char dat);
 void UartSend1_Byte(unsigned long dat,unsigned char n);//调用此函数发送
 void InitUart2(void);
 void UartSend2(unsigned char dat);
-void UartSend2_Byte(unsigned char *dat) ;
+void UartSend2_str(unsigned char *dat) ;
+uint8 UartRec2(void);
 
 #endif

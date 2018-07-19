@@ -16,6 +16,7 @@
 #include <absacc.h>
 #include <intrins.h>
 #include <math.h>
+#include <string.h>
 #include ".\Board\STC8A8K64S4A12.h"
 
 

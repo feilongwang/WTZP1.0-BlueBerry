@@ -20,6 +20,8 @@
 
 
 /*---------------------DECLARES----------------------*/
-
+void WifiLink(void);
+void WifiBeat(void);
+void Wifidat(void);
 
 #endif

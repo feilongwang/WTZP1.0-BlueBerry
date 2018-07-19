@@ -18,7 +18,7 @@
 /*---------------------DEFINES-----------------------*/
 
 /*---------------------DECLARES----------------------*/
-void Uart2Isr(void);
+//void Uart2Isr(void);
 void KeyIsr(void);
 
 #endif
