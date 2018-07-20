@@ -28,5 +28,6 @@ void InitUart2(void);
 void UartSend2(unsigned char dat);
 void UartSend2_str(unsigned char *dat) ;
 uint8 UartRec2(void);
+void UartSend1_str(char *dat);
 
 #endif

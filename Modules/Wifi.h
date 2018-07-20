@@ -22,6 +22,7 @@
 /*---------------------DECLARES----------------------*/
 void WifiLink(void);
 void WifiBeat(void);
-void Wifidat(void);
-
+void Wifidat(int8 rank1,int16 DAT);
+uint16 JsonMakePak(int8 rank,int16 value);
+uint16 WifiLinkAck(char *JsonKey);
 #endif

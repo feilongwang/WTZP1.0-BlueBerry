@@ -50,32 +50,28 @@ void StartSystem(void)
 {
 	//´æ´¢±äÁ¿Çø
 	//int LiquidT;
-	//float k;
-	//k=0;
+	float k;
+	k=0;
 	TEST=0;//LEDÁÁ
 	delay1s();
 	delay1s();
   //DS18B20Start();
 	//Read_AD5933_Temperature(); 
-	
 	//
     while(1)
     {
 			delay1s();
+			WifiLink();
 			delay1s();
 			//k=EC();
 			//LiquidT=DS18B20();
-			//UartSend1_Byte(LiquidT,2);
-			WifiLink();
 			delay1s();
+			Wifidat(1,0);
 			delay1s();
-			Wifidat();
-			delay1s();
+			Wifidat(5,1);
 			delay1s();
 			WifiBeat();
-			//UartSend_Byte(Get_Lux(),4);
-			//UartSend_Byte(ph(),2);
-			//UartSend1_Byte(k,4);
+			delay1s();
 			TEST = ~TEST; 
     }
 
