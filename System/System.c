@@ -20,7 +20,7 @@
 //生长参数变量储存区
 uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
 uint16 DateHumidity=0;uint16 DateTemp=0;
-int32 DateEc;
+int16 DateEc;
 uint32 DateLux;
 //其他控制参数区
 
@@ -59,7 +59,7 @@ void Sensor()
 	//程序区
 	DS18B20Start();
 	Read_AD5933_Temperature(); 
-	DateEc=EC();
+	DateEc=(int)EC();
 	DateLiquidT=DS18B20();
 	DateLux=Get_Lux();
 	DateCO2=Get_CO2();

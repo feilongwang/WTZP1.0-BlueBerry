@@ -22,7 +22,7 @@ extern uint16 DateCO2;
 extern uint16 DatePh;
 extern uint16 DateHumidity;
 extern uint16 DateTemp;
-extern int32 DateEc;
+extern int16 DateEc;
 extern uint32 DateLux;
 
 /*---------------------DECLARES----------------------*/
