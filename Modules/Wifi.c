@@ -3,25 +3,27 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-14
+** 日    期：   2018-07-19
 ** 作    者：   温武军
 **---------------------------------------------------------------
 ** 文 件 名：   Wifi.c
-** 文件说明：   wifi功能模块(与wifi模块通信有问题)
+** 文件说明：   wifi功能模块
 *****************************************************************/
 /*---------------------INCLUDES----------------------*/
 #include "Wifi.h"
 
 /*---------------------VARIABLES---------------------*/
 char xdata Link[110]="{\"t\": 1,\"device\": \"BlueBerry\",\"key\":\"d9b8d549677e42d989f35401b6c0790f\",\"ver\":\"v1.0\"}";
-char xdata Date[100]="{\"t\":3,\"datatype\":1,\"datas\":{\"Ph";
-char xdata DateMid[10]="\":19";
+char xdata Date[300]="{\"t\":3,\"datatype\":1,\"datas\":{\"Ph";
+char xdata DateMid1[10]="\":0";
+char xdata DateMid2[10]="},{\"";
 char xdata DateBack[14]="},\"msgid\":1}";
 char xdata BeatQus[7]="$#AT#\r";
 char KeyName[7][9]={{"Ph"},{"LiquidT"},{"Humidity"},{"Lux"},{"Temp"},{"EC"},{"CO2"}};//传感器识别码
+int8 KeyLen[7]={2,7,8,3,4,2,3};
 char xdata Ack[64],*JSONp=Ack;
-	
-
+extern uint16 DateLiquidT;extern uint16 DateCO2;extern uint16 DatePh;extern uint16 DateHumidity;
+extern uint16 DateTemp;extern int32 DateEc;extern uint32 DateLux;
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
@@ -35,7 +37,7 @@ uint8 WifiRec()
 {
 	int j=0;
 	char k;
-	k=UartRec2();
+	k=UartRec2(Ack);
 	{
 		while(!k)
 		{j++;if(j>300)return 0;}//等待无果返回0
@@ -50,7 +52,7 @@ uint8 WifiRec()
 ** 输入参数： 目标键名，键值储存地址
 ** 返回参数： uint16,键值的地址
 ***********************************************************************/
-uint16 WifiLinkAck(char *JsonKey)
+uint16 JsonKeyRec(char *JsonKey)
 {
 	char *value;
 	char *JsonKeyStart;//键名开始的地址
@@ -88,15 +90,15 @@ void WifiBeat()
 	UartSend2_str(BeatQus);
 }
 /***********************************************************************
-** 函 数 名： JsonMakePak()
-** 函数说明： 组包
+** 函 数 名： JsonMakePak1()
+** 函数说明： 组包(只打包一个数据)
 **---------------------------------------------------------------------
-** 输入参数： int8 rank,int16 value
+** 输入参数： int8 rank,uint32 value
 ** 返回参数： uint16,键值的地址
 ***********************************************************************/
-uint16 JsonMakePak(int8 rank,int16 value)
+uint16 JsonMakePak1(int8 rank,uint32 value)
 {
-	#define DateKeyStart 30
+	char DateKeyStart=30;
 	uint8 DateValueLen;
 	switch(rank)
 	{
@@ -108,20 +110,86 @@ uint16 JsonMakePak(int8 rank,int16 value)
 		case 5:strcpy(Date+DateKeyStart,KeyName[5]);break;
 		case 6:strcpy(Date+DateKeyStart,KeyName[6]);break;
 	}
-  DateValueLen=sprintf(DateMid+2,"%d",value);
-	strcat(Date,DateMid);
+	if(rank!=5)
+		DateValueLen=sprintf(DateMid1+2,"%d",value);
+	else 
+		DateValueLen=sprintf(DateMid1+2,"%f",value);
+	strcat(Date,DateMid1);
+	strcat(Date,DateBack);
+	return Date;
+}
+/***********************************************************************
+** 函 数 名： JsonMakePak2()
+** 函数说明： 组包(打包一组传感器数据)
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： uint16,键值的地址
+***********************************************************************/
+uint16 JsonMakePak2()
+{
+	uint8 DateValueLen;
+	uint16 value1=0;
+	int32 value2=0;
+	int8 i;
+	char xdata *DateKeyStart;//数据指针
+	DateKeyStart=Date+30;
+	for(i=0;i<7;i++)
+	{
+		switch(i)
+		{
+			case 0:strcpy(DateKeyStart,KeyName[0]);break;//使数据指针指向数据首地址
+			case 1:strcpy(DateKeyStart,KeyName[1]);break;
+			case 2:strcpy(DateKeyStart,KeyName[2]);break;
+			case 3:strcpy(DateKeyStart,KeyName[3]);break;
+			case 4:strcpy(DateKeyStart,KeyName[4]);break;
+			case 5:strcpy(DateKeyStart,KeyName[5]);break;
+			case 6:strcpy(DateKeyStart,KeyName[6]);break;
+		}
+		switch(i)
+		{
+			case 0:value1=DatePh;break;//获得数据
+			case 1:value1=DateLiquidT;break;
+			case 2:value1=DateHumidity;break;
+			case 3:value1=DateLux;break;
+			case 4:value1=DateTemp;break;
+			case 5:value2=DateEc;break;
+			case 6:value1=DateCO2;break;
+		}
+		if(i!=5)
+			DateValueLen=sprintf(DateMid1+2,"%d",value1);
+		else 
+			DateValueLen=sprintf(DateMid1+2,"%f",value2);
+		strcat(Date,DateMid1);
+		if(i!=6)
+		{
+			strcat(Date,DateMid2);
+			DateKeyStart=DateKeyStart+KeyLen[i]+DateValueLen+6;
+		}
+	}
 	strcat(Date,DateBack);
 	return Date;
 }
 /***********************************************************************
 ** 函 数 名： Wifidat()
-** 函数说明： 发送数据
+** 函数说明： 发送一个传感器数据
 **---------------------------------------------------------------------
 ** 输入参数： int8 rank,int16 DAT
 ** 返回参数： 无
 ***********************************************************************/
-void Wifidat(int8 rank1,int16 DAT)
+void Wifidat(int8 rank1,uint32 DAT)
 {
-	JsonMakePak(rank1,DAT);
+	JsonMakePak1(rank1,DAT);
+	UartSend2_str(Date);
+}
+/***********************************************************************
+** 函 数 名： WifidatPackt()
+** 函数说明： 发送一组传感器数据
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： 无
+***********************************************************************/
+void WifidatPack()
+{
+	JsonMakePak2();
 	UartSend2_str(Date);
 }

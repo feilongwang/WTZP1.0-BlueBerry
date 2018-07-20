@@ -18,7 +18,9 @@
 #include ".\Drivers\Drivers.h"
 
 /*---------------------DEFINES-----------------------*/
-
+extern uint8 Urst2Rec;
+extern uint8 Urst2TI;
+extern uint8 Urst2RI;
 
 /*---------------------DECLARES----------------------*/
 void InitUart1(void);//初始化串口1
@@ -27,7 +29,7 @@ void UartSend1_Byte(unsigned long dat,unsigned char n);//调用此函数发送
 void InitUart2(void);
 void UartSend2(unsigned char dat);
 void UartSend2_str(unsigned char *dat) ;
-uint8 UartRec2(void);
+uint8 UartRec2(char *p);
 void UartSend1_str(char *dat);
 
 #endif

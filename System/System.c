@@ -17,7 +17,12 @@
 #include ".\Board\Board.h"
 
 /*---------------------VARIABLES---------------------*/
-
+//生长参数变量储存区
+uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
+uint16 DateHumidity=0;uint16 DateTemp=0;
+int32 DateEc;
+uint32 DateLux;
+//其他控制参数区
 
 
 /*---------------------FUNCTIONS---------------------*/
@@ -31,14 +36,36 @@
 ***********************************************************************/
 void InitSystem(void)
 {
+	//传感器初始化区域
 	InitI2C();
-	InitUart1();
 	InitLUX();
   Init_AD();
 	InitPh();
+	//串口初始化区域
+	InitUart1();
 	InitUart2();
+	//中断或定时器初始化区域
+	InterruptKeyIsr();
 }
-
+/***********************************************************************
+** 函 数 名： StartSystem()
+** 函数说明： 运行系统
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： 无
+***********************************************************************/
+void Sensor()
+{
+	//程序区
+	DS18B20Start();
+	Read_AD5933_Temperature(); 
+	DateEc=EC();
+	DateLiquidT=DS18B20();
+	DateLux=Get_Lux();
+	DateCO2=Get_CO2();
+	DatePh=ph();
+	WifidatPack();
+}
 /***********************************************************************
 ** 函 数 名： StartSystem()
 ** 函数说明： 运行系统
@@ -49,30 +76,18 @@ void InitSystem(void)
 void StartSystem(void)
 {
 	//存储变量区
-	//int LiquidT;
-	float k;
-	k=0;
 	TEST=0;//LED亮
-	delay1s();
-	delay1s();
-  //DS18B20Start();
-	//Read_AD5933_Temperature(); 
 	//
     while(1)
     {
 			delay1s();
 			WifiLink();
-			delay1s();
-			//k=EC();
-			//LiquidT=DS18B20();
-			delay1s();
-			Wifidat(1,0);
-			delay1s();
-			Wifidat(5,1);
+			delay_ms(50);
+			Sensor();
 			delay1s();
 			WifiBeat();
-			delay1s();
 			TEST = ~TEST; 
+			UartSend1_Byte(0x11,1);
     }
 
 }

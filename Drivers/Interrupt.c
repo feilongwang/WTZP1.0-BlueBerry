@@ -15,7 +15,9 @@
 
 
 /*---------------------VARIABLES---------------------*/
-
+extern uint8 Urst2TI;
+extern uint8 Urst2Rec;
+extern uint8 Urst2RI;
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
@@ -25,7 +27,7 @@
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void KeyIsr()
+void InterruptKeyIsr()
 {
   IE2 = 0x01;//打开串口2接收中断
   EA = 1;//总中断打开
@@ -56,17 +58,17 @@ void Uart1Isr() interrupt 4 using 1
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-/*void Uart2Isr() interrupt 8 using 1
+void Uart2Isr() interrupt 8 using 1
 {
-    if (S2CON & 0x02)
-    {
-			S2CON &= ~0x02;
-			Urst2busy=0;
-    }
-    if (S2CON & 0x01)
-    {
-			S2CON &= ~0x01;
-			Urst2Rec = S2BUF;
-    }
-		UartSend1_Byte(0,2);
-}*/
+	if (S2CON & 0x02)
+	{
+		S2CON &= ~0x02;
+		Urst2TI=0;
+	}
+	if (S2CON & 0x01)
+	{
+		S2CON &= ~0x01;
+		Urst2RI=1;
+		Urst2Rec = S2BUF;
+	}
+}

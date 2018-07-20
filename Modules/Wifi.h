@@ -15,6 +15,7 @@
 /*---------------------INCLUDES----------------------*/
 #include ".\Board\Board.h"
 #include ".\Drivers\Drivers.h"
+#include ".\System\System.h"
 
 /*---------------------DEFINES-----------------------*/
 
@@ -22,7 +23,9 @@
 /*---------------------DECLARES----------------------*/
 void WifiLink(void);
 void WifiBeat(void);
-void Wifidat(int8 rank1,int16 DAT);
-uint16 JsonMakePak(int8 rank,int16 value);
-uint16 WifiLinkAck(char *JsonKey);
+void Wifidat(int8 rank1,uint32 DAT);
+uint16 JsonMakePak1(int8 rank,uint32 value);
+uint16 JsonMakePak2();
+uint16 JsonKeyRec(char *JsonKey);
+void WifidatPack();
 #endif

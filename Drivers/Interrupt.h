@@ -14,11 +14,12 @@
 
 /*---------------------INCLUDES----------------------*/
 #include ".\Board\Board.h"
+#include "UrstTest.h"
 
 /*---------------------DEFINES-----------------------*/
 
 /*---------------------DECLARES----------------------*/
-//void Uart2Isr(void);
-void KeyIsr(void);
+void Uart2Isr(void);
+void InterruptKeyIsr(void);
 
 #endif
