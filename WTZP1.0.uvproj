@@ -417,6 +417,21 @@
               <FileType>1</FileType>
               <FilePath>.\Modules\Wifi.c</FilePath>
             </File>
+            <File>
+              <FileName>Control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\Control.c</FilePath>
+            </File>
+            <File>
+              <FileName>AM2301.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\AM2301.c</FilePath>
+            </File>
+            <File>
+              <FileName>LCD.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Modules\LCD.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

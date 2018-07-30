@@ -21,6 +21,9 @@
 extern uint8 Urst2Rec;
 extern uint8 Urst2TI;
 extern uint8 Urst2RI;
+extern uint8 Urst3TI;
+extern uint8 Urst3RI;
+extern uint8 Urst3Rec;
 
 /*---------------------DECLARES----------------------*/
 void InitUart1(void);//³õÊ¼»¯´®¿Ú1
@@ -31,5 +34,9 @@ void UartSend2(unsigned char dat);
 void UartSend2_str(unsigned char *dat) ;
 uint8 UartRec2(char *p);
 void UartSend1_str(char *dat);
+void InitUart3(void);
+void UartSend3(unsigned char dat);
+void UartSend3_str(char *dat);
+//uint8 UartRec3()(void);
 
 #endif

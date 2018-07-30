@@ -3,26 +3,29 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-07
-** 作    者：   王老师
+** 日    期：   2018-07-21
+** 作    者：   温武军
 **---------------------------------------------------------------
-** 文 件 名：   Modules.h
-** 文件说明：   模块层头文件整合
+** 文 件 名：   Control.h
+** 文件说明：   泵控制功能模块
 *****************************************************************/
-#ifndef _MODULES_H_
-#define _MODULES_H_
+#ifndef _CONTROL_H_
+#define _CONTROL_H_
 
 /*---------------------INCLUDES----------------------*/
-#include "DS18B20.h"
-#include "EC.h"
-#include "LUX.h"
+#include ".\Board\Board.h"
 #include ".\Drivers\Drivers.h"
-#include "CO2.h"
-#include "PH.h"
-#include "Wifi.h"
-#include "AM2301.h"
-#include "LCD.h"
-#include "Control.h"
+#include ".\System\System.h"
+
+
+/*---------------------DEFINES-----------------------*/
+#define MOS1 P2_3
+#define MOS2 P2_0
+#define MOS3 P2_2
+#define MOS4 P2_1
+
+/*---------------------DECLARES----------------------*/
+
 
 
 #endif

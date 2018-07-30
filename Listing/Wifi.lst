@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   WIFI                                                                  07/20/2018 17:45:45 PAGE 1   
+C51 COMPILER V9.00   WIFI                                                                  07/30/2018 17:32:33 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE WIFI
 OBJECT MODULE PLACED IN .\Output\Wifi.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\Wifi.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
-                    -\Listing\Wifi.lst) TABS(2) OBJECT(.\Output\Wifi.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\Wifi.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEX
+                    -TEND PRINT(.\Listing\Wifi.lst) TABS(2) OBJECT(.\Output\Wifi.obj)
 
 line level    source
 
@@ -31,180 +31,181 @@ line level    source
   20          char xdata DateBack[14]="},\"msgid\":1}";
   21          char xdata BeatQus[7]="$#AT#\r";
   22          char KeyName[7][9]={{"Ph"},{"LiquidT"},{"Humidity"},{"Lux"},{"Temp"},{"EC"},{"CO2"}};//传感器识别码
-  23          int8 KeyLen[7]={2,7,8,3,4,2,3};
-  24          char xdata Ack[64],*JSONp=Ack;
-  25          extern uint16 DateLiquidT;extern uint16 DateCO2;extern uint16 DatePh;extern uint16 DateHumidity;
-  26          extern uint16 DateTemp;extern int16 DateEc;extern uint32 DateLux;
-  27          
-  28          /*---------------------FUNCTIONS---------------------*/
-  29          /***********************************************************************
-  30          ** 函 数 名： WifiRec()
-  31          ** 函数说明： 接收来自WiFi模块的JSON
-  32          **---------------------------------------------------------------------
-  33          ** 输入参数： 无
-  34          ** 返回参数： uint8
-  35          ***********************************************************************/
-  36          uint8 WifiRec()
-  37          {
-  38   1        int j=0;
-  39   1        char k;
-  40   1        k=UartRec2(Ack);
-  41   1        {
-  42   2          while(!k)
-  43   2          {j++;if(j>300)return 0;}//等待无果返回0
-  44   2          *JSONp=k;
-  45   2        }while(JSONp++);
-  46   1        return 1;//成功返回1
-  47   1      }
-  48          /***********************************************************************
-  49          ** 函 数 名： JsonKeyRec()
-  50          ** 函数说明： 获取JSON键值
-  51          **---------------------------------------------------------------------
-  52          ** 输入参数： 目标键名，键值储存地址
-  53          ** 返回参数： uint16,键值的地址
-C51 COMPILER V9.00   WIFI                                                                  07/20/2018 17:45:45 PAGE 2   
+  23          int8 KeyLen[7]={2,7,8,3,4,2,3};//识别码长度
+  24          char xdata Ack[64];
+  25          char xdata *JSONp=Ack;
+  26          extern uint16 DateLiquidT;extern uint16 DateCO2;extern uint16 DatePh;extern uint16 DateHumidity;
+  27          extern uint16 DateTemp;extern int16 DateEc;extern uint32 DateLux;
+  28          
+  29          /*---------------------FUNCTIONS---------------------*/
+  30          /***********************************************************************
+  31          ** 函 数 名： WifiRec()
+  32          ** 函数说明： 接收来自WiFi模块的JSON
+  33          **---------------------------------------------------------------------
+  34          ** 输入参数： 无
+  35          ** 返回参数： uint8
+  36          ***********************************************************************/
+  37          uint8 WifiRec()
+  38          {
+  39   1        int j=0;
+  40   1        char k;
+  41   1        k=UartRec2(Ack);
+  42   1        {
+  43   2          while(!k)
+  44   2          {j++;if(j>300)return 0;}//等待无果返回0
+  45   2          *JSONp=k;
+  46   2        }while(JSONp++);
+  47   1        return 1;//成功返回1
+  48   1      }
+  49          /***********************************************************************
+  50          ** 函 数 名： JsonKeyRec()
+  51          ** 函数说明： 获取JSON键值
+  52          **---------------------------------------------------------------------
+  53          ** 输入参数： 目标键名，键值储存地址
+C51 COMPILER V9.00   WIFI                                                                  07/30/2018 17:32:33 PAGE 2   
 
-  54          ***********************************************************************/
-  55          uint16 JsonKeyRec(char *JsonKey)
-  56          {
-  57   1        char *value;
-  58   1        char *JsonKeyStart;//键名开始的地址
-  59   1        char *JsonKeyEnd;//键名结束的地址
-  60   1        char JsonKeyLength;//键名长度
-  61   1        JsonKeyStart=strstr(JSONp,JsonKey);
-  62   1        JsonKeyLength=strlen(JsonKey);
-  63   1        JsonKeyEnd=JsonKeyStart+JsonKeyLength;
-  64   1        if(JsonKeyStart != 0 && *(JsonKeyStart - 1) == '\"' && *(JsonKeyEnd) == '\"' && *(JsonKeyEnd + 1) == ':' 
+  54          ** 返回参数： uint16,键值的地址
+  55          ***********************************************************************/
+  56          uint16 JsonKeyRec(char *JsonKey)
+  57          {
+  58   1        char *value;
+  59   1        char *JsonKeyStart;//键名开始的地址
+  60   1        char *JsonKeyEnd;//键名结束的地址
+  61   1        char JsonKeyLength;//键名长度
+  62   1        JsonKeyStart=strstr(JSONp,JsonKey);
+  63   1        JsonKeyLength=strlen(JsonKey);
+  64   1        JsonKeyEnd=JsonKeyStart+JsonKeyLength;
+  65   1        if(JsonKeyStart != 0 && *(JsonKeyStart - 1) == '\"' && *(JsonKeyEnd) == '\"' && *(JsonKeyEnd + 1) == ':' 
              -&& *(JsonKeyEnd + 2) == '\"' )
-  65   1        {
-  66   2          value=JsonKeyEnd+2;
-  67   2        }
-  68   1        return value;
-  69   1      }
-  70          /***********************************************************************
-  71          ** 函 数 名： WifiLink()
-  72          ** 函数说明： 与云平台台建立链接
-  73          **---------------------------------------------------------------------
-  74          ** 输入参数： 无
-  75          ** 返回参数： 无
-  76          ***********************************************************************/
-  77          void WifiLink()
-  78          {
-  79   1        UartSend2_str(Link);
-  80   1      }
-  81          /***********************************************************************
-  82          ** 函 数 名： WifiBeat()
-  83          ** 函数说明： 与云平台台建立心跳连接
-  84          **---------------------------------------------------------------------
-  85          ** 输入参数： 无
-  86          ** 返回参数： 无
-  87          ***********************************************************************/
-  88          void WifiBeat()
-  89          {
-  90   1        UartSend2_str(BeatQus);
-  91   1      }
-  92          /***********************************************************************
-  93          ** 函 数 名： JsonMakePak1()
-  94          ** 函数说明： 组包(只打包一个数据)
-  95          **---------------------------------------------------------------------
-  96          ** 输入参数： int8 rank,uint32 value
-  97          ** 返回参数： uint16,键值的地址
-  98          ***********************************************************************/
-  99          uint16 JsonMakePak1(int8 rank,uint32 value)
- 100          {
- 101   1        char DateKeyStart=30;
- 102   1        uint8 DateValueLen;
- 103   1        switch(rank)
- 104   1        {
- 105   2          case 0:strcpy(Date+DateKeyStart,KeyName[0]);break;//使数据指针指向数据首地址
- 106   2          case 1:strcpy(Date+DateKeyStart,KeyName[1]);break;
- 107   2          case 2:strcpy(Date+DateKeyStart,KeyName[2]);break;
- 108   2          case 3:strcpy(Date+DateKeyStart,KeyName[3]);break;
- 109   2          case 4:strcpy(Date+DateKeyStart,KeyName[4]);break;
- 110   2          case 5:strcpy(Date+DateKeyStart,KeyName[5]);break;
- 111   2          case 6:strcpy(Date+DateKeyStart,KeyName[6]);break;
- 112   2        }
- 113   1        DateValueLen=sprintf(DateMid1+2,"%d",value);
- 114   1        strcat(Date,DateMid1);
-C51 COMPILER V9.00   WIFI                                                                  07/20/2018 17:45:45 PAGE 3   
+  66   1        {
+  67   2          value=JsonKeyEnd+2;
+  68   2        }
+  69   1        return value;
+  70   1      }
+  71          /***********************************************************************
+  72          ** 函 数 名： WifiLink()
+  73          ** 函数说明： 与云平台台建立链接
+  74          **---------------------------------------------------------------------
+  75          ** 输入参数： 无
+  76          ** 返回参数： 无
+  77          ***********************************************************************/
+  78          void WifiLink()
+  79          {
+  80   1        UartSend2_str(Link);
+  81   1      }
+  82          /***********************************************************************
+  83          ** 函 数 名： WifiBeat()
+  84          ** 函数说明： 与云平台台建立心跳连接
+  85          **---------------------------------------------------------------------
+  86          ** 输入参数： 无
+  87          ** 返回参数： 无
+  88          ***********************************************************************/
+  89          void WifiBeat()
+  90          {
+  91   1        UartSend2_str(BeatQus);
+  92   1      }
+  93          /***********************************************************************
+  94          ** 函 数 名： JsonMakePak1()
+  95          ** 函数说明： 组包(只打包一个数据)
+  96          **---------------------------------------------------------------------
+  97          ** 输入参数： int8 rank,uint32 value
+  98          ** 返回参数： uint16,键值的地址
+  99          ***********************************************************************/
+ 100          uint16 JsonMakePak1(int8 rank,uint32 value)
+ 101          {
+ 102   1        char DateKeyStart=30;
+ 103   1        uint8 DateValueLen;
+ 104   1        switch(rank)
+ 105   1        {
+ 106   2          case 0:strcpy(Date+DateKeyStart,KeyName[0]);break;//使数据指针指向数据首地址
+ 107   2          case 1:strcpy(Date+DateKeyStart,KeyName[1]);break;
+ 108   2          case 2:strcpy(Date+DateKeyStart,KeyName[2]);break;
+ 109   2          case 3:strcpy(Date+DateKeyStart,KeyName[3]);break;
+ 110   2          case 4:strcpy(Date+DateKeyStart,KeyName[4]);break;
+ 111   2          case 5:strcpy(Date+DateKeyStart,KeyName[5]);break;
+ 112   2          case 6:strcpy(Date+DateKeyStart,KeyName[6]);break;
+ 113   2        }
+ 114   1        DateValueLen=sprintf(DateMid1+2,"%d",value);
+C51 COMPILER V9.00   WIFI                                                                  07/30/2018 17:32:33 PAGE 3   
 
- 115   1        strcat(Date,DateBack);
- 116   1        return Date;
- 117   1      }
- 118          /***********************************************************************
- 119          ** 函 数 名： JsonMakePak2()
- 120          ** 函数说明： 组包(打包一组传感器数据)
- 121          **---------------------------------------------------------------------
- 122          ** 输入参数： 无
- 123          ** 返回参数： uint16,键值的地址
- 124          ***********************************************************************/
- 125          uint16 JsonMakePak2()
- 126          {
- 127   1        uint8 DateValueLen=0;
- 128   1        uint16 value1=0;
- 129   1        int8 i=0;
- 130   1        char xdata *DateKeyStart;
- 131   1        DateKeyStart=Date+30;//使数据指针指向数据首地址
- 132   1        for(i=0;i<7;i++)
- 133   1        {
- 134   2          strcpy(DateKeyStart,KeyName[i]);
- 135   2          DateKeyStart=DateKeyStart+KeyLen[i];
- 136   2          *DateKeyStart=0;
- 137   2          switch(i)
- 138   2          {
- 139   3            case 0:value1=DatePh;break;//获得数据
- 140   3            case 1:value1=DateLiquidT;break;
- 141   3            case 2:value1=DateHumidity;break;
- 142   3            case 3:value1=DateLux;break;
- 143   3            case 4:value1=DateTemp;break;
- 144   3            case 5:value1=DateEc;break;
- 145   3            case 6:value1=DateCO2;break;
- 146   3          }
- 147   2          DateValueLen=sprintf(DateMid1+2,"%d",value1);
- 148   2          strcat(Date,DateMid1);
- 149   2          DateKeyStart=DateKeyStart+DateValueLen+2;
- 150   2          *DateKeyStart=0;
- 151   2          if(i!=6)
- 152   2          {
- 153   3            strcat(Date,DateMid2);
- 154   3            DateKeyStart=DateKeyStart+2;
- 155   3          }
- 156   2        }
- 157   1        strcat(Date,DateBack);
- 158   1        return Date;
- 159   1      }
- 160          /***********************************************************************
- 161          ** 函 数 名： Wifidat()
- 162          ** 函数说明： 发送一个传感器数据
- 163          **---------------------------------------------------------------------
- 164          ** 输入参数： int8 rank,int16 DAT
- 165          ** 返回参数： 无
- 166          ***********************************************************************/
- 167          void Wifidat(int8 rank1,uint32 DAT)
- 168          {
- 169   1        JsonMakePak1(rank1,DAT);
- 170   1        UartSend2_str(Date);
- 171   1      }
- 172          /***********************************************************************
- 173          ** 函 数 名： WifidatPackt()
- 174          ** 函数说明： 发送一组传感器数据
- 175          **---------------------------------------------------------------------
- 176          ** 输入参数： 无
-C51 COMPILER V9.00   WIFI                                                                  07/20/2018 17:45:45 PAGE 4   
+ 115   1        strcat(Date,DateMid1);
+ 116   1        strcat(Date,DateBack);
+ 117   1        return Date;
+ 118   1      }
+ 119          /***********************************************************************
+ 120          ** 函 数 名： JsonMakePak2()
+ 121          ** 函数说明： 组包(打包一组传感器数据)
+ 122          **---------------------------------------------------------------------
+ 123          ** 输入参数： 无
+ 124          ** 返回参数： uint16,键值的地址
+ 125          ***********************************************************************/
+ 126          uint16 JsonMakePak2()
+ 127          {
+ 128   1        uint8 DateValueLen=0;
+ 129   1        uint16 value1=0;
+ 130   1        int8 i=0;
+ 131   1        char xdata *DateKeyStart;
+ 132   1        DateKeyStart=Date+30;//使数据指针指向数据首地址
+ 133   1        for(i=0;i<7;i++)
+ 134   1        {
+ 135   2          strcpy(DateKeyStart,KeyName[i]);
+ 136   2          DateKeyStart=DateKeyStart+KeyLen[i];
+ 137   2          *DateKeyStart=0;
+ 138   2          switch(i)
+ 139   2          {
+ 140   3            case 0:value1=DatePh;break;//获得数据
+ 141   3            case 1:value1=DateLiquidT;break;
+ 142   3            case 2:value1=DateHumidity;break;
+ 143   3            case 3:value1=DateLux;break;
+ 144   3            case 4:value1=DateTemp;break;
+ 145   3            case 5:value1=DateEc;break;
+ 146   3            case 6:value1=DateCO2;break;
+ 147   3          }
+ 148   2          DateValueLen=sprintf(DateMid1+2,"%d",value1);
+ 149   2          strcat(Date,DateMid1);
+ 150   2          DateKeyStart=DateKeyStart+DateValueLen+2;
+ 151   2          *DateKeyStart=0;
+ 152   2          if(i!=6)
+ 153   2          {
+ 154   3            strcat(Date,DateMid2);
+ 155   3            DateKeyStart=DateKeyStart+2;
+ 156   3          }
+ 157   2        }
+ 158   1        strcat(Date,DateBack);
+ 159   1        return Date;
+ 160   1      }
+ 161          /***********************************************************************
+ 162          ** 函 数 名： Wifidat()
+ 163          ** 函数说明： 发送一个传感器数据
+ 164          **---------------------------------------------------------------------
+ 165          ** 输入参数： int8 rank,int16 DAT
+ 166          ** 返回参数： 无
+ 167          ***********************************************************************/
+ 168          void Wifidat(int8 rank1,uint32 DAT)
+ 169          {
+ 170   1        JsonMakePak1(rank1,DAT);
+ 171   1        UartSend2_str(Date);
+ 172   1      }
+ 173          /***********************************************************************
+ 174          ** 函 数 名： WifidatPackt()
+ 175          ** 函数说明： 发送一组传感器数据
+ 176          **---------------------------------------------------------------------
+C51 COMPILER V9.00   WIFI                                                                  07/30/2018 17:32:33 PAGE 4   
 
- 177          ** 返回参数： 无
- 178          ***********************************************************************/
- 179          void WifidatPack()
- 180          {
- 181   1        JsonMakePak2();
- 182   1        UartSend2_str(Date);
- 183   1      }
+ 177          ** 输入参数： 无
+ 178          ** 返回参数： 无
+ 179          ***********************************************************************/
+ 180          void WifidatPack()
+ 181          {
+ 182   1        JsonMakePak2();
+ 183   1        UartSend2_str(Date);
+ 184   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =   1083    ----
+   CODE SIZE        =   1086    ----
    CONSTANT SIZE    =      3    ----
-   XDATA SIZE       =    588      32
+   XDATA SIZE       =    587      32
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

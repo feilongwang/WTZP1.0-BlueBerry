@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   INTERRUPT                                                             07/20/2018 17:45:44 PAGE 1   
+C51 COMPILER V9.00   INTERRUPT                                                             07/30/2018 17:32:32 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE INTERRUPT
 OBJECT MODULE PLACED IN .\Output\Interrupt.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Drivers\Interrupt.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PR
-                    -INT(.\Listing\Interrupt.lst) TABS(2) OBJECT(.\Output\Interrupt.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Drivers\Interrupt.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJ
+                    -ECTEXTEND PRINT(.\Listing\Interrupt.lst) TABS(2) OBJECT(.\Output\Interrupt.obj)
 
 line level    source
 
@@ -22,7 +22,7 @@ line level    source
   12          
   13          /*---------------------INCLUDES----------------------*/
   14          #include "Interrupt.h"
-  15          
+  15          extern char xdata *JSONp;
   16          
   17          /*---------------------VARIABLES---------------------*/
   18          extern uint8 Urst2TI;
@@ -39,7 +39,7 @@ line level    source
   29          ***********************************************************************/
   30          void InterruptKeyIsr()
   31          {
-  32   1        IE2 = 0x01;//打开串口2接收中断
+  32   1        IE2 = 0x09;//打开串口2,3接收中断
   33   1        EA = 1;//总中断打开
   34   1      }
   35          /***********************************************************************
@@ -62,7 +62,7 @@ line level    source
   52            }
   53          } */
   54          /***********************************************************************
-C51 COMPILER V9.00   INTERRUPT                                                             07/20/2018 17:45:44 PAGE 2   
+C51 COMPILER V9.00   INTERRUPT                                                             07/30/2018 17:32:32 PAGE 2   
 
   55          ** 函 数 名： Uart2Isr()
   56          ** 函数说明： 串口2中断服务程序
@@ -81,13 +81,34 @@ line level    source
   69   1        {
   70   2          S2CON &= ~0x01;
   71   2          Urst2RI=1;
-  72   2          Urst2Rec = S2BUF;
+  72   2          UartRec2(JSONp);
   73   2        }
   74   1      }
+  75          /***********************************************************************
+  76          ** 函 数 名： Uart3Isr()
+  77          ** 函数说明： 串口2中断服务程序
+  78          **---------------------------------------------------------------------
+  79          ** 输入参数： 无
+  80          ** 返回参数： 无
+  81          ***********************************************************************/
+  82          void Uart3Isr() interrupt 17
+  83          {
+  84   1        if (S3CON & 0x02)
+  85   1        {
+  86   2          S3CON &= ~0x02;
+  87   2          Urst3TI=0;
+  88   2        }
+  89   1        if (S3CON & 0x01)
+  90   1        {
+  91   2          S3CON &= ~0x01;
+  92   2          Urst3RI=1;
+  93   2          Urst3Rec = S3BUF;
+  94   2        }
+  95   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     52    ----
+   CODE SIZE        =    118    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

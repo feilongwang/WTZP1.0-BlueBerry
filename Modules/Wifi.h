@@ -18,7 +18,7 @@
 #include ".\System\System.h"
 
 /*---------------------DEFINES-----------------------*/
-
+extern char xdata *JSONp;
 
 /*---------------------DECLARES----------------------*/
 void WifiLink(void);

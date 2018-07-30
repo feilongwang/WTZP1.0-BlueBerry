@@ -20,8 +20,9 @@ char xdata DateMid2[10]=",\"";
 char xdata DateBack[14]="},\"msgid\":1}";
 char xdata BeatQus[7]="$#AT#\r";
 char KeyName[7][9]={{"Ph"},{"LiquidT"},{"Humidity"},{"Lux"},{"Temp"},{"EC"},{"CO2"}};//传感器识别码
-int8 KeyLen[7]={2,7,8,3,4,2,3};
-char xdata Ack[64],*JSONp=Ack;
+int8 KeyLen[7]={2,7,8,3,4,2,3};//识别码长度
+char xdata Ack[64];
+char xdata *JSONp=Ack;
 extern uint16 DateLiquidT;extern uint16 DateCO2;extern uint16 DatePh;extern uint16 DateHumidity;
 extern uint16 DateTemp;extern int16 DateEc;extern uint32 DateLux;
 

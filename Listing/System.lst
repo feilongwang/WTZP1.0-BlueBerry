@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                07/20/2018 17:45:45 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                07/30/2018 17:32:34 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
-                    -.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -29,7 +29,7 @@ line level    source
   19          /*---------------------VARIABLES---------------------*/
   20          //生长参数变量储存区
   21          uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
-  22          uint16 DateHumidity=0;uint16 DateTemp=0;
+  22          uint16 DateHumidity;uint16 DateTemp;
   23          int16 DateEc;
   24          uint32 DateLux;
   25          //其他控制参数区
@@ -51,63 +51,83 @@ line level    source
   41   1        InitLUX();
   42   1        Init_AD();
   43   1        InitPh();
-  44   1        //串口初始化区域
-  45   1        InitUart1();
-  46   1        InitUart2();
-  47   1        //中断或定时器初始化区域
-  48   1        InterruptKeyIsr();
-  49   1      }
-  50          /***********************************************************************
-  51          ** 函 数 名： StartSystem()
-  52          ** 函数说明： 运行系统
-  53          **---------------------------------------------------------------------
-  54          ** 输入参数： 无
-C51 COMPILER V9.00   SYSTEM                                                                07/20/2018 17:45:45 PAGE 2   
+  44   1        AM2301Start();
+  45   1        //串口初始化区域
+  46   1        InitUart1();
+  47   1        InitUart2();
+  48   1        InitUart3();
+  49   1        //中断或定时器初始化区域
+  50   1        InterruptKeyIsr();
+  51   1        //云平台连接
+  52   1        WifiLink();
+  53   1      }
+  54          /***********************************************************************
+C51 COMPILER V9.00   SYSTEM                                                                07/30/2018 17:32:34 PAGE 2   
 
-  55          ** 返回参数： 无
-  56          ***********************************************************************/
-  57          void Sensor()
-  58          {
-  59   1        //程序区
-  60   1        DS18B20Start();
-  61   1        Read_AD5933_Temperature(); 
-  62   1        DateEc=(int)EC();
-  63   1        DateLiquidT=DS18B20();
-  64   1        DateLux=Get_Lux();
-  65   1        DateCO2=Get_CO2();
-  66   1        DatePh=ph();
-  67   1        WifidatPack();
-  68   1      }
-  69          /***********************************************************************
-  70          ** 函 数 名： StartSystem()
-  71          ** 函数说明： 运行系统
-  72          **---------------------------------------------------------------------
-  73          ** 输入参数： 无
-  74          ** 返回参数： 无
-  75          ***********************************************************************/
-  76          void StartSystem(void)
-  77          {
-  78   1        //存储变量区
-  79   1        TEST=0;//LED亮
-  80   1        //
-  81   1          while(1)
-  82   1          {
-  83   2            delay1s();
-  84   2            WifiLink();
-  85   2            delay_ms(50);
-  86   2            Sensor();
-  87   2            delay1s();
-  88   2            WifiBeat();
-  89   2            TEST = ~TEST; 
-  90   2            UartSend1_Byte(0x11,1);
-  91   2          }
-  92   1      
-  93   1      }
+  55          ** 函 数 名： Sensor()
+  56          ** 函数说明： 传感器数据获取
+  57          **---------------------------------------------------------------------
+  58          ** 输入参数： 无
+  59          ** 返回参数： 无
+  60          ***********************************************************************/
+  61          void Sensor()
+  62          {
+  63   1        DS18B20Start();
+  64   1        Read_AD5933_Temperature(); 
+  65   1        DateEc=(int)EC();
+  66   1        DateLiquidT=DS18B20();
+  67   1        DateLux=Get_Lux();
+  68   1        DateCO2=Get_CO2();
+  69   1        DatePh=ph();
+  70   1        AM2301();
+  71   1        WifidatPack();
+  72   1      }
+  73          /***********************************************************************
+  74          ** 函 数 名： LCDdisplay()
+  75          ** 函数说明： 将数据上传至串口屏
+  76          **---------------------------------------------------------------------
+  77          ** 输入参数： 无
+  78          ** 返回参数： 无
+  79          ***********************************************************************/
+  80          void LCDdisplay()
+  81          {
+  82   1        LCDSend(1,DateLiquidT);//溶液温度
+  83   1        LCDSend(2,DateCO2);//CO2浓度
+  84   1        LCDSend(3,DatePh);//PH
+  85   1        LCDSend(4,DateHumidity);//空气湿度
+  86   1        LCDSend(5,DateTemp);//空气温度
+  87   1        LCDSend(6,DateEc);//溶液电导率
+  88   1        LCDSend(7,DateLux);//光照
+  89   1      }
+  90          /***********************************************************************
+  91          ** 函 数 名： StartSystem()
+  92          ** 函数说明： 运行系统
+  93          **---------------------------------------------------------------------
+  94          ** 输入参数： 无
+  95          ** 返回参数： 无
+  96          ***********************************************************************/
+  97          void StartSystem(void)
+  98          {
+  99   1        //存储变量区
+ 100   1        TEST=0;//LED亮
+ 101   1        //
+ 102   1          while(1)
+ 103   1          {
+ 104   2            Sensor();
+ 105   2            LCDdisplay();
+ 106   2            WifiBeat();
+ 107   2            TEST = ~TEST;
+ 108   2            UartSend1_Byte(0x11,1);
+ 109   2          }
+ 110   1      
+ 111   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    131    ----
+   CODE SIZE        =    290    ----
    CONSTANT SIZE    =   ----    ----
+C51 COMPILER V9.00   SYSTEM                                                                07/30/2018 17:32:34 PAGE 3   
+
    XDATA SIZE       =     16    ----
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----

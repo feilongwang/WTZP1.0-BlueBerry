@@ -3,26 +3,26 @@
 **                       物联网应用工坊
 **---------------------------------------------------------------
 ** 项目名称：   WTZP1.0-BlueBerry
-** 日    期：   2018-07-07
-** 作    者：   王老师
+** 日    期：   2018-07-30
+** 作    者：   温武军
 **---------------------------------------------------------------
-** 文 件 名：   Modules.h
-** 文件说明：   模块层头文件整合
+** 文 件 名：   LCD.h
+** 文件说明：   串口屏通信
 *****************************************************************/
-#ifndef _MODULES_H_
-#define _MODULES_H_
+#ifndef _LCD_H_
+#define _LCD_H_
 
 /*---------------------INCLUDES----------------------*/
-#include "DS18B20.h"
-#include "EC.h"
-#include "LUX.h"
+#include ".\Board\Board.h"
 #include ".\Drivers\Drivers.h"
-#include "CO2.h"
-#include "PH.h"
-#include "Wifi.h"
-#include "AM2301.h"
-#include "LCD.h"
-#include "Control.h"
+
+
+/*---------------------DEFINES-----------------------*/
+
+
+/*---------------------DECLARES----------------------*/
+void LCDSend(uint8 site,uint32 dat);
+uint8 LCDRec(void);
 
 
 #endif

@@ -21,6 +21,6 @@ void delay1us(unsigned int b);
 void delay1s(void);
 void Delay5us(void);
 void delay_ms(uint16 k);
-
+void Delay_N10us(uint8 n);
 
 #endif

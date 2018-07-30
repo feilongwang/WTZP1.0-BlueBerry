@@ -19,7 +19,7 @@
 /*---------------------VARIABLES---------------------*/
 //生长参数变量储存区
 uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
-uint16 DateHumidity=0;uint16 DateTemp=0;
+uint16 DateHumidity;uint16 DateTemp;
 int16 DateEc;
 uint32 DateLux;
 //其他控制参数区
@@ -41,22 +41,25 @@ void InitSystem(void)
 	InitLUX();
   Init_AD();
 	InitPh();
+	AM2301Start();
 	//串口初始化区域
 	InitUart1();
 	InitUart2();
+  InitUart3();
 	//中断或定时器初始化区域
 	InterruptKeyIsr();
+	//云平台连接
+	WifiLink();
 }
 /***********************************************************************
-** 函 数 名： StartSystem()
-** 函数说明： 运行系统
+** 函 数 名： Sensor()
+** 函数说明： 传感器数据获取
 **---------------------------------------------------------------------
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
 void Sensor()
 {
-	//程序区
 	DS18B20Start();
 	Read_AD5933_Temperature(); 
 	DateEc=(int)EC();
@@ -64,7 +67,25 @@ void Sensor()
 	DateLux=Get_Lux();
 	DateCO2=Get_CO2();
 	DatePh=ph();
+	AM2301();
 	WifidatPack();
+}
+/***********************************************************************
+** 函 数 名： LCDdisplay()
+** 函数说明： 将数据上传至串口屏
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： 无
+***********************************************************************/
+void LCDdisplay()
+{
+	LCDSend(1,DateLiquidT);//溶液温度
+	LCDSend(2,DateCO2);//CO2浓度
+	LCDSend(3,DatePh);//PH
+	LCDSend(4,DateHumidity);//空气湿度
+	LCDSend(5,DateTemp);//空气温度
+	LCDSend(6,DateEc);//溶液电导率
+	LCDSend(7,DateLux);//光照
 }
 /***********************************************************************
 ** 函 数 名： StartSystem()
@@ -80,13 +101,10 @@ void StartSystem(void)
 	//
     while(1)
     {
-			delay1s();
-			WifiLink();
-			delay_ms(50);
 			Sensor();
-			delay1s();
+			LCDdisplay();
 			WifiBeat();
-			TEST = ~TEST; 
+			TEST = ~TEST;
 			UartSend1_Byte(0x11,1);
     }
 
