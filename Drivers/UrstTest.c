@@ -15,12 +15,12 @@
 #include "UrstTest.h"
 
 /*---------------------VARIABLES---------------------*/
-uint8 Urst2Rec;
+uint8 Urst2Rec=0;
 uint8 Urst2TI=0;
 uint8 Urst2RI=0;
 uint8 Urst3TI=0;
 uint8 Urst3RI=0;
-uint8 Urst3Rec;
+uint8 Urst3Rec=0;
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
@@ -183,16 +183,18 @@ void UartSend3_str(char *dat)
 ** 函 数 名： UartRec3()
 ** 函数说明： 字符串接收程序
 **---------------------------------------------------------------------
-** 输入参数： 接收一个字符
-** 返回参数： uint8
+** 输入参数： 接收字符
+** 返回参数： uint8 接收字符串的首地址
 ***********************************************************************/
-/*uint8 UartRec3()(void) 
+uint8 UartRec3(char *p)
 {
-	uint8 RecvData;
-
-	while(!(S3CON&0x01));
-	RecvData = S3BUF;
-	S3CON &= ~0x01;
-
-	return RecvData;
-}*/
+	while(Urst3RI)
+	{
+		Urst3RI=0;
+		Urst3Rec = S3BUF;
+		*p=Urst3Rec;
+		if(*p){Urst3RI=1;p++;}
+		else 	{Urst3RI=0;*p=0;return 1;}
+	}
+	return 0;
+}

@@ -55,18 +55,18 @@ uint8 WifiRec()
 ***********************************************************************/
 uint16 JsonKeyRec(char *JsonKey)
 {
-	char *value;
+	char *ValueAddr;
 	char *JsonKeyStart;//键名开始的地址
 	char *JsonKeyEnd;//键名结束的地址
 	char JsonKeyLength;//键名长度
 	JsonKeyStart=strstr(JSONp,JsonKey);
 	JsonKeyLength=strlen(JsonKey);
 	JsonKeyEnd=JsonKeyStart+JsonKeyLength;
-	if(JsonKeyStart != 0 && *(JsonKeyStart - 1) == '\"' && *(JsonKeyEnd) == '\"' && *(JsonKeyEnd + 1) == ':' && *(JsonKeyEnd + 2) == '\"' )
+	if(JsonKeyStart != 0 && *(JsonKeyStart - 1) == '\"' && *(JsonKeyEnd) == '\"' && *(JsonKeyEnd + 1) == ':')
 	{
-		value=JsonKeyEnd+2;
+		ValueAddr=JsonKeyEnd+2;
 	}
-	return value;
+	return ValueAddr;
 }
 /***********************************************************************
 ** 函 数 名： WifiLink()
@@ -97,7 +97,7 @@ void WifiBeat()
 ** 输入参数： int8 rank,uint32 value
 ** 返回参数： uint16,键值的地址
 ***********************************************************************/
-uint16 JsonMakePak1(int8 rank,uint32 value)
+/*uint16 JsonMakePak1(int8 rank,uint32 value)
 {
 	char DateKeyStart=30;
 	uint8 DateValueLen;
@@ -115,7 +115,7 @@ uint16 JsonMakePak1(int8 rank,uint32 value)
 	strcat(Date,DateMid1);
 	strcat(Date,DateBack);
 	return Date;
-}
+}/*
 /***********************************************************************
 ** 函 数 名： JsonMakePak2()
 ** 函数说明： 组包(打包一组传感器数据)
@@ -165,11 +165,11 @@ uint16 JsonMakePak2()
 ** 输入参数： int8 rank,int16 DAT
 ** 返回参数： 无
 ***********************************************************************/
-void Wifidat(int8 rank1,uint32 DAT)
+/*void Wifidat(int8 rank1,uint32 DAT)
 {
 	JsonMakePak1(rank1,DAT);
 	UartSend2_str(Date);
-}
+}*/
 /***********************************************************************
 ** 函 数 名： WifidatPackt()
 ** 函数说明： 发送一组传感器数据

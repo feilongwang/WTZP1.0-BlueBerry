@@ -37,6 +37,6 @@ void UartSend1_str(char *dat);
 void InitUart3(void);
 void UartSend3(unsigned char dat);
 void UartSend3_str(char *dat);
-//uint8 UartRec3()(void);
+uint8 UartRec3(char *p);
 
 #endif

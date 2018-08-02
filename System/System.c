@@ -48,6 +48,10 @@ void InitSystem(void)
   InitUart3();
 	//中断或定时器初始化区域
 	InterruptKeyIsr();
+	//植物生长参数控制初始化
+  EEPROMWrite(0x0100,0x08);//PH=8
+	EEPROMWrite(0x0101,0x08);//低位，EC=1800
+	EEPROMWrite(0x0102,0x07);//高位
 	//云平台连接
 	WifiLink();
 }
@@ -103,6 +107,7 @@ void StartSystem(void)
     {
 			Sensor();
 			LCDdisplay();
+			AsmControl();
 			WifiBeat();
 			TEST = ~TEST;
 			UartSend1_Byte(0x11,1);

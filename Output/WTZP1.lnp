@@ -5,6 +5,7 @@
 ".\Output\Delay.obj",
 ".\Output\ADC.obj",
 ".\Output\Interrupt.obj",
+".\Output\EEPROM.obj",
 ".\Output\DS18B20.obj",
 ".\Output\EC.obj",
 ".\Output\LUX.obj",

@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   LCD                                                                   07/30/2018 17:32:34 PAGE 1   
+C51 COMPILER V9.00   LCD                                                                   08/02/2018 18:09:58 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE LCD
@@ -24,48 +24,55 @@ line level    source
   14          
   15          /*---------------------VARIABLES---------------------*/
   16          uint8 xdata lcd_buf[64];
-  17          
-  18          
+  17          char LCDAck[5]="";
+  18          char *LCDAckp=LCDAck;
   19          
-  20          /*---------------------FUNCTIONS---------------------*/
-  21          /***********************************************************************
-  22          ** 函 数 名： LCDSend()
-  23          ** 函数说明： 发送数据到串口屏
-  24          **---------------------------------------------------------------------
-  25          ** 输入参数： uint8 site,uint32 dat
-  26          ** 返回参数： 无
-  27          ***********************************************************************/
-  28          void LCDSend(uint8 site,uint32 dat)
-  29          {
-  30   1         UartSend3(0xEE);
-  31   1         UartSend3(0xB1);UartSend3(0x10);
-  32   1         UartSend3(0x00);UartSend3(0x00);
-  33   1         UartSend3(0x00);UartSend3(site);//控件编号
-  34   1         sprintf(lcd_buf,"%.1f",(float)dat);
-  35   1         UartSend3_str(lcd_buf);
-  36   1         UartSend3(0xFF);UartSend3(0xFC);UartSend3(0xFF);UartSend3(0xFF);
-  37   1      }
-  38          /***********************************************************************
-  39          ** 函 数 名： LCDRec()
-  40          ** 函数说明： 发送数据到串口屏
-  41          **---------------------------------------------------------------------
-  42          ** 输入参数： 无
-  43          ** 返回参数： uint8(操作码)
-  44          ***********************************************************************/
-  45          uint8 LCDRec()
-  46          {
-  47   1        if(Urst3RI)
-  48   1          return Urst3Rec;
-  49   1        return 0;
-  50   1      }
+  20          
+  21          /*---------------------FUNCTIONS---------------------*/
+  22          /***********************************************************************
+  23          ** 函 数 名： LCDSend()
+  24          ** 函数说明： 发送数据到串口屏
+  25          **---------------------------------------------------------------------
+  26          ** 输入参数： uint8 site,uint32 dat
+  27          ** 返回参数： 无
+  28          ***********************************************************************/
+  29          void LCDSend(uint8 site,uint32 dat)
+  30          {
+  31   1         UartSend3(0xEE);
+  32   1         UartSend3(0xB1);UartSend3(0x10);
+  33   1         UartSend3(0x00);UartSend3(0x00);
+  34   1         UartSend3(0x00);UartSend3(site);//控件编号
+  35   1         sprintf(lcd_buf,"%.1f",(float)dat);
+  36   1         UartSend3_str(lcd_buf);
+  37   1         UartSend3(0xFF);UartSend3(0xFC);UartSend3(0xFF);UartSend3(0xFF);
+  38   1      }
+  39          /***********************************************************************
+  40          ** 函 数 名： LCDRec()
+  41          ** 函数说明： 从串口屏接收数据到单片机
+  42          **---------------------------------------------------------------------
+  43          ** 输入参数： 无
+  44          ** 返回参数： uint8(操作码)
+  45          ***********************************************************************/
+  46          uint8 LCDRec()
+  47          {
+  48   1        int j=0;
+  49   1        char k;
+  50   1        k=UartRec3(LCDAck);
+  51   1        {
+  52   2          while(!k)
+  53   2          {j++;if(j>300)return 0;}//等待无果返回0
+  54   2          *LCDAckp=k;
+C51 COMPILER V9.00   LCD                                                                   08/02/2018 18:09:58 PAGE 2   
+
+  55   2        }while(LCDAckp++);
+  56   1        return 1;//成功返回1
+  57   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    134    ----
-C51 COMPILER V9.00   LCD                                                                   07/30/2018 17:32:34 PAGE 2   
-
+   CODE SIZE        =    208    ----
    CONSTANT SIZE    =      5    ----
-   XDATA SIZE       =     64       5
+   XDATA SIZE       =     72       7
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

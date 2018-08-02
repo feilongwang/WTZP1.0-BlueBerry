@@ -377,6 +377,11 @@
               <FileType>1</FileType>
               <FilePath>.\Drivers\Interrupt.c</FilePath>
             </File>
+            <File>
+              <FileName>EEPROM.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Drivers\EEPROM.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

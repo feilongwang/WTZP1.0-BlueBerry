@@ -23,8 +23,8 @@ extern char xdata *JSONp;
 /*---------------------DECLARES----------------------*/
 void WifiLink(void);
 void WifiBeat(void);
-void Wifidat(int8 rank1,uint32 DAT);
-uint16 JsonMakePak1(int8 rank,uint32 value);
+//void Wifidat(int8 rank1,uint32 DAT);
+//uint16 JsonMakePak1(int8 rank,uint32 value);
 uint16 JsonMakePak2();
 uint16 JsonKeyRec(char *JsonKey);
 void WifidatPack();

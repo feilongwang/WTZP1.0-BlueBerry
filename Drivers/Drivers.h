@@ -23,6 +23,7 @@
 #include "Interrupt.h"
 #include "AD5933.h"
 #include "I2C.h"
+#include "EEPROM.h"
 
 
 #endif
