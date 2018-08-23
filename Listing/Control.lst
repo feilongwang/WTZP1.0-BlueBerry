@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   CONTROL                                                               08/02/2018 18:09:58 PAGE 1   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE CONTROL
@@ -62,7 +62,7 @@ line level    source
   50   2        }
   51   1      }
   52          /***********************************************************************
-C51 COMPILER V9.00   CONTROL                                                               08/02/2018 18:09:58 PAGE 2   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 2   
 
   53          ** 函 数 名： MOSArb()
   54          ** 函数说明： MOS管的开关仲裁
@@ -126,7 +126,7 @@ line level    source
  112   3            case 0x41:MOSHand[3]=1;break;
  113   3          }
  114   2          Urst3Rec=0;
-C51 COMPILER V9.00   CONTROL                                                               08/02/2018 18:09:58 PAGE 3   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 3   
 
  115   2          HighControlAckFlag=1;
  116   2          ControlAckFlag=1;
@@ -190,7 +190,7 @@ line level    source
  174   2          AlamCnt[1]++;
  175   2          if(AlamCnt[1]>4)
  176   2          {
-C51 COMPILER V9.00   CONTROL                                                               08/02/2018 18:09:58 PAGE 4   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 4   
 
  177   3            AlamCnt[1]=0;
  178   3            MOSAuto[1]=1;
@@ -216,35 +216,6 @@ line level    source
  198   1        MOSMesRec();//其他控制指令
  199   1        MOSArb(0);MOSArb(1);MOSArb(2);MOSArb(3);//MOS管控制仲裁
  200   1      }
- 201          
- 202          
- 203          
- 204          
- 205          
- 206          
- 207          
- 208          
- 209          
- 210          
- 211          
- 212          
- 213          
- 214          
- 215          
- 216          
- 217          
- 218          
- 219          
- 220          
- 221          
- 222          
- 223          
- 224          
- 225          
- 226          
- 227          
- 228          
- 229          
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -254,8 +225,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
-C51 COMPILER V9.00   CONTROL                                                               08/02/2018 18:09:58 PAGE 5   
-
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
 

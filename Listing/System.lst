@@ -1,4 +1,4 @@
-C51 COMPILER V9.00   SYSTEM                                                                08/02/2018 18:09:58 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 10:22:21 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
@@ -62,7 +62,7 @@ line level    source
   52   1        EEPROMWrite(0x0100,0x08);//PH=8
   53   1        EEPROMWrite(0x0101,0x08);//低位，EC=1800
   54   1        EEPROMWrite(0x0102,0x07);//高位
-C51 COMPILER V9.00   SYSTEM                                                                08/02/2018 18:09:58 PAGE 2   
+C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 10:22:21 PAGE 2   
 
   55   1        //云平台连接
   56   1        WifiLink();
@@ -95,13 +95,13 @@ line level    source
   83          ***********************************************************************/
   84          void LCDdisplay()
   85          {
-  86   1        LCDSend(1,DateLiquidT);//溶液温度
-  87   1        LCDSend(2,DateCO2);//CO2浓度
-  88   1        LCDSend(3,DatePh);//PH
-  89   1        LCDSend(4,DateHumidity);//空气湿度
-  90   1        LCDSend(5,DateTemp);//空气温度
-  91   1        LCDSend(6,DateEc);//溶液电导率
-  92   1        LCDSend(7,DateLux);//光照
+  86   1        LCDSend(42,DateLiquidT);//溶液温度
+  87   1        LCDSend(10,DateCO2);//CO2浓度
+  88   1        LCDSend(11,DatePh);//PH
+  89   1        LCDSend(8,DateHumidity);//空气湿度
+  90   1        LCDSend(7,DateTemp);//空气温度
+  91   1        LCDSend(12,DateEc);//溶液电导率
+  92   1        LCDSend(9,DateLux);//光照
   93   1      }
   94          /***********************************************************************
   95          ** 函 数 名： StartSystem()
@@ -126,7 +126,7 @@ line level    source
  114   2          }
  115   1      
  116   1      }
-C51 COMPILER V9.00   SYSTEM                                                                08/02/2018 18:09:58 PAGE 3   
+C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 10:22:21 PAGE 3   
 
 
 

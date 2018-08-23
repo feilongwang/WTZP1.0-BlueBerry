@@ -83,13 +83,13 @@ void Sensor()
 ***********************************************************************/
 void LCDdisplay()
 {
-	LCDSend(1,DateLiquidT);//溶液温度
-	LCDSend(2,DateCO2);//CO2浓度
-	LCDSend(3,DatePh);//PH
-	LCDSend(4,DateHumidity);//空气湿度
-	LCDSend(5,DateTemp);//空气温度
-	LCDSend(6,DateEc);//溶液电导率
-	LCDSend(7,DateLux);//光照
+	LCDSend(42,DateLiquidT);//溶液温度
+	LCDSend(10,DateCO2);//CO2浓度
+	LCDSend(11,DatePh);//PH
+	LCDSend(8,DateHumidity);//空气湿度
+	LCDSend(7,DateTemp);//空气温度
+	LCDSend(12,DateEc);//溶液电导率
+	LCDSend(9,DateLux);//光照
 }
 /***********************************************************************
 ** 函 数 名： StartSystem()
