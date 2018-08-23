@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 1   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE CONTROL
 OBJECT MODULE PLACED IN .\Output\Control.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\Control.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJEC
-                    -TEXTEND PRINT(.\Listing\Control.lst) TABS(2) OBJECT(.\Output\Control.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\Control.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
+                    -T(.\Listing\Control.lst) TABS(2) OBJECT(.\Output\Control.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   50   2        }
   51   1      }
   52          /***********************************************************************
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 2   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 2   
 
   53          ** 函 数 名： MOSArb()
   54          ** 函数说明： MOS管的开关仲裁
@@ -126,7 +126,7 @@ line level    source
  112   3            case 0x41:MOSHand[3]=1;break;
  113   3          }
  114   2          Urst3Rec=0;
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 3   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 3   
 
  115   2          HighControlAckFlag=1;
  116   2          ControlAckFlag=1;
@@ -190,7 +190,7 @@ line level    source
  174   2          AlamCnt[1]++;
  175   2          if(AlamCnt[1]>4)
  176   2          {
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 10:22:21 PAGE 4   
+C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 4   
 
  177   3            AlamCnt[1]=0;
  178   3            MOSAuto[1]=1;

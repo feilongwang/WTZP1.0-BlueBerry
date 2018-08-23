@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   LCD                                                                   08/23/2018 10:22:21 PAGE 1   
+C51 COMPILER V9.00   LCD                                                                   08/23/2018 20:19:24 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE LCD
 OBJECT MODULE PLACED IN .\Output\LCD.obj
-COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\LCD.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXT
-                    -END PRINT(.\Listing\LCD.lst) TABS(2) OBJECT(.\Output\LCD.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\LCD.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\
+                    -Listing\LCD.lst) TABS(2) OBJECT(.\Output\LCD.obj)
 
 line level    source
 
@@ -62,7 +62,7 @@ line level    source
   52   2          while(!k)
   53   2          {j++;if(j>300)return 0;}//等待无果返回0
   54   2          *LCDAckp=k;
-C51 COMPILER V9.00   LCD                                                                   08/23/2018 10:22:21 PAGE 2   
+C51 COMPILER V9.00   LCD                                                                   08/23/2018 20:19:24 PAGE 2   
 
   55   2        }while(LCDAckp++);
   56   1        return 1;//成功返回1

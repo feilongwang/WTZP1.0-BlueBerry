@@ -115,7 +115,7 @@ void WifiBeat()
 	strcat(Date,DateMid1);
 	strcat(Date,DateBack);
 	return Date;
-}/*
+}*/
 /***********************************************************************
 ** 函 数 名： JsonMakePak2()
 ** 函数说明： 组包(打包一组传感器数据)

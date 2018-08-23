@@ -34,15 +34,15 @@ float ECCon;
 void InitAD5933(void)
 {
 	AD5933WriteByte(0x82,0x0E); //起始频率 30kHz 1k/(16.776M/4)*2^27 =  30000*32	0x0EA600
-	AD5933WriteByte(0x83,0xA6);
+	AD5933WriteByte(0x83,0xA6); 
 	AD5933WriteByte(0x84,0x00);
 	
 	AD5933WriteByte(0x85,0x00); //频率增量 100Hz 5/(16.776M/4)*2^27 =  5*32	0x000064
-	AD5933WriteByte(0x86,0x00);
-	AD5933WriteByte(0x87,0x64);
+	AD5933WriteByte(0x86,0x7D); //频率增量 1000Hz 0x7D02
+	AD5933WriteByte(0x87,0x02);
 
-	AD5933WriteByte(0x88,0x00); //增量数 100 	0x0064
-	AD5933WriteByte(0x89,0x64);
+	AD5933WriteByte(0x88,0x03); //增量数 1000 	0x03E8
+	AD5933WriteByte(0x89,0xE8);
 
 	AD5933WriteByte(0x8A,0x00); //建立时间周期数 100 	0x0064
 	AD5933WriteByte(0x8B,0x64);
@@ -117,11 +117,10 @@ float EC(void)
 	{
 		ECRads=180*atan2(ECImageValue,ECRealValue)/PI + 360;
 	}//计算相位
-
 	ECRes=Cgain/ECMagnitude; //Ω
 	ECCon=1000000L*Cce/(ECRes*cos(PI*(ECRads-SysPhase)/180)-SysRes); //μS/cm	 
     
 	AD5933WriteByte(0x80,0xA1); //控制寄存器，1010 0001 0000 0000 省电模式，2V，一倍放大，内部时钟 	0xA100
-	
+	UartSend1_Byte(ECCon,2);
 	return ECCon;
 }

@@ -86,5 +86,6 @@ uint16 ph()
   uint16 tmp;
 	tmp=GetADFilter(0x05); //P1.5 PH
 	ph_value = ph_k*tmp+ph_b;
+	UartSend1_Byte(ph_value,2);
 	return ph_value;
 }

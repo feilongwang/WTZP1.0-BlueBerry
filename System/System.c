@@ -70,6 +70,7 @@ void Sensor()
 	DateLiquidT=DS18B20();
 	DateLux=Get_Lux();
 	DateCO2=Get_CO2();
+	UartSend1_Byte(0,2);
 	DatePh=ph();
 	AM2301();
 	WifidatPack();
@@ -105,12 +106,12 @@ void StartSystem(void)
 	//
     while(1)
     {
+			//WifiLink();
 			Sensor();
-			LCDdisplay();
-			AsmControl();
-			WifiBeat();
+			//LCDdisplay();
+			//AsmControl();
+			//WifiBeat();
 			TEST = ~TEST;
-			UartSend1_Byte(0x11,1);
     }
 
 }
