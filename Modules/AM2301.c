@@ -27,7 +27,7 @@ unsigned char TempAnsFlag,TempErrorFlag;
 void AM2301Start()
 {
 	TEMP_SDA=0;
-	delay_ms(6);	//延时6ms
+	TDelay_N1ms(5);	//延时6ms
 	TEMP_SDA=1;
 	Delay_N10us(3);//延时30us
 	TEMP_SDA=1;
@@ -43,18 +43,20 @@ void AM2301Start()
 ***********************************************************************/
 unsigned char AM2301SingleRec()
 {
-	unsigned char i,dat=0,cnt;
+	unsigned char i,buf=0,tmp,cnt;
+	
 	for(i=0;i<8;i++)
 	{
 		cnt=0;
 		while(!TEMP_SDA){if(++cnt>=200){break;}}
 	  Delay_N10us(4);//延时40us
-		dat=TEMP_SDA;
+		tmp=TEMP_SDA;
 		cnt=0;
-		while(!TEMP_SDA){if(++cnt>=200){break;}}
-		dat<<=1;
+		while(TEMP_SDA){if(++cnt>=200){break;}}
+		buf<<=1;
+		buf|=tmp;
 	}
-	return dat; 	
+	return buf; 	
 }
 /***********************************************************************
 ** 函 数 名： DataCheck()
@@ -78,7 +80,7 @@ unsigned char DataCheck()
 ** 输入参数： unsigned char a[]
 ** 返回参数： unsigned int
 ***********************************************************************/
-unsigned int H_T_Caculate(unsigned char a[])//湿度、温度计算
+unsigned int H_T_Caculate(unsigned char *a)//湿度、温度计算
 {
 	unsigned int result;
 	result=a[0];
@@ -129,6 +131,7 @@ unsigned char AM2301()//使用AM2301时调用此函数
 		TempAnsFlag=0;
 		return 0;
 	}
+	
 	if(TempAnsFlag)
 	{
 		if(DataCheck())

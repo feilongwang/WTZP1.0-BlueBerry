@@ -19,6 +19,7 @@
 #include <string.h>
 #include ".\Board\STC8A8K64S4A12.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 
 

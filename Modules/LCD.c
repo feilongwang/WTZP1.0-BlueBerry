@@ -14,9 +14,8 @@
 
 /*---------------------VARIABLES---------------------*/
 uint8 xdata lcd_buf[64];
-char LCDAck[5]="";
-char *LCDAckp=LCDAck;
-
+char xdata LCDAck[25];
+uint8 LCDReccount=0;//接收数组控制位
 
 /*---------------------FUNCTIONS---------------------*/
 /***********************************************************************
@@ -25,14 +24,14 @@ char *LCDAckp=LCDAck;
 **---------------------------------------------------------------------
 ** 输入参数： uint8 site,uint32 dat
 ** 返回参数： 无
-***********************************************************************/
-void LCDSend(uint8 site,uint32 dat)
+***********************************************************************/                                                                  
+void LCDSend(uint8 site,float dat)
 {
 	 UartSend3(0xEE);
 	 UartSend3(0xB1);UartSend3(0x10);
-	 UartSend3(0x00);UartSend3(0x00);
-	 UartSend3(0x00);UartSend3(site);//控件编号
-	 sprintf(lcd_buf,"%.1f",(float)dat);
+	 UartSend3(0x00);UartSend3(0x01);
+	 UartSend3(0x00);UartSend3((char)site);//控件编号
+	 sprintf(lcd_buf,"%.1f",dat);
 	 UartSend3_str(lcd_buf);
 	 UartSend3(0xFF);UartSend3(0xFC);UartSend3(0xFF);UartSend3(0xFF);
 }
@@ -45,13 +44,54 @@ void LCDSend(uint8 site,uint32 dat)
 ***********************************************************************/
 uint8 LCDRec()
 {
-	int j=0;
-	char k;
-  k=UartRec3(LCDAck);
+	uint8 j=0;
+  if(LCDAck[1])
 	{
-		while(!k)
-		{j++;if(j>300)return 0;}//等待无果返回0
-		*LCDAckp=k;
-	}while(LCDAckp++);
-	return 1;//成功返回1
+		j=1;//有泵控制响应
+	}
+	return j;//没有响应返回0
+}
+/***********************************************************************
+** 函 数 名： LCDAnalyse()
+** 函数说明： 从串口屏接收的数据进行分析
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： uint8(操作码)
+***********************************************************************/
+uint8 LCDAnalyse()
+{
+	uint8 ACKDate;
+	ACKDate=LCDAck[1];
+	return ACKDate;
+}
+/***********************************************************************
+** 函 数 名： LCDKeyControl()
+** 函数说明： 控制串口屏按键
+**---------------------------------------------------------------------
+** 输入参数： uint8 site,uint32 dat
+** 返回参数： 无
+***********************************************************************/  
+void LCDKeyControl(uint8 site,uint8 dat)
+{
+	 UartSend3(0xEE);
+	 UartSend3(0xB1);UartSend3(0x10);
+	 UartSend3(0x00);UartSend3(0x01);//画面ID
+	 UartSend3(0x00);UartSend3(site);//控件编号
+	 UartSend3(dat);//按键状态
+	 UartSend3(0xFF);UartSend3(0xFC);UartSend3(0xFF);UartSend3(0xFF);
+}
+/***********************************************************************
+** 函 数 名： LCDTypeRead()
+** 函数说明： 读取串口屏数据
+**---------------------------------------------------------------------
+** 输入参数： uint8 FaceID,uint8 site
+** 返回参数： 无
+***********************************************************************/  
+void LCDTypeRead(uint8 FaceID,uint8 site)
+{
+	 UartSend3(0xEE);
+	 UartSend3(0xB1);UartSend3(0x11);
+	 UartSend3(0x00);UartSend3(FaceID);
+	 UartSend3(0x00);UartSend3(site);//控件编号
+	 UartSend3(0xFF);UartSend3(0xFC);UartSend3(0xFF);UartSend3(0xFF);
 }

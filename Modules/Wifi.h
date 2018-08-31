@@ -18,14 +18,18 @@
 #include ".\System\System.h"
 
 /*---------------------DEFINES-----------------------*/
-extern char xdata *JSONp;
-
+extern char xdata WIFIAck[64];
+extern uint8 WIFIReccount;//WIFI数组标志位
+extern char xdata WIFICommendAck[110];
 /*---------------------DECLARES----------------------*/
 void WifiLink(void);
 void WifiBeat(void);
 //void Wifidat(int8 rank1,uint32 DAT);
 //uint16 JsonMakePak1(int8 rank,uint32 value);
 uint16 JsonMakePak2();
-uint16 JsonKeyRec(char *JsonKey);
-void WifidatPack();
+char* JsonKeyRec(char *JsonKey,char *JSONp);
+void WifidatPack(void);
+uint8 JsonKeyCmp(char *JsonKey,char *JSONp);
+uint16 WifiComAck(void);
+uint16 WifiPack(void);
 #endif

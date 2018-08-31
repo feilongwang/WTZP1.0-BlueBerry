@@ -17,10 +17,15 @@
 #include "UrstTest.h"
 
 /*---------------------DEFINES-----------------------*/
+extern char xdata LCDAck[25];
+extern char xdata WIFIAck[64];
+extern uint16 Timecount1;
 
 /*---------------------DECLARES----------------------*/
 void InterruptKeyIsr(void);
+void Uart1Isr(void);
 void Uart2Isr(void);
 void Uart3Isr(void);
+void Time0_Isr(void);
 
 #endif

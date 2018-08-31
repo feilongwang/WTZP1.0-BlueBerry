@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   AM2301                                                                08/23/2018 20:19:23 PAGE 1   
+C51 COMPILER V9.00   AM2301                                                                08/28/2018 17:24:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE AM2301
 OBJECT MODULE PLACED IN .\Output\AM2301.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\AM2301.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT
-                    -(.\Listing\AM2301.lst) TABS(2) OBJECT(.\Output\AM2301.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\AM2301.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECT
+                    -EXTEND PRINT(.\Listing\AM2301.lst) TABS(2) OBJECT(.\Output\AM2301.obj)
 
 line level    source
 
@@ -37,7 +37,7 @@ line level    source
   27          void AM2301Start()
   28          {
   29   1        TEMP_SDA=0;
-  30   1        delay_ms(6);  //延时6ms
+  30   1        TDelay_N1ms(5); //延时6ms
   31   1        TEMP_SDA=1;
   32   1        Delay_N10us(3);//延时30us
   33   1        TEMP_SDA=1;
@@ -53,113 +53,116 @@ line level    source
   43          ***********************************************************************/
   44          unsigned char AM2301SingleRec()
   45          {
-  46   1        unsigned char i,dat=0,cnt;
-  47   1        for(i=0;i<8;i++)
-  48   1        {
-  49   2          cnt=0;
-  50   2          while(!TEMP_SDA){if(++cnt>=200){break;}}
-  51   2          Delay_N10us(4);//延时40us
-  52   2          dat=TEMP_SDA;
-  53   2          cnt=0;
-  54   2          while(!TEMP_SDA){if(++cnt>=200){break;}}
-C51 COMPILER V9.00   AM2301                                                                08/23/2018 20:19:23 PAGE 2   
+  46   1        unsigned char i,buf=0,tmp,cnt;
+  47   1        
+  48   1        for(i=0;i<8;i++)
+  49   1        {
+  50   2          cnt=0;
+  51   2          while(!TEMP_SDA){if(++cnt>=200){break;}}
+  52   2          Delay_N10us(4);//延时40us
+  53   2          tmp=TEMP_SDA;
+  54   2          cnt=0;
+C51 COMPILER V9.00   AM2301                                                                08/28/2018 17:24:45 PAGE 2   
 
-  55   2          dat<<=1;
-  56   2        }
-  57   1        return dat;   
-  58   1      }
-  59          /***********************************************************************
-  60          ** 函 数 名： DataCheck()
-  61          ** 函数说明： 接收AM2301数据校验
-  62          **---------------------------------------------------------------------
-  63          ** 输入参数： 无
-  64          ** 返回参数： unsigned char
-  65          ***********************************************************************/
-  66          unsigned char DataCheck()
-  67          {
-  68   1        if((RecData[0]+RecData[1]+RecData[2]+RecData[3])==RecData[4])
-  69   1        {
-  70   2          return 1;
-  71   2        }
-  72   1        return 0;
-  73   1      }
-  74          /***********************************************************************
-  75          ** 函 数 名： H_T_Caculate()
-  76          ** 函数说明： 数据湿度、温度计算
-  77          **---------------------------------------------------------------------
-  78          ** 输入参数： unsigned char a[]
-  79          ** 返回参数： unsigned int
-  80          ***********************************************************************/
-  81          unsigned int H_T_Caculate(unsigned char a[])//湿度、温度计算
-  82          {
-  83   1        unsigned int result;
-  84   1        result=a[0];
-  85   1        result=result<<8;
-  86   1        result|=a[1];
-  87   1        return result;  
-  88   1      } 
-  89          /***********************************************************************
-  90          ** 函 数 名： AM2301()
-  91          ** 函数说明： 使用AM2301时调用此函数，获得温湿度，注：温度与湿度需外部定义
-  92          **---------------------------------------------------------------------
-  93          ** 输入参数： 无
-  94          ** 返回参数： unsigned char
-  95          ***********************************************************************/
-  96          unsigned char AM2301()//使用AM2301时调用此函数
-  97          {
-  98   1        unsigned char i;
-  99   1        unsigned char cnt;
- 100   1        AM2301Start();
- 101   1        if(TEMP_SDA==0)
- 102   1        {
- 103   2          TempAnsFlag=1;
- 104   2          cnt=0;
- 105   2          while(!TEMP_SDA)
- 106   2          {
- 107   3            if(++cnt>300)
- 108   3            {
- 109   4               TempErrorFlag=1;
- 110   4               return 0;
- 111   4            }
- 112   3          }
- 113   2          cnt=0;
- 114   2          while(TEMP_SDA)
- 115   2          {
- 116   3            if(++cnt>300)
-C51 COMPILER V9.00   AM2301                                                                08/23/2018 20:19:23 PAGE 3   
+  55   2          while(TEMP_SDA){if(++cnt>=200){break;}}
+  56   2          buf<<=1;
+  57   2          buf|=tmp;
+  58   2        }
+  59   1        return buf;   
+  60   1      }
+  61          /***********************************************************************
+  62          ** 函 数 名： DataCheck()
+  63          ** 函数说明： 接收AM2301数据校验
+  64          **---------------------------------------------------------------------
+  65          ** 输入参数： 无
+  66          ** 返回参数： unsigned char
+  67          ***********************************************************************/
+  68          unsigned char DataCheck()
+  69          {
+  70   1        if((RecData[0]+RecData[1]+RecData[2]+RecData[3])==RecData[4])
+  71   1        {
+  72   2          return 1;
+  73   2        }
+  74   1        return 0;
+  75   1      }
+  76          /***********************************************************************
+  77          ** 函 数 名： H_T_Caculate()
+  78          ** 函数说明： 数据湿度、温度计算
+  79          **---------------------------------------------------------------------
+  80          ** 输入参数： unsigned char a[]
+  81          ** 返回参数： unsigned int
+  82          ***********************************************************************/
+  83          unsigned int H_T_Caculate(unsigned char *a)//湿度、温度计算
+  84          {
+  85   1        unsigned int result;
+  86   1        result=a[0];
+  87   1        result=result<<8;
+  88   1        result|=a[1];
+  89   1        return result;  
+  90   1      } 
+  91          /***********************************************************************
+  92          ** 函 数 名： AM2301()
+  93          ** 函数说明： 使用AM2301时调用此函数，获得温湿度，注：温度与湿度需外部定义
+  94          **---------------------------------------------------------------------
+  95          ** 输入参数： 无
+  96          ** 返回参数： unsigned char
+  97          ***********************************************************************/
+  98          unsigned char AM2301()//使用AM2301时调用此函数
+  99          {
+ 100   1        unsigned char i;
+ 101   1        unsigned char cnt;
+ 102   1        AM2301Start();
+ 103   1        if(TEMP_SDA==0)
+ 104   1        {
+ 105   2          TempAnsFlag=1;
+ 106   2          cnt=0;
+ 107   2          while(!TEMP_SDA)
+ 108   2          {
+ 109   3            if(++cnt>300)
+ 110   3            {
+ 111   4               TempErrorFlag=1;
+ 112   4               return 0;
+ 113   4            }
+ 114   3          }
+ 115   2          cnt=0;
+ 116   2          while(TEMP_SDA)
+C51 COMPILER V9.00   AM2301                                                                08/28/2018 17:24:45 PAGE 3   
 
- 117   3            {
- 118   4               TempErrorFlag=1;
- 119   4               return 0;
- 120   4            } 
- 121   3          }
- 122   2          for(i=0;i<5;i++)
- 123   2          {
- 124   3            RecData[i]=AM2301SingleRec();
- 125   3          }
- 126   2        }
- 127   1        else
- 128   1        {
- 129   2          TempAnsFlag=0;
- 130   2          return 0;
- 131   2        }
- 132   1        if(TempAnsFlag)
- 133   1        {
- 134   2          if(DataCheck())
- 135   2          {
- 136   3            DateHumidity=H_T_Caculate(RecData);
- 137   3            DateTemp=H_T_Caculate(RecData+2);
- 138   3            return 1;
- 139   3          }
- 140   2        }
- 141   1        return 0;       
- 142   1      }
+ 117   2          {
+ 118   3            if(++cnt>300)
+ 119   3            {
+ 120   4               TempErrorFlag=1;
+ 121   4               return 0;
+ 122   4            } 
+ 123   3          }
+ 124   2          for(i=0;i<5;i++)
+ 125   2          {
+ 126   3            RecData[i]=AM2301SingleRec();
+ 127   3          }
+ 128   2        }
+ 129   1        else
+ 130   1        {
+ 131   2          TempAnsFlag=0;
+ 132   2          return 0;
+ 133   2        }
+ 134   1        
+ 135   1        if(TempAnsFlag)
+ 136   1        {
+ 137   2          if(DataCheck())
+ 138   2          {
+ 139   3            DateHumidity=H_T_Caculate(RecData);
+ 140   3            DateTemp=H_T_Caculate(RecData+2);
+ 141   3            return 1;
+ 142   3          }
+ 143   2        }
+ 144   1        return 0;       
+ 145   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    328    ----
+   CODE SIZE        =    348    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =      7       4
+   XDATA SIZE       =      7       6
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

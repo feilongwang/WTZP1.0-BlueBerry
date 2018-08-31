@@ -46,7 +46,7 @@ void IapIdle()
 ** 输入参数： int addr
 ** 返回参数： 无
 ***********************************************************************/
-char IapRead(int addr)
+/*char IapRead(int addr)
 {
     char dat;
 
@@ -61,7 +61,7 @@ char IapRead(int addr)
     IapIdle();                                  //关闭IAP功能
 
     return dat;
-}
+}*/
 /***********************************************************************
 ** 函 数 名： IapProgram()
 ** 函数说明： 在对应地址写入某值

@@ -54,7 +54,7 @@ void delay1us(unsigned int b)
 ** 输入参数： 无
 ** 返回参数： 无
 ***********************************************************************/
-void delay1s(void)   //误差 -0.000000000017us
+/*void delay1s(void)   //误差 -0.000000000017us
 {
     unsigned char a,b,c,n;
     for(c=205;c>0;c--)
@@ -62,7 +62,7 @@ void delay1s(void)   //误差 -0.000000000017us
             for(a=253;a>0;a--);
     for(n=14;n>0;n--);
     _nop_();  
-}
+}*/
 /***********************************************************************
 ** 函 数 名： Delay5us()
 ** 函数说明： 延时5微妙
@@ -109,5 +109,26 @@ void Delay_N10us(uint8 n)
 	while(n--)
 	{
 		for(i=0;i<17;i++){_nop_();}
+	}
+}
+
+void Delay_100us(void)
+{
+	uint8 i;
+
+	for(i=0;i<185;i++)
+	{
+		_nop_();
+	}
+}
+
+void TDelay_N1ms(uint8 n)
+{
+	uint8 i;
+
+	for(i=0;i<n;i++)
+	{
+		Delay_100us();Delay_100us();Delay_100us();Delay_100us();Delay_100us();
+		Delay_100us();Delay_100us();Delay_100us();Delay_100us();Delay_100us();
 	}
 }

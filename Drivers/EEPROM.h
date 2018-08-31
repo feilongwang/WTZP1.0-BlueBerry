@@ -22,7 +22,7 @@
 
 /*---------------------DECLARES----------------------*/
 void IapIdle(void);
-char IapRead(int addr);
+//char IapRead(int addr);
 void IapProgram(int addr, char dat);
 void IapErase(int addr);
 void EEPROMWrite(int addr, char dat);

@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 20:19:24 PAGE 1   
+C51 COMPILER V9.00   SYSTEM                                                                08/28/2018 17:24:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE SYSTEM
 OBJECT MODULE PLACED IN .\Output\System.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE System\System.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(
-                    -.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE System\System.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTE
+                    -XTEND PRINT(.\Listing\System.lst) TABS(2) OBJECT(.\Output\System.obj)
 
 line level    source
 
@@ -28,64 +28,64 @@ line level    source
   18          
   19          /*---------------------VARIABLES---------------------*/
   20          //生长参数变量储存区
-  21          uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
+  21          uint16 DateLiquidT;uint16 DateCO2;int16 DatePh;
   22          uint16 DateHumidity;uint16 DateTemp;
   23          int16 DateEc;
   24          uint32 DateLux;
   25          //其他控制参数区
-  26          
-  27          
-  28          /*---------------------FUNCTIONS---------------------*/
-  29          
-  30          /***********************************************************************
-  31          ** 函 数 名： InitSystem()
-  32          ** 函数说明： 初始化系统
-  33          **---------------------------------------------------------------------
-  34          ** 输入参数： 无
-  35          ** 返回参数： 无
-  36          ***********************************************************************/
-  37          void InitSystem(void)
-  38          {
-  39   1        //传感器初始化区域
-  40   1        InitI2C();
-  41   1        InitLUX();
-  42   1        Init_AD();
-  43   1        InitPh();
-  44   1        AM2301Start();
-  45   1        //串口初始化区域
-  46   1        InitUart1();
-  47   1        InitUart2();
-  48   1        InitUart3();
-  49   1        //中断或定时器初始化区域
-  50   1        InterruptKeyIsr();
-  51   1        //植物生长参数控制初始化
-  52   1        EEPROMWrite(0x0100,0x08);//PH=8
-  53   1        EEPROMWrite(0x0101,0x08);//低位，EC=1800
-  54   1        EEPROMWrite(0x0102,0x07);//高位
-C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 20:19:24 PAGE 2   
+  26          extern char MesureMode;//1-on 0-off
+  27          extern char AutoControlMode;//1-on 0-off
+  28          
+  29          /*---------------------FUNCTIONS---------------------*/
+  30          
+  31          /***********************************************************************
+  32          ** 函 数 名： InitSystem()
+  33          ** 函数说明： 初始化系统
+  34          **---------------------------------------------------------------------
+  35          ** 输入参数： 无
+  36          ** 返回参数： 无
+  37          ***********************************************************************/
+  38          void InitSystem(void)
+  39          {
+  40   1        //泵初始化
+  41   1        MOS1=0;MOS2=0;MOS3=0;MOS4=0;
+  42   1        //传感器初始化区域
+  43   1        InitI2C();
+  44   1        InitLUX();
+  45   1        Init_AD();
+  46   1        InitPh();
+  47   1        //串口初始化区域
+  48   1        InitUart1();
+  49   1        InitUart2();
+  50   1        InitUart3();
+  51   1        //中断或定时器初始化区域
+  52   1        InterruptKeyIsr();
+  53   1        //定时器初始化
+  54   1        InitTime0();
+C51 COMPILER V9.00   SYSTEM                                                                08/28/2018 17:24:45 PAGE 2   
 
-  55   1        //云平台连接
-  56   1        WifiLink();
-  57   1      }
-  58          /***********************************************************************
-  59          ** 函 数 名： Sensor()
-  60          ** 函数说明： 传感器数据获取
-  61          **---------------------------------------------------------------------
-  62          ** 输入参数： 无
-  63          ** 返回参数： 无
-  64          ***********************************************************************/
-  65          void Sensor()
-  66          {
-  67   1        DS18B20Start();
-  68   1        Read_AD5933_Temperature(); 
-  69   1        DateEc=(int)EC();
-  70   1        DateLiquidT=DS18B20();
-  71   1        DateLux=Get_Lux();
-  72   1        DateCO2=Get_CO2();
-  73   1        UartSend1_Byte(0,2);
-  74   1        DatePh=ph();
-  75   1        AM2301();
-  76   1        WifidatPack();
+  55   1        //植物生长参数控制初始化
+  56   1        //EEPROMWrite(0x0100,0x08);//PH=8
+  57   1        //EEPROMWrite(0x0101,0x08);//低位，EC=1800
+  58   1        //EEPROMWrite(0x0102,0x07);//高位
+  59   1      }
+  60          /***********************************************************************
+  61          ** 函 数 名： Sensor()
+  62          ** 函数说明： 传感器数据获取
+  63          **---------------------------------------------------------------------
+  64          ** 输入参数： 无
+  65          ** 返回参数： 无
+  66          ***********************************************************************/
+  67          void Sensor()
+  68          {
+  69   1        AM2301();
+  70   1        DS18B20Start();
+  71   1        Read_AD5933_Temperature(); 
+  72   1        DateEc=(int)EC();
+  73   1        DateLiquidT=DS18B20();
+  74   1        DateLux=Get_Lux();
+  75   1        DateCO2=Get_CO2();
+  76   1        DatePh=ph();
   77   1      }
   78          /***********************************************************************
   79          ** 函 数 名： LCDdisplay()
@@ -96,45 +96,74 @@ line level    source
   84          ***********************************************************************/
   85          void LCDdisplay()
   86          {
-  87   1        LCDSend(42,DateLiquidT);//溶液温度
-  88   1        LCDSend(10,DateCO2);//CO2浓度
-  89   1        LCDSend(11,DatePh);//PH
-  90   1        LCDSend(8,DateHumidity);//空气湿度
-  91   1        LCDSend(7,DateTemp);//空气温度
-  92   1        LCDSend(12,DateEc);//溶液电导率
-  93   1        LCDSend(9,DateLux);//光照
-  94   1      }
-  95          /***********************************************************************
-  96          ** 函 数 名： StartSystem()
-  97          ** 函数说明： 运行系统
-  98          **---------------------------------------------------------------------
-  99          ** 输入参数： 无
- 100          ** 返回参数： 无
- 101          ***********************************************************************/
- 102          void StartSystem(void)
- 103          {
- 104   1        //存储变量区
- 105   1        TEST=0;//LED亮
- 106   1        //
- 107   1          while(1)
- 108   1          {
- 109   2            //WifiLink();
- 110   2            Sensor();
- 111   2            //LCDdisplay();
- 112   2            //AsmControl();
- 113   2            //WifiBeat();
- 114   2            TEST = ~TEST;
- 115   2          }
- 116   1      
-C51 COMPILER V9.00   SYSTEM                                                                08/23/2018 20:19:24 PAGE 3   
+  87   1        LCDSend(0x2A,DateLiquidT/10.0);//溶液温度
+  88   1        LCDSend(0x0A,DateCO2);//CO2浓度
+  89   1        LCDSend(0x0B,DatePh/1000.0);//PH
+  90   1        LCDSend(0x08,DateHumidity/10.0);//空气湿度
+  91   1        LCDSend(0x07,DateTemp/10.0);//空气温度
+  92   1        LCDSend(0x0C,DateEc);//溶液电导率
+  93   1        LCDSend(0x09,DateLux);//光照
+  94   1        //显示状态
+  95   1        LCDKeyControl(0x11,MOSAuto[0]);//MOS1
+  96   1        LCDKeyControl(0x13,MOSAuto[1]);//MOS2
+  97   1        LCDKeyControl(0x14,MOSAuto[2]);//MOS3
+  98   1        LCDKeyControl(0x15,MOSAuto[3]);//MOS4
+  99   1        LCDKeyControl(0x25,MesureMode);
+ 100   1        LCDKeyControl(0x23,AutoControlMode);
+ 101   1      }
+ 102          /***********************************************************************
+ 103          ** 函 数 名： WIFIControl()
+ 104          ** 函数说明： 与云平台连接函数
+ 105          **---------------------------------------------------------------------
+ 106          ** 输入参数： 无
+ 107          ** 返回参数： 无
+ 108          ***********************************************************************/
+ 109          void WIFIControl()
+ 110          {
+ 111   1        static uint8 SysCheck=1;//系统检测次数
+ 112   1        if(SysCheck%200==0||SysCheck<9)WifiLink();//云平台连接//
+ 113   1        WifiBeat();//与云平台保持连接
+ 114   1        //if(SysCheck%3==0)WifiPack();//向云平台发送数据
+ 115   1        if(SysCheck%3==0)WifidatPack();
+ 116   1        if(SysCheck%4==0)WifiPack();
+C51 COMPILER V9.00   SYSTEM                                                                08/28/2018 17:24:45 PAGE 3   
 
- 117   1      }
+ 117   1        SysCheck++;
+ 118   1        if(SysCheck>250)SysCheck=1;
+ 119   1      }
+ 120          /***********************************************************************
+ 121          ** 函 数 名： StartSystem()
+ 122          ** 函数说明： 运行系统
+ 123          **---------------------------------------------------------------------
+ 124          ** 输入参数： 无
+ 125          ** 返回参数： 无
+ 126          ***********************************************************************/
+ 127          void StartSystem(void)
+ 128          {
+ 129   1        //存储变量区
+ 130   1        char cnt=0;
+ 131   1        TEST=0;//LED亮
+ 132   1        MesureMode=1;
+ 133   1        //
+ 134   1        while(1)
+ 135   1        {
+ 136   2          WIFIControl();
+ 137   2          Sensor();
+ 138   2          LCDdisplay();
+ 139   2          AsmControl();
+ 140   2          WIFIReccount=0;
+ 141   2          LCDReccount=0;
+ 142   2          TEST = ~TEST;
+ 143   2        }
+ 144   1        cnt++;
+ 145   1        if(cnt>254)cnt=0;
+ 146   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    311    ----
+   CODE SIZE        =    472    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =     16    ----
+   XDATA SIZE       =     17       1
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----

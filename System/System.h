@@ -19,7 +19,7 @@
 /*---------------------DEFINES-----------------------*/
 extern uint16 DateLiquidT;
 extern uint16 DateCO2;
-extern uint16 DatePh;
+extern int16 DatePh;
 extern uint16 DateHumidity;
 extern uint16 DateTemp;
 extern int16 DateEc;

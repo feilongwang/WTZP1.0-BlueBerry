@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   TIME                                                                  08/23/2018 20:19:22 PAGE 1   
+C51 COMPILER V9.00   TIME                                                                  08/28/2018 17:24:43 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE TIME
 OBJECT MODULE PLACED IN .\Output\Time.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Drivers\Time.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.
-                    -\Listing\Time.lst) TABS(2) OBJECT(.\Output\Time.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Drivers\Time.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEX
+                    -TEND PRINT(.\Listing\Time.lst) TABS(2) OBJECT(.\Output\Time.obj)
 
 line level    source
 
@@ -52,7 +52,7 @@ line level    source
   42          {
   43   1        AUXR |= 0x14; //选择定时器2,12分频，定时器2为16位自动重装;
   44   1        T2H = 0xFD;
-  45   1        T2L = 0x8E; //baud:9600 fosc=24M
+  45   1        T2L = 0x8F; //baud:9600 fosc=24M
   46   1      }
   47          /***********************************************************************
   48          ** 函 数 名： InitTime3()
@@ -62,7 +62,7 @@ line level    source
   52          ** 返回参数： 无
   53          ***********************************************************************/
   54          void InitTime3()
-C51 COMPILER V9.00   TIME                                                                  08/23/2018 20:19:22 PAGE 2   
+C51 COMPILER V9.00   TIME                                                                  08/28/2018 17:24:43 PAGE 2   
 
   55          {
   56   1        S3CON = 0x10;   //8位数据,可变波特率
@@ -71,10 +71,25 @@ line level    source
   59   1        T3H = 0xFD;     //
   60   1        T4T3M |= 0x08;    //启动定时器3
   61   1      }
+  62          /***********************************************************************
+  63          ** 函 数 名： InitTime0()
+  64          ** 函数说明： 启动定时器0
+  65          **---------------------------------------------------------------------
+  66          ** 输入参数： 无
+  67          ** 返回参数： 无
+  68          ***********************************************************************/
+  69          void InitTime0()
+  70          {
+  71   1        TMOD = 0x00;  
+  72   1        TH0 = 0xA2;
+  73   1        TL0 = 0x40; //24M,定时1ms
+  74   1        IP |= 0x02;
+  75   1        IPH |= 0x02;//调整到最高优先级
+  76   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     44    ----
+   CODE SIZE        =     60    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

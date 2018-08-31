@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 1   
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE CONTROL
 OBJECT MODULE PLACED IN .\Output\Control.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Modules\Control.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRIN
-                    -T(.\Listing\Control.lst) TABS(2) OBJECT(.\Output\Control.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Modules\Control.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJEC
+                    -TEXTEND PRINT(.\Listing\Control.lst) TABS(2) OBJECT(.\Output\Control.obj)
 
 line level    source
 
@@ -33,195 +33,436 @@ line level    source
              -，ControlPrmFlag（参数改变）0-无，1-有
   22          ***********************************************************************/
   23          static uint8 HighControlAckFlag=0,ControlAckFlag=0,ControlPrmFlag=1;
-  24          char ControlKeyName[6][15]={"ControlPh","","","","data","apitag"};
-  25          uint16 PrmEC;
-  26          uint16 PrmPH;
-  27          
-  28          /*---------------------FUNCTIONS---------------------*/
-  29          /*{
-  30          MOS1=0;PH
-  31          MOS2=0;EC
-  32          MOS3=0;
-  33          MOS4=0;
-  34          }*///0 off 1 on
-  35          /***********************************************************************
-  36          ** 函 数 名： MOSControl()
-  37          ** 函数说明： MOS管的控制函数
-  38          **---------------------------------------------------------------------
-  39          ** 输入参数： uint8 MOSNum（需要打开的MOS序号）uint8 Switch(开关状态)
-  40          ** 返回参数： 无，泵的状态，0-关，1-开
-  41          ***********************************************************************/
-  42          void MOSControl(uint8 MOSNum,uint8 Switch)
-  43          {
-  44   1        switch(MOSNum)
-  45   1        {
-  46   2          case 0:MOS1=Switch;break;
-  47   2          case 1:MOS2=Switch;break;
-  48   2          case 2:MOS3=Switch;break;
-  49   2          case 3:MOS4=Switch;break;
-  50   2        }
-  51   1      }
-  52          /***********************************************************************
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 2   
+  24          char AutoCrolAck[4]={0,0,0,0};
+  25          char MOSCntFlag=0;
+  26          char MesureMode=0;//1-on 0-off
+  27          char AutoControlMode=0;//1-on 0-off
+  28          char ControlKeyName[6][15]={"PhControl","BNutAdd","WaterCircule","ANutAdd","data","apitag"};//泵控制识别码
+  29          int16 PrmEC;
+  30          int16 PrmPH;
+  31          extern uint8 LCDReccount;
+  32          extern uint16 Timecount1;
+  33          uint16 Timecount1_MOS1=0;//每一秒储存
+  34          uint16 Timecount2_MOS1=0;//每十秒储存
+  35          uint16 Timecount1_MOS2=0;//每一秒储存
+  36          uint16 Timecount2_MOS2=0;//每十秒储存
+  37          uint16 Timecount1_MOS3=0;//每一秒储存
+  38          uint16 Timecount2_MOS3=0;//每十秒储存
+  39          uint16 Timecount1_MOS4=0;//每一秒储存
+  40          uint16 Timecount2_MOS4=0;//每十秒储存
+  41          uint8 MOSTimeCotrol=0;//0000 0000 开始计时1bitMOS1 2bitMOS2 3bitMOS3 4bitMOS4 计时完成标志位5bitMOS1 6bitM
+             -OS2 7bitMOS3 8bitMOS4 
+  42          uint16 Time_MOS[4][2];//4-MOS管编号，3-时间，秒-时(转换成十秒制)
+  43          
+  44          /*---------------------FUNCTIONS---------------------*/
+  45          /*{
+  46          MOS1=0;PH
+  47          MOS2=0;B液
+  48          MOS3=0;水循环
+  49          MOS4=0;A液
+  50          }*///0 off 1 on
+  51          /***********************************************************************
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 2   
 
-  53          ** 函 数 名： MOSArb()
-  54          ** 函数说明： MOS管的开关仲裁
-  55          **---------------------------------------------------------------------
-  56          ** 输入参数： uint8 MOSNum（需要仲裁的MOS序号）
-  57          ** 返回参数： uint8,泵的状态，0-关，1-开,FF-没有泵操作
-  58          ***********************************************************************/
-  59          uint8 MOSArb(uint8 MOSNum)
-  60          {
-  61   1        static uint8 HighInterruptCnt=0;
-  62   1        //仲裁原则：人工与云平台同属最高级别中断（由先后判断），自动控制属于低级别中断
-  63   1        if((!HighControlAckFlag)&ControlAckFlag)//当云平台与人工无操作时，自动控制响应
-  64   1        {
-  65   2          MOSControl(MOSNum,MOSAuto[MOSNum]);//控制泵
-  66   2          ControlAckFlag=0;//清除标志
-  67   2          MOSHand[MOSNum]=MOSAuto[MOSNum];//统一泵状态
-  68   2          return MOSAuto[MOSNum];
-  69   2        }
-  70   1        else if(HighControlAckFlag&ControlAckFlag)//云平台或者人工操作时，屏蔽自动控制响应
-  71   1        {
-  72   2          MOSControl(MOSNum,MOSHand[MOSNum]);//控制泵
-  73   2          ControlAckFlag=0;//清除标志，高级中断操作在下次高级中断操作时清除
-  74   2          MOSAuto[MOSNum]=MOSHand[MOSNum];//统一泵状态
-  75   2          HighInterruptCnt++;
-  76   2          if(HighInterruptCnt==2)//清除高级中断标志
-  77   2          {
-  78   3            HighInterruptCnt=0;
-  79   3            HighControlAckFlag=0;
-  80   3          }
-  81   2          return MOSHand[MOSNum];
-  82   2        }
-  83   1        else if(!ControlAckFlag)//无泵操作时响应
-  84   1        {
-  85   2          return 0XFF;
-  86   2        }
-  87   1        return 0XFF;
-  88   1      }
-  89          /***********************************************************************
-  90          ** 函 数 名： MOSMesRec()
-  91          ** 函数说明： MOS管控制数据采集(对人工操作和云平台)
-  92          **---------------------------------------------------------------------
-  93          ** 输入参数： 无
-  94          ** 返回参数： 无
-  95          ***********************************************************************/
-  96          void MOSMesRec()
-  97          {
-  98   1        char *NetData;
-  99   1        char *NetKey;
- 100   1        char Ackcmp[4],i;
- 101   1        if(Urst3Rec)//人工现场控制
- 102   1        {
- 103   2          switch(Urst3Rec)
- 104   2          {
- 105   3            case 0x10:MOSHand[0]=0;break;
- 106   3            case 0x11:MOSHand[0]=1;break;
- 107   3            case 0x20:MOSHand[1]=0;break;
- 108   3            case 0x21:MOSHand[1]=1;break;
- 109   3            case 0x30:MOSHand[2]=0;break;
- 110   3            case 0x31:MOSHand[2]=1;break;
- 111   3            case 0x40:MOSHand[3]=0;break;
- 112   3            case 0x41:MOSHand[3]=1;break;
- 113   3          }
- 114   2          Urst3Rec=0;
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 3   
+  52          ** 函 数 名： MOSControl()
+  53          ** 函数说明： MOS管的控制函数
+  54          **---------------------------------------------------------------------
+  55          ** 输入参数： uint8 MOSNum（需要打开的MOS序号）uint8 Switch(开关状态)
+  56          ** 返回参数： 无，泵的状态，0-关，1-开
+  57          ***********************************************************************/
+  58          void MOSControl(uint8 MOSNum,uint8 Switch)
+  59          {
+  60   1        switch(MOSNum)
+  61   1        {
+  62   2          case 0:MOS1=(!Switch)?0:1;break;
+  63   2          case 1:MOS2=(!Switch)?0:1;break;
+  64   2          case 2:MOS3=(!Switch)?0:1;break;
+  65   2          case 3:MOS4=(!Switch)?0:1;break;
+  66   2        }
+  67   1      }
+  68          /***********************************************************************
+  69          ** 函 数 名： MOSArb()
+  70          ** 函数说明： MOS管的开关仲裁
+  71          **---------------------------------------------------------------------
+  72          ** 输入参数： uint8 MOSNum（需要仲裁的MOS序号）
+  73          ** 返回参数： uint8,泵的状态，0-关，1-开,FF-没有泵操作
+  74          ***********************************************************************/
+  75          uint8 MOSArb()
+  76          {
+  77   1        static uint8 HighInterruptCnt=0;
+  78   1        //仲裁原则：人工与云平台同属最高级别中断（由先后判断），自动控制属于低级别中断
+  79   1                  UartSend1_Byte(HighControlAckFlag,1);
+  80   1                  UartSend1_Byte(ControlAckFlag,1);
+  81   1                  UartSend1_Byte(AutoControlMode,1);
+  82   1        if((!HighControlAckFlag)&&ControlAckFlag&&AutoControlMode)//当云平台与人工无操作时，自动控制响应
+  83   1        {
+  84   2          MOSControl(0,MOSAuto[0]);//控制泵
+  85   2          MOSControl(1,MOSAuto[1]);
+  86   2          MOSControl(2,MOSAuto[2]);
+  87   2          MOSControl(3,MOSAuto[3]);
+  88   2          ControlAckFlag=0;//清除标志
+  89   2          MOSHand[0]=MOSAuto[0];//统一泵状态
+  90   2          MOSHand[1]=MOSAuto[1];
+  91   2          MOSHand[2]=MOSAuto[2];
+  92   2          MOSHand[3]=MOSAuto[3];
+  93   2          return 0;
+  94   2        }
+  95   1        else if(HighControlAckFlag&ControlAckFlag)//云平台或者人工操作时，屏蔽自动控制响应
+  96   1        {
+  97   2          MOSControl(0,MOSHand[0]);//控制泵
+  98   2          MOSControl(1,MOSHand[1]);
+  99   2          MOSControl(2,MOSHand[2]);
+ 100   2          MOSControl(3,MOSHand[3]);
+ 101   2          ControlAckFlag=0;//清除标志，高级中断操作在下次高级中断操作时清除
+ 102   2          MOSAuto[0]=MOSHand[0];//统一泵状态
+ 103   2          MOSAuto[1]=MOSHand[1];
+ 104   2          MOSAuto[2]=MOSHand[2];
+ 105   2          MOSAuto[3]=MOSHand[3];
+ 106   2          HighInterruptCnt++;
+ 107   2          if(HighInterruptCnt==2)//清除高级中断标志
+ 108   2          {
+ 109   3            HighInterruptCnt=0;
+ 110   3            HighControlAckFlag=0;
+ 111   3          }
+ 112   2          return 0;
+ 113   2        }
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 3   
 
- 115   2          HighControlAckFlag=1;
- 116   2          ControlAckFlag=1;
+ 114   1        else if(!ControlAckFlag)//无泵操作时响应
+ 115   1        {
+ 116   2          return 0XFF;
  117   2        }
- 118   1        if(Urst2Rec)
- 119   1        {
- 120   2          (int)NetKey=JsonKeyRec(ControlKeyName[5]);
- 121   2          Ackcmp[0]=!strcmp(NetKey,ControlKeyName[0]);
- 122   2          Ackcmp[1]=!strcmp(NetKey,ControlKeyName[1]);
- 123   2          Ackcmp[2]=!strcmp(NetKey,ControlKeyName[2]);
- 124   2          Ackcmp[3]=!strcmp(NetKey,ControlKeyName[3]);
- 125   2          for(i=0;i<4;i++)
- 126   2          {
- 127   3            if(Ackcmp[i])
- 128   3            {
- 129   4              (int)NetData=JsonKeyRec(ControlKeyName[4]);
- 130   4              MOSHand[i]=*NetData;
- 131   4              HighControlAckFlag=1;
- 132   4              ControlAckFlag=1;
- 133   4            }
- 134   3          }
- 135   2          Urst2Rec=0;
- 136   2        }
- 137   1      }
- 138          /***********************************************************************
- 139          ** 函 数 名： ControlPrm()
- 140          ** 函数说明： 植物生长控制参数调整
- 141          **---------------------------------------------------------------------
- 142          ** 输入参数： 无
- 143          ** 返回参数： 无
- 144          ***********************************************************************/
- 145          void ControlPrm()
- 146          {
- 147   1        PrmEC=IapRead(0x0102);
- 148   1        PrmEC=PrmEC<<8;
- 149   1        PrmEC=PrmEC|IapRead(0x0101);//获取EC参数值
- 150   1        PrmPH=IapRead(0x0100);//获取PH参数
- 151   1      }
- 152          /***********************************************************************
- 153          ** 函 数 名： AutoControl()
- 154          ** 函数说明： 系统自动控制泵函数
- 155          **---------------------------------------------------------------------
- 156          ** 输入参数： 无
- 157          ** 返回参数： 无
- 158          ***********************************************************************/
- 159          void AutoControl()
- 160          {
- 161   1        static char AlamCnt[2]={0,0};//0-PH 1-EC
- 162   1        if(DatePh>PrmPH)
- 163   1        {
- 164   2          AlamCnt[0]++;
- 165   2          if(AlamCnt[0]>4)
- 166   2          {
- 167   3            AlamCnt[0]=0;
- 168   3            MOSAuto[0]=1;
- 169   3            ControlAckFlag=1;
- 170   3          }
- 171   2        }
- 172   1        if(DateEc<PrmEC)
- 173   1        {
- 174   2          AlamCnt[1]++;
- 175   2          if(AlamCnt[1]>4)
- 176   2          {
-C51 COMPILER V9.00   CONTROL                                                               08/23/2018 20:19:23 PAGE 4   
+ 118   1        return 0XFF;
+ 119   1      }
+ 120          /***********************************************************************
+ 121          ** 函 数 名： ControlPrm()
+ 122          ** 函数说明： 植物生长控制参数调整
+ 123          **---------------------------------------------------------------------
+ 124          ** 输入参数： 无
+ 125          ** 返回参数： 无
+ 126          ***********************************************************************/
+ 127          void ControlPrm()
+ 128          {
+ 129   1        /*PrmEC=IapRead(0x0102);
+ 130   1        PrmEC=PrmEC<<8;
+ 131   1        PrmEC=PrmEC|IapRead(0x0101);//获取EC参数值
+ 132   1        PrmPH=IapRead(0x0100);//获取PH参数*/
+ 133   1        PrmPH=0x1388;//5000
+ 134   1        PrmEC=0x03E8;//1000
+ 135   1      }
+ 136          /***********************************************************************
+ 137          ** 函 数 名： MOSMesRec()
+ 138          ** 函数说明： MOS管控制数据采集(对人工操作和云平台)
+ 139          **---------------------------------------------------------------------
+ 140          ** 输入参数： 无
+ 141          ** 返回参数： 无
+ 142          ***********************************************************************/
+ 143          void MOSMesRec()
+ 144          {
+ 145   1        char *NetData;
+ 146   1        char *NetKey;
+ 147   1        char Ackcmp[4]={0,0,0,0},i,j;
+ 148   1        char OptionCode;//操作码
+ 149   1        i=LCDRec();//接收标志位
+ 150   1        if(i)//人工现场控制
+ 151   1        {
+ 152   2          LCDAck[LCDReccount]=0;
+ 153   2          OptionCode=LCDAnalyse();
+ 154   2          switch(OptionCode)
+ 155   2          {
+ 156   3            case 0x10:MOSHand[0]=0;i=0;break;
+ 157   3            case 0x11:MOSHand[0]=1;i=0;break;
+ 158   3            case 0x20:MOSHand[1]=0;i=0;break;
+ 159   3            case 0x21:MOSHand[1]=1;i=0;break;
+ 160   3            case 0x30:MOSHand[2]=0;i=0;break;
+ 161   3            case 0x31:MOSHand[2]=1;i=0;break;
+ 162   3            case 0x40:MOSHand[3]=0;i=0;break;
+ 163   3            case 0x41:MOSHand[3]=1;i=0;break;
+ 164   3            case 0xF1:MesureMode=1;break;
+ 165   3            case 0xF4:MesureMode=0;break;
+ 166   3            case 0xF2:AutoControlMode=1;HighControlAckFlag=0;MesureMode=0;MOSTimeCotrol=0;ControlAckFlag=0;ControlA
+             -ckFlag=1;for(j=0;j<3;j++){AutoCrolAck[j]=0;}TR0=0;Timecount1=0;break;//所有自动控制变量复位
+ 167   3            case 0xF3:AutoControlMode=0;break;
+ 168   3            default:i=0xFF;
+ 169   3          }
+ 170   2          LCDAck[1]=0;
+ 171   2          if(!i)
+ 172   2          {
+ 173   3            HighControlAckFlag=1;
+ 174   3            ControlAckFlag=1;
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 4   
 
- 177   3            AlamCnt[1]=0;
- 178   3            MOSAuto[1]=1;
- 179   3            ControlAckFlag=1;
- 180   3          }
- 181   2        }
- 182   1      }
- 183          /***********************************************************************
- 184          ** 函 数 名： AsmControl()
- 185          ** 函数说明： 控制系统总函数
- 186          **---------------------------------------------------------------------
- 187          ** 输入参数： 无
- 188          ** 返回参数： 无
- 189          ***********************************************************************/
- 190          void AsmControl()
- 191          {
- 192   1        if(ControlPrmFlag)//查看植物生长参数是否改变
- 193   1        {
- 194   2          ControlPrm();
- 195   2          ControlPrmFlag=0;
- 196   2        }
- 197   1        AutoControl();//自动控制指令
- 198   1        MOSMesRec();//其他控制指令
- 199   1        MOSArb(0);MOSArb(1);MOSArb(2);MOSArb(3);//MOS管控制仲裁
- 200   1      }
+ 175   3          }
+ 176   2        }
+ 177   1        if(Urst2Rec)//云平台控制
+ 178   1        {
+ 179   2          
+ 180   2          NetKey=JsonKeyRec(ControlKeyName[5],WIFIAck);
+ 181   2          for(i=0;i<4;i++)
+ 182   2          {
+ 183   3            OptionCode=JsonKeyCmp(ControlKeyName[i],NetKey);//此处用于函数返回值中转
+ 184   3            Ackcmp[i]=!OptionCode;
+ 185   3            if(Ackcmp[i])
+ 186   3            {
+ 187   4              NetData=JsonKeyRec(ControlKeyName[4],WIFIAck)-1;
+ 188   4              MOSHand[i]=*NetData-0x30;
+ 189   4              HighControlAckFlag=1;
+ 190   4              ControlAckFlag=1;
+ 191   4            }
+ 192   3          }
+ 193   2          Urst2Rec=0;
+ 194   2        }
+ 195   1      }
+ 196          /*
+ 197          void TimeMesRec()
+ 198          {
+ 199            char i,cnt=0;
+ 200            uint16 t1,t2,t3;
+ 201            if(ControlPrmFlag)//人工现场控制
+ 202            {
+ 203              //for(i=0;i<3;i++)
+ 204              {
+ 205                UartSend1_str(LCDAck+9);
+ 206                LCDReccount=0;
+ 207                LCDTypeRead(3,2);
+ 208                
+ 209                while(cnt>200)cnt++;cnt=0;
+ 210                      UartSend1_str(LCDAck+9);
+ 211                t1=atoi(LCDAck+9);
+ 212                      LCDReccount=0;
+ 213                UartSend1_Byte(t1,1);
+ 214                LCDTypeRead(3,3+i*3);
+ 215                      while(cnt>200)cnt++;cnt=0;
+ 216                t2=atoi(LCDAck+8);
+ 217                UartSend1_Byte(t2,1);
+ 218                      LCDReccount=0;
+ 219                LCDTypeRead(3,4+i*3);
+ 220                      while(cnt>200)cnt++;cnt=0;
+ 221                t3=atoi(LCDAck+8);
+ 222                UartSend1_Byte(t3,1);
+ 223                if((t1+t2+t3)!=0)
+ 224                {
+ 225                  TimeConvert(t1,t2,t3,i);
+ 226                  MOSAuto[i]=1;
+ 227                  HighControlAckFlag=1;
+ 228                  ControlAckFlag=1;
+ 229                }
+ 230              }
+ 231              ControlPrmFlag=0;
+ 232            }
+ 233          }*/
+ 234          /***********************************************************************
+ 235          ** 函 数 名： AutoControl()
+ 236          ** 函数说明： 系统自动控制开泵函数
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 5   
+
+ 237          **---------------------------------------------------------------------
+ 238          ** 输入参数： 无
+ 239          ** 返回参数： 无
+ 240          ***********************************************************************/
+ 241          void AutoControl()
+ 242          {
+ 243   1        char i;
+ 244   1        UartSend1_Byte(AutoCrolAck[0],1);
+ 245   1        for(i=0;i<3;i++)
+ 246   1        {
+ 247   2          if(AutoCrolAck[i]==0)
+ 248   2          {
+ 249   3            AutoControlOpen();
+ 250   3            AutoCrolAck[i]++;
+ 251   3          }
+ 252   2        }
+ 253   1      }
+ 254          /***********************************************************************
+ 255          ** 函 数 名： AutoControlOpen()
+ 256          ** 函数说明： 系统自动控制开泵函数
+ 257          **---------------------------------------------------------------------
+ 258          ** 输入参数： 无
+ 259          ** 返回参数： 无
+ 260          ***********************************************************************/
+ 261          void AutoControlOpen()
+ 262          {
+ 263   1        char ControlSecond[4]={0,0,0,0},i;//0-MOS1 1-MOS2
+ 264   1        //char ZFFlag[2];//数据正负标志
+ 265   1        //char AddLiquidSecond=1.5;//(ml)每一秒加入溶液的量
+ 266   1        //char HoldLquidV=1;//(L)系统总液体体积
+ 267   1        uint16 Difference_value[4];//0-MOS1 1-MOS2
+ 268   1        if(1)
+ 269   1        {
+ 270   2          Difference_value[0]=abs(DatePh-PrmPH);
+ 271   2          /*for(i=0;i<3;i++)
+ 272   2          {
+ 273   2            if(Difference_value[i]&80){Difference_value[i]=abs(Difference_value[i]);ZFFlag[i]=1;}
+ 274   2          }*/
+ 275   2          if(Difference_value[0]>=500)
+ 276   2          {
+ 277   3            ControlSecond[0]=Difference_value[0]/500;
+ 278   3            TimeConvert(ControlSecond[0],0,0,0);
+ 279   3            MOSAuto[0]=1;
+ 280   3            ControlAckFlag=1;
+ 281   3        UartSend1_Byte(ControlAckFlag,1);
+ 282   3          }
+ 283   2          Difference_value[1]=abs(DateEc-PrmEC);
+ 284   2          if(Difference_value[1]>=400)
+ 285   2          {
+ 286   3            ControlSecond[1]=Difference_value[1]/400;
+ 287   3            TimeConvert(ControlSecond[1],0,0,1);
+ 288   3            MOSAuto[1]=1;
+ 289   3            ControlAckFlag=1;
+ 290   3          }
+ 291   2          ControlSecond[2]=ControlSecond[0]>=ControlSecond[1]?ControlSecond[0]:ControlSecond[1];
+ 292   2          if(ControlSecond[2]&&(!AutoCrolAck[2]))
+ 293   2          {
+ 294   3            TimeConvert(ControlSecond[2]*10,0,0,2);
+ 295   3            MOSAuto[2]=1;
+ 296   3            ControlAckFlag=1;
+ 297   3          }
+ 298   2        }
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 6   
+
+ 299   1      }
+*** WARNING C280 IN LINE 263 OF MODULES\CONTROL.C: 'i': unreferenced local variable
+ 300          /***********************************************************************
+ 301          ** 函 数 名： TimeConvert()
+ 302          ** 函数说明： 时间传递函数
+ 303          **---------------------------------------------------------------------
+ 304          ** 输入参数： uint8 Time_second//秒控制,uint16 Time_mintius//分钟控制,uint16 Time_hours_MOS1;//小时控制,ui
+             -nt8 MosN//MOS管编号
+ 305          ** 返回参数： 无
+ 306          ***********************************************************************/
+ 307          void TimeConvert(uint8 Time_second,uint16 Time_mintius,uint16 Time_hours,uint8 MosN)
+ 308          {
+ 309   1        switch(MosN)
+ 310   1        {
+ 311   2          case 0:MOSTimeCotrol|=0x01;TR0=1;Time_MOS[0][0]=Time_second+Time_mintius*60,Time_MOS[0][1]=Time_hours*36
+             -0+Time_MOS[0][0]/10;break;//MOS1计时启动
+ 312   2          case 1:MOSTimeCotrol|=0x02;TR0=1;Time_MOS[1][0]=Time_second+Time_mintius*60,Time_MOS[1][1]=Time_hours*36
+             -0+Time_MOS[0][0]/10;break;//MOS2计时启动
+ 313   2          case 2:MOSTimeCotrol|=0x04;TR0=1;Time_MOS[2][0]=Time_second+Time_mintius*60,Time_MOS[2][1]=Time_hours*36
+             -0+Time_MOS[0][0]/10;;break;//MOS3计时启动
+ 314   2          case 3:MOSTimeCotrol|=0x08;TR0=1;Time_MOS[3][0]=Time_second+Time_mintius*60,Time_MOS[3][1]=Time_hours*36
+             -0+Time_MOS[0][0]/10;break;//MOS4计时启动
+ 315   2        }
+ 316   1      }
+ 317          /***********************************************************************
+ 318          ** 函 数 名： TimeCnt()
+ 319          ** 函数说明： 时间计算函数
+ 320          **---------------------------------------------------------------------
+ 321          ** 输入参数： 无
+ 322          ** 返回参数： 无
+ 323          ***********************************************************************/
+ 324          void TimeCnt()
+ 325          {
+ 326   1        if(MOSTimeCotrol)
+ 327   1        {
+ 328   2          if(MOSTimeCotrol&0x01)
+ 329   2          {
+ 330   3            if(MOSCntFlag&0x01&&MOSCntFlag&0x10)
+ 331   3            {MOSTimeCotrol|=0x10;MOSCntFlag=0;}
+ 332   3          }
+ 333   2          if(MOSTimeCotrol&0x02)
+ 334   2          {
+ 335   3            if(MOSCntFlag&0x02&&MOSCntFlag&0x20)
+ 336   3            {MOSTimeCotrol|=0x20;MOSCntFlag=0;}
+ 337   3          }
+ 338   2          if(MOSTimeCotrol&0x04)
+ 339   2          {
+ 340   3            if(MOSCntFlag&0x04&&MOSCntFlag&0x40)
+ 341   3            {MOSTimeCotrol|=0x40;MOSCntFlag=0;}
+ 342   3          }
+ 343   2          if(MOSTimeCotrol&0x08)
+ 344   2          {
+ 345   3            if(MOSCntFlag&0x08&&MOSCntFlag&0x80)
+ 346   3            {MOSTimeCotrol|=0x80;MOSCntFlag=0;}
+ 347   3          }
+ 348   2        }
+ 349   1      }
+ 350          /***********************************************************************
+ 351          ** 函 数 名： AutoContolClose()
+ 352          ** 函数说明： 系统自动控制关泵函数
+ 353          **---------------------------------------------------------------------
+ 354          ** 输入参数： 无
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 7   
+
+ 355          ** 返回参数： 无
+ 356          ***********************************************************************/
+ 357          void AutoContolClose()
+ 358          {
+ 359   1        TimeCnt();
+ 360   1        if(MOSTimeCotrol)
+ 361   1        {
+ 362   2          if(MOSTimeCotrol&0x10)
+ 363   2          {
+ 364   3            MOSAuto[0]=0;
+ 365   3            MOSTimeCotrol=MOSTimeCotrol&0xEE;
+ 366   3            Timecount1_MOS1=0;Timecount2_MOS1=0;
+ 367   3            if(MOSTimeCotrol&0x40)
+ 368   3            {
+ 369   4                AutoCrolAck[0]=0;
+ 370   4            }
+ 371   3            ControlAckFlag=1;
+ 372   3          }
+ 373   2          if(MOSTimeCotrol&0x20)
+ 374   2          {
+ 375   3            MOSAuto[1]=0;
+ 376   3            MOSTimeCotrol=MOSTimeCotrol&0xDD;
+ 377   3            Timecount1_MOS2=0;Timecount2_MOS2=0;
+ 378   3            if(MOSTimeCotrol&0x40)
+ 379   3            {
+ 380   4                AutoCrolAck[1]=0;
+ 381   4            }
+ 382   3            ControlAckFlag=1;
+ 383   3          }
+ 384   2          if(MOSTimeCotrol&0x40)
+ 385   2          {
+ 386   3            MOSAuto[2]=0;
+ 387   3            MOSTimeCotrol=MOSTimeCotrol&0xBB;
+ 388   3            Timecount1_MOS3=0;Timecount2_MOS3=0;
+ 389   3            AutoCrolAck[2]=0;
+ 390   3            ControlAckFlag=1;
+ 391   3          }
+ 392   2          if(MOSTimeCotrol&0x80)
+ 393   2          {
+ 394   3            MOSAuto[3]=0;
+ 395   3            MOSTimeCotrol=MOSTimeCotrol&0x77;
+ 396   3            Timecount1_MOS4=0;Timecount2_MOS4=0;
+ 397   3            AutoCrolAck[3]=0;
+ 398   3            ControlAckFlag=1;
+ 399   3          }
+ 400   2          if(!MOSTimeCotrol){TR0=0;MesureMode=1;}
+ 401   2        }
+ 402   1      }
+ 403          /***********************************************************************
+ 404          ** 函 数 名： AsmControl()
+ 405          ** 函数说明： 控制系统总函数
+ 406          **---------------------------------------------------------------------
+ 407          ** 输入参数： 无
+ 408          ** 返回参数： 无
+ 409          ***********************************************************************/
+ 410          void AsmControl()//控制顺序很重要
+ 411          {
+ 412   1        if(ControlPrmFlag)//查看植物生长参数是否改变
+ 413   1        {
+ 414   2          ControlPrm();
+ 415   2          ControlPrmFlag=0;
+ 416   2        }
+C51 COMPILER V9.00   CONTROL                                                               08/28/2018 17:24:45 PAGE 8   
+
+ 417   1        MOSMesRec();//其他控制指令
+ 418   1        //TimeMesRec();
+ 419   1        if(AutoControlMode)
+ 420   1        {
+ 421   2          AutoControl();//自动控制指令
+ 422   2          AutoContolClose();
+ 423   2        }
+ 424   1        MOSArb();//MOS管控制仲裁
+ 425   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    790    ----
-   CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =    108      11
+   CODE SIZE        =   1856    ----
+   CONSTANT SIZE    =      8    ----
+   XDATA SIZE       =    146      29
    PDATA SIZE       =   ----    ----
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
@@ -229,4 +470,4 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
 END OF MODULE INFORMATION.
 
 
-C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
+C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)

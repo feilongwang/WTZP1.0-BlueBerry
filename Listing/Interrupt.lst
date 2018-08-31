@@ -1,10 +1,10 @@
-C51 COMPILER V9.00   INTERRUPT                                                             08/23/2018 20:19:22 PAGE 1   
+C51 COMPILER V9.00   INTERRUPT                                                             08/28/2018 17:24:44 PAGE 1   
 
 
 C51 COMPILER V9.00, COMPILATION OF MODULE INTERRUPT
 OBJECT MODULE PLACED IN .\Output\Interrupt.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE Drivers\Interrupt.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PR
-                    -INT(.\Listing\Interrupt.lst) TABS(2) OBJECT(.\Output\Interrupt.obj)
+COMPILER INVOKED BY: E:\Program Files\keil5\C51\BIN\C51.EXE Drivers\Interrupt.c LARGE OPTIMIZE(8,SPEED) BROWSE DEBUG OBJ
+                    -ECTEXTEND PRINT(.\Listing\Interrupt.lst) TABS(2) OBJECT(.\Output\Interrupt.obj)
 
 line level    source
 
@@ -23,95 +23,175 @@ line level    source
   13          /*---------------------INCLUDES----------------------*/
   14          #include "Interrupt.h"
   15          extern char xdata *JSONp;
-  16          
-  17          /*---------------------VARIABLES---------------------*/
-  18          extern uint8 Urst2TI;
-  19          extern uint8 Urst2Rec;
-  20          extern uint8 Urst2RI;
-  21          
-  22          /*---------------------FUNCTIONS---------------------*/
-  23          /***********************************************************************
-  24          ** 函 数 名： KeyIsr()
-  25          ** 函数说明： 中断服务程序,开关
-  26          **---------------------------------------------------------------------
-  27          ** 输入参数： 无
-  28          ** 返回参数： 无
-  29          ***********************************************************************/
-  30          void InterruptKeyIsr()
-  31          {
-  32   1        IE2 = 0x09;//打开串口2,3接收中断
-  33   1        EA = 1;//总中断打开
-  34   1      }
-  35          /***********************************************************************
-  36          ** 函 数 名： Uart1Isr()
-  37          ** 函数说明： 串口1中断服务程序
-  38          **---------------------------------------------------------------------
-  39          ** 输入参数： 无
-  40          ** 返回参数： 无
-  41          ***********************************************************************/
-  42          /*
-  43          void Uart1Isr() interrupt 4 using 1
-  44          {
-  45            if(TI)
-  46            {
-  47              TI=0;
-  48            }
-  49            if(RI)
-  50            {
-  51              RI=0;
-  52            }
-  53          } */
-  54          /***********************************************************************
-C51 COMPILER V9.00   INTERRUPT                                                             08/23/2018 20:19:22 PAGE 2   
+  16          uint16 Timecount1=0;
+  17          extern uint16 Timecount2_MOS1;//计算十秒
+  18          extern uint16 Timecount1_MOS1;//每一秒储存
+  19          extern uint16 Timecount1_MOS2;//每一秒储存
+  20          extern uint16 Timecount2_MOS2;//每十秒储存
+  21          extern uint16 Timecount1_MOS3;//每一秒储存
+  22          extern uint16 Timecount2_MOS3;//每十秒储存
+  23          extern uint16 Timecount1_MOS4;//每一秒储存
+  24          extern uint16 Timecount2_MOS4;//每十秒储存
+  25          extern uint8 MOSTimeCotrol;
+  26          extern char MOSCntFlag;
+  27          
+  28          /*---------------------VARIABLES---------------------*/
+  29          extern uint8 Urst2TI;
+  30          extern uint8 Urst2Rec;
+  31          extern uint8 Urst2RI;
+  32          extern uint8 LCDReccount;
+  33          extern uint8 WIFIReccount;//WIFI数组标志位
+  34          extern uint16 Time_MOS[4][2];
+  35          
+  36          /*---------------------FUNCTIONS---------------------*/
+  37          /***********************************************************************
+  38          ** 函 数 名： KeyIsr()
+  39          ** 函数说明： 中断服务程序,开关
+  40          **---------------------------------------------------------------------
+  41          ** 输入参数： 无
+  42          ** 返回参数： 无
+  43          ***********************************************************************/
+  44          void InterruptKeyIsr()
+  45          {
+  46   1        IE2 = 0x09;//打开串口2,3接收中断
+  47   1        ET0=1; //打开定时器0中断
+  48   1        //ES = 1; //打开串口1中断
+  49   1        EA = 1;//总中断打开
+  50   1      }
+  51          /***********************************************************************
+  52          ** 函 数 名： Uart1Isr()
+  53          ** 函数说明： 串口1中断服务程序
+  54          **---------------------------------------------------------------------
+C51 COMPILER V9.00   INTERRUPT                                                             08/28/2018 17:24:44 PAGE 2   
 
-  55          ** 函 数 名： Uart2Isr()
-  56          ** 函数说明： 串口2中断服务程序
-  57          **---------------------------------------------------------------------
-  58          ** 输入参数： 无
-  59          ** 返回参数： 无
-  60          ***********************************************************************/
-  61          void Uart2Isr() interrupt 8 using 1
-  62          {
-  63   1        if (S2CON & 0x02)
-  64   1        {
-  65   2          S2CON &= ~0x02;
-  66   2          Urst2TI=0;
-  67   2        }
-  68   1        if (S2CON & 0x01)
-  69   1        {
-  70   2          S2CON &= ~0x01;
-  71   2          Urst2RI=1;
-  72   2          UartRec2(JSONp);
-  73   2        }
-  74   1      }
-  75          /***********************************************************************
-  76          ** 函 数 名： Uart3Isr()
-  77          ** 函数说明： 串口2中断服务程序
-  78          **---------------------------------------------------------------------
-  79          ** 输入参数： 无
-  80          ** 返回参数： 无
-  81          ***********************************************************************/
-  82          void Uart3Isr() interrupt 17
-  83          {
-  84   1        if (S3CON & 0x02)
-  85   1        {
-  86   2          S3CON &= ~0x02;
-  87   2          Urst3TI=0;
-  88   2        }
-  89   1        if (S3CON & 0x01)
-  90   1        {
-  91   2          S3CON &= ~0x01;
-  92   2          Urst3RI=1;
-  93   2          Urst3Rec = S3BUF;
-  94   2        }
-  95   1      }
+  55          ** 输入参数： 无
+  56          ** 返回参数： 无
+  57          ***********************************************************************/
+  58          /*void Uart1Isr() interrupt 4 using 1
+  59          {
+  60            if(TI)
+  61            {
+  62              TI=0;
+  63            }
+  64            if(RI)
+  65            {
+  66              RI=0;
+  67              WIFIAck[WIFIReccount]=SBUF;//修改此处改变接收的字符串
+  68              WIFIReccount++;
+  69            }
+  70          }*/
+  71          /***********************************************************************
+  72          ** 函 数 名： Uart2Isr()
+  73          ** 函数说明： 串口2中断服务程序
+  74          **---------------------------------------------------------------------
+  75          ** 输入参数： 无
+  76          ** 返回参数： 无
+  77          ***********************************************************************/
+  78          void Uart2Isr() interrupt 8 using 1
+  79          {
+  80   1        if (S2CON & 0x02)
+  81   1        {
+  82   2          S2CON &= ~0x02;
+  83   2          Urst2TI=0;
+  84   2        }
+  85   1        if (S2CON & 0x01)
+  86   1        {
+  87   2          S2CON &= ~0x01;
+  88   2          Urst2RI=1;
+  89   2          Urst2Rec = S2BUF;
+  90   2          WIFIAck[WIFIReccount]=Urst2Rec;
+  91   2          WIFIReccount++;
+  92   2        }
+  93   1      }
+  94          /***********************************************************************
+  95          ** 函 数 名： Uart3Isr()
+  96          ** 函数说明： 串口3中断服务程序
+  97          **---------------------------------------------------------------------
+  98          ** 输入参数： 无
+  99          ** 返回参数： 无
+ 100          ***********************************************************************/
+ 101          void Uart3Isr() interrupt 17
+ 102          {
+ 103   1        if (S3CON & 0x02)
+ 104   1        {
+ 105   2          S3CON &= ~0x02;
+ 106   2          Urst3TI=0;
+ 107   2        }
+ 108   1        if (S3CON & 0x01)
+ 109   1        {
+ 110   2          S3CON &= ~0x01;
+ 111   2          Urst3RI=1;
+ 112   2          Urst3Rec = S3BUF;
+ 113   2          LCDAck[LCDReccount]=Urst3Rec;
+ 114   2          LCDReccount++;
+ 115   2        }
+ 116   1      }
+C51 COMPILER V9.00   INTERRUPT                                                             08/28/2018 17:24:44 PAGE 3   
+
+ 117          /***********************************************************************
+ 118          ** 函 数 名： Time0_Isr()
+ 119          ** 函数说明： 定时器0中断服务程序
+ 120          **---------------------------------------------------------------------
+ 121          ** 输入参数： 无
+ 122          ** 返回参数： 无
+ 123          ***********************************************************************/
+ 124          void Time0_Isr() interrupt 1 using 1//最后记得计算一下时间正确
+ 125          {
+ 126   1        Timecount1++;
+ 127   1        if(Timecount1%85==0)
+ 128   1        {
+ 129   2          if(MOSTimeCotrol)
+ 130   2          {
+ 131   3            Timecount1_MOS1++;//每一秒储存
+ 132   3            Timecount1_MOS2++;
+ 133   3            Timecount1_MOS3++;
+ 134   3            Timecount1_MOS4++;
+ 135   3          }
+ 136   2        }
+ 137   1        if(Timecount1==850)
+ 138   1        {
+ 139   2          Timecount1=0;
+ 140   2          if(MOSTimeCotrol)
+ 141   2          {
+ 142   3            Timecount2_MOS1++;//每十秒储存
+ 143   3            Timecount2_MOS2++;
+ 144   3            Timecount2_MOS3++;
+ 145   3            Timecount2_MOS4++;
+ 146   3          }
+ 147   2        }
+ 148   1        if(MOSTimeCotrol)
+ 149   1        {
+ 150   2          if(MOSTimeCotrol&0x01)
+ 151   2          {
+ 152   3            if(Time_MOS[0][0]==Timecount1_MOS1)MOSCntFlag|=0x01;
+ 153   3            if(Time_MOS[0][1]==Timecount2_MOS1)MOSCntFlag|=0x10;
+ 154   3          }
+ 155   2          if(MOSTimeCotrol&0x02)
+ 156   2          {
+ 157   3            if(Time_MOS[0][0]==Timecount1_MOS2)MOSCntFlag|=0x02;
+ 158   3            if(Time_MOS[0][1]==Timecount2_MOS2)MOSCntFlag|=0x20;
+ 159   3          }
+ 160   2          if(MOSTimeCotrol&0x04)
+ 161   2          {
+ 162   3            if(Time_MOS[0][0]==Timecount1_MOS3)MOSCntFlag|=0x04;
+ 163   3            if(Time_MOS[0][1]==Timecount2_MOS3)MOSCntFlag|=0x40;
+ 164   3          }
+ 165   2          if(MOSTimeCotrol&0x08)
+ 166   2          {
+ 167   3            if(Time_MOS[0][0]==Timecount1_MOS4)MOSCntFlag|=0x08;
+ 168   3            if(Time_MOS[0][1]==Timecount2_MOS4)MOSCntFlag|=0x80;
+ 169   3          }
+ 170   2        }
+ 171   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    118    ----
+   CODE SIZE        =    609    ----
    CONSTANT SIZE    =   ----    ----
-   XDATA SIZE       =   ----    ----
+   XDATA SIZE       =      2    ----
    PDATA SIZE       =   ----    ----
+C51 COMPILER V9.00   INTERRUPT                                                             08/28/2018 17:24:44 PAGE 4   
+
    DATA SIZE        =   ----    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----

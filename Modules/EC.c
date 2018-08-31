@@ -121,6 +121,5 @@ float EC(void)
 	ECCon=1000000L*Cce/(ECRes*cos(PI*(ECRads-SysPhase)/180)-SysRes); //μS/cm	 
     
 	AD5933WriteByte(0x80,0xA1); //控制寄存器，1010 0001 0000 0000 省电模式，2V，一倍放大，内部时钟 	0xA100
-	UartSend1_Byte(ECCon,2);
 	return ECCon;
 }

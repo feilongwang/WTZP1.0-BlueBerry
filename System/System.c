@@ -18,12 +18,13 @@
 
 /*---------------------VARIABLES---------------------*/
 //生长参数变量储存区
-uint16 DateLiquidT;uint16 DateCO2;uint16 DatePh;
+uint16 DateLiquidT;uint16 DateCO2;int16 DatePh;
 uint16 DateHumidity;uint16 DateTemp;
 int16 DateEc;
 uint32 DateLux;
 //其他控制参数区
-
+extern char MesureMode;//1-on 0-off
+extern char AutoControlMode;//1-on 0-off
 
 /*---------------------FUNCTIONS---------------------*/
 
@@ -36,24 +37,25 @@ uint32 DateLux;
 ***********************************************************************/
 void InitSystem(void)
 {
+	//泵初始化
+	MOS1=0;MOS2=0;MOS3=0;MOS4=0;
 	//传感器初始化区域
 	InitI2C();
 	InitLUX();
   Init_AD();
 	InitPh();
-	AM2301Start();
 	//串口初始化区域
 	InitUart1();
 	InitUart2();
   InitUart3();
 	//中断或定时器初始化区域
 	InterruptKeyIsr();
+	//定时器初始化
+	InitTime0();
 	//植物生长参数控制初始化
-  EEPROMWrite(0x0100,0x08);//PH=8
-	EEPROMWrite(0x0101,0x08);//低位，EC=1800
-	EEPROMWrite(0x0102,0x07);//高位
-	//云平台连接
-	WifiLink();
+  //EEPROMWrite(0x0100,0x08);//PH=8
+	//EEPROMWrite(0x0101,0x08);//低位，EC=1800
+	//EEPROMWrite(0x0102,0x07);//高位
 }
 /***********************************************************************
 ** 函 数 名： Sensor()
@@ -64,16 +66,14 @@ void InitSystem(void)
 ***********************************************************************/
 void Sensor()
 {
+	AM2301();
 	DS18B20Start();
 	Read_AD5933_Temperature(); 
 	DateEc=(int)EC();
 	DateLiquidT=DS18B20();
 	DateLux=Get_Lux();
 	DateCO2=Get_CO2();
-	UartSend1_Byte(0,2);
 	DatePh=ph();
-	AM2301();
-	WifidatPack();
 }
 /***********************************************************************
 ** 函 数 名： LCDdisplay()
@@ -84,13 +84,38 @@ void Sensor()
 ***********************************************************************/
 void LCDdisplay()
 {
-	LCDSend(42,DateLiquidT);//溶液温度
-	LCDSend(10,DateCO2);//CO2浓度
-	LCDSend(11,DatePh);//PH
-	LCDSend(8,DateHumidity);//空气湿度
-	LCDSend(7,DateTemp);//空气温度
-	LCDSend(12,DateEc);//溶液电导率
-	LCDSend(9,DateLux);//光照
+	LCDSend(0x2A,DateLiquidT/10.0);//溶液温度
+	LCDSend(0x0A,DateCO2);//CO2浓度
+	LCDSend(0x0B,DatePh/1000.0);//PH
+	LCDSend(0x08,DateHumidity/10.0);//空气湿度
+	LCDSend(0x07,DateTemp/10.0);//空气温度
+	LCDSend(0x0C,DateEc);//溶液电导率
+	LCDSend(0x09,DateLux);//光照
+	//显示状态
+	LCDKeyControl(0x11,MOSAuto[0]);//MOS1
+	LCDKeyControl(0x13,MOSAuto[1]);//MOS2
+	LCDKeyControl(0x14,MOSAuto[2]);//MOS3
+	LCDKeyControl(0x15,MOSAuto[3]);//MOS4
+	LCDKeyControl(0x25,MesureMode);
+	LCDKeyControl(0x23,AutoControlMode);
+}
+/***********************************************************************
+** 函 数 名： WIFIControl()
+** 函数说明： 与云平台连接函数
+**---------------------------------------------------------------------
+** 输入参数： 无
+** 返回参数： 无
+***********************************************************************/
+void WIFIControl()
+{
+	static uint8 SysCheck=1;//系统检测次数
+	if(SysCheck%200==0||SysCheck<9)WifiLink();//云平台连接//
+	WifiBeat();//与云平台保持连接
+	//if(SysCheck%3==0)WifiPack();//向云平台发送数据
+	if(SysCheck%3==0)WifidatPack();
+	if(SysCheck%4==0)WifiPack();
+	SysCheck++;
+	if(SysCheck>250)SysCheck=1;
 }
 /***********************************************************************
 ** 函 数 名： StartSystem()
@@ -102,16 +127,20 @@ void LCDdisplay()
 void StartSystem(void)
 {
 	//存储变量区
+	char cnt=0;
 	TEST=0;//LED亮
+	MesureMode=1;
 	//
-    while(1)
-    {
-			//WifiLink();
-			Sensor();
-			//LCDdisplay();
-			//AsmControl();
-			//WifiBeat();
-			TEST = ~TEST;
-    }
-
+	while(1)
+	{
+		WIFIControl();
+		Sensor();
+		LCDdisplay();
+		AsmControl();
+		WIFIReccount=0;
+		LCDReccount=0;
+		TEST = ~TEST;
+	}
+	cnt++;
+	if(cnt>254)cnt=0;
 }

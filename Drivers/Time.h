@@ -19,5 +19,6 @@
 void InitTime1(void);
 void InitTime2(void);
 void InitTime3(void);
+void InitTime0(void);
 
 #endif

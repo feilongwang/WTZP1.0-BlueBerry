@@ -20,7 +20,7 @@
 /*---------------------DEFINES-----------------------*/
 extern uint16 DateHumidity;
 extern uint16 DateTemp;
-sbit TEMP_SDA=P1^3; //根据需要修改端口
+#define TEMP_SDA P1_3//根据需要修改端口
 
 /*---------------------DECLARES----------------------*/
 void AM2301Start(void);

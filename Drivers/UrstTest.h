@@ -29,14 +29,15 @@ extern uint8 Urst3Rec;
 void InitUart1(void);//初始化串口1
 void UartSend1(unsigned char dat);
 void UartSend1_Byte(unsigned long dat,unsigned char n);//调用此函数发送
+//uint8 UartRec1(char *p);//电脑发送测试
 void InitUart2(void);
 void UartSend2(unsigned char dat);
 void UartSend2_str(unsigned char *dat) ;
-uint8 UartRec2(char *p);
+//uint8 UartRec2(char *p);
 void UartSend1_str(char *dat);
 void InitUart3(void);
 void UartSend3(unsigned char dat);
 void UartSend3_str(char *dat);
-uint8 UartRec3(char *p);
+//uint8 UartRec3(char *p);
 
 #endif
